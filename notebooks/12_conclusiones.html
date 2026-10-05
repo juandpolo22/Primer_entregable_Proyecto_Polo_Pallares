@@ -1,0 +1,914 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>12. Conclusiones, limitaciones y checklist &#8212; Riesgo de entrega tardía en DataCo (sin fuga)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/12_conclusiones';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="11. Modelo base: línea base trivial y regresión logística" href="11_modelo_base.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="01_introduccion.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Riesgo de entrega tardía en DataCo (sin fuga)</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduccion.html">
+                    1. Introducción: riesgo de entrega tardía en DataCo
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base de datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_datos.html">2. La base de datos: estructura, tamaño, calidad y representatividad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_eda_objetivo.html">3. Análisis de la variable objetivo (2.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_eda_univariado.html">4. Análisis univariado (2.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_eda_bivariado.html">5. Análisis bivariado (2.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_eda_multivariado.html">6. Análisis multivariado (2.4)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_eda_temporal.html">7. Componente temporal (2.6)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_eda_espacial.html">8. Componente espacial (2.7) y espacio-temporal (2.8)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="09_data_leakage.html">9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modelado</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_preprocesamiento.html">10. Preprocesamiento y Pipeline (2.9)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_base.html">11. Modelo base: línea base trivial y regresión logística</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">12. Conclusiones, limitaciones y checklist</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/juandpolo22/Avance_1_Polo_Pallares" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/12_conclusiones.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>12. Conclusiones, limitaciones y checklist</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">Resumen ejecutivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrica-elegida-roc-auc">Métrica elegida: ROC-AUC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#respuestas-a-las-preguntas-del-enunciado">Respuestas a las preguntas del enunciado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-principales-del-eda-que-guiaron-el-modelado">Hallazgos principales del EDA que guiaron el modelado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones">Limitaciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibilidad-semillas-y-versiones">Reproducibilidad: semillas y versiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencias">Referencias</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="conclusiones-limitaciones-y-checklist">
+<h1>12. Conclusiones, limitaciones y checklist<a class="headerlink" href="#conclusiones-limitaciones-y-checklist" title="Link to this heading">#</a></h1>
+<p>Este capítulo <strong>lee las tablas generadas en los capítulos anteriores</strong> y resume los
+hallazgos; las cifras salen de esas tablas, no están escritas a mano.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">"_config.yml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">project_root</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">"No se encontró _config.yml. Ejecuta el notebook dentro de la carpeta del libro."</span><span class="p">)</span>
+    <span class="n">project_root</span> <span class="o">=</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">_folder</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tables"</span><span class="p">,</span> <span class="s2">"figures"</span><span class="p">):</span>          <span class="c1"># se crean si no existen</span>
+    <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="n">_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.project_utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">configure_plots</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">project_root</span> <span class="o">/</span> <span class="s2">"tables"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">md_out</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+<span class="n">part</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"particion_pedidos.csv"</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"resultados_prueba.csv"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"intervalos_bootstrap_logistica.csv"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dif</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"diferencias_vs_dummy.csv"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"cv_resumen.csv"</span><span class="p">)</span>
+<span class="n">con_sin</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"con_fuga_vs_sin_fuga.csv"</span><span class="p">)</span>
+<span class="n">techo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"techo_sin_fuga.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sel</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">((</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"modelo_elegido.json"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">))</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"decision_poblacion.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"ranking_univariado.csv"</span><span class="p">)</span>
+<span class="n">moran</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"moran_global.csv"</span><span class="p">)</span>
+<span class="n">sub</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"desempeno_subgrupos.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="resumen-ejecutivo">
+<h2>Resumen ejecutivo<a class="headerlink" href="#resumen-ejecutivo" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_tr</span><span class="p">,</span> <span class="n">n_te</span> <span class="o">=</span> <span class="p">(</span><span class="n">part</span><span class="p">[</span><span class="s2">"conjunto"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"train"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="p">(</span><span class="n">part</span><span class="p">[</span><span class="s2">"conjunto"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"test"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">lr_</span><span class="p">,</span> <span class="n">du_</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Regresión logística"</span><span class="p">],</span> <span class="n">res</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Dummy (prior)"</span><span class="p">]</span>
+<span class="n">cv_lr</span> <span class="o">=</span> <span class="n">cv</span><span class="p">[(</span><span class="n">cv</span><span class="p">[</span><span class="s2">"esquema"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"Temporal"</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cv</span><span class="p">[</span><span class="s2">"modelo"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Regresión logística"</span><span class="p">)]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">md_out</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"Se construyó una línea base para predecir, **al crear un pedido**, si su entrega llegará tarde en **DataCo Smart Supply Chain** "</span>
+    <span class="sa">f</span><span class="s2">"(180.519 líneas, 2015–2018). La partición es **cronológica** (</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">n_tr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> líneas de entrenamiento y </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">n_te</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> de prueba, con 7 días de separación) "</span>
+    <span class="sa">f</span><span class="s2">"y se excluyeron </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dec</span><span class="p">[</span><span class="s1">'n_excluidos_train'</span><span class="p">]),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> líneas de pedidos cancelados o sospechosos de fraude del entrenamiento (y sus equivalentes en la prueba).</span><span class="se">\n\n</span><span class="s2">"</span>
+    <span class="sa">f</span><span class="s2">"- **Métrica principal, ROC-AUC (prueba):** regresión logística **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">lr_</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">],</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">** "</span>
+    <span class="sa">f</span><span class="s2">"(IC 95 % bootstrap por pedido: </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2"> – </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">) frente a 0,5 del Dummy. "</span>
+    <span class="sa">f</span><span class="s2">"En validación cruzada temporal: </span><span class="si">{</span><span class="n">cv_lr</span><span class="p">[</span><span class="s1">'roc_auc'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'.'</span><span class="p">,</span><span class="w"> </span><span class="s1">','</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="sa">f</span><span class="s2">"- **Accuracy:** </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">lr_</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> frente a </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">du_</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> del Dummy (diferencia </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">dif</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Diferencia'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">, "</span>
+    <span class="sa">f</span><span class="s2">"IC </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">dif</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">,</span><span class="w"> </span><span class="s1">'IC inferior'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> – </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">dif</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">,</span><span class="w"> </span><span class="s1">'IC superior'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">).</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="sa">f</span><span class="s2">"- **Techo sin fuga:** ROC-AUC </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">techo</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> (tabla de tasas por modo × jornada). El modelo lo alcanza.</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="sa">f</span><span class="s2">"- **Con fuga** (días reales de envío) el ROC-AUC sería </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">con_sin</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">: ese es el resultado «espectacular» que se descarta.</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="sa">f</span><span class="s2">"- **Variables del modelo:** </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sel</span><span class="p">[</span><span class="s1">'cat'</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sel</span><span class="p">[</span><span class="s1">'num_lin'</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sel</span><span class="p">[</span><span class="s1">'num_log'</span><span class="p">])</span><span class="si">}</span><span class="s2"> (modo de envío × jornada AM/PM del pedido)."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p>Se construyó una línea base para predecir, <strong>al crear un pedido</strong>, si su entrega llegará tarde en <strong>DataCo Smart Supply Chain</strong> (180.519 líneas, 2015–2018). La partición es <strong>cronológica</strong> (143.075 líneas de entrenamiento y 36.222 de prueba, con 7 días de separación) y se excluyeron 6.032 líneas de pedidos cancelados o sospechosos de fraude del entrenamiento (y sus equivalentes en la prueba).</p>
+<ul class="simple">
+<li><p><strong>Métrica principal, ROC-AUC (prueba):</strong> regresión logística <strong>0,7746</strong> (IC 95 % bootstrap por pedido: 0,7668 – 0,7825) frente a 0,5 del Dummy. En validación cruzada temporal: 0,7743 ± 0,0035.</p></li>
+<li><p><strong>Accuracy:</strong> 0,725 frente a 0,573 del Dummy (diferencia 0,152, IC 0,137 – 0,166).</p></li>
+<li><p><strong>Techo sin fuga:</strong> ROC-AUC 0,775 (tabla de tasas por modo × jornada). El modelo lo alcanza.</p></li>
+<li><p><strong>Con fuga</strong> (días reales de envío) el ROC-AUC sería 0,975: ese es el resultado «espectacular» que se descarta.</p></li>
+<li><p><strong>Variables del modelo:</strong> mode_x_daypart (modo de envío × jornada AM/PM del pedido).</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="metrica-elegida-roc-auc">
+<h2>Métrica elegida: ROC-AUC<a class="headerlink" href="#metrica-elegida-roc-auc" title="Link to this heading">#</a></h2>
+<p>La métrica principal del proyecto es el <strong>área bajo la curva ROC (ROC-AUC)</strong>. La elección se
+justifica con el problema y con los propios resultados del libro:</p>
+<ol class="arabic simple">
+<li><p><strong>Coincide con el uso del modelo.</strong> El objetivo operativo es <strong>ordenar</strong> los pedidos por
+riesgo de retraso para priorizar acciones (reasignar transporte, avisar al cliente). La
+ROC-AUC mide exactamente eso: la probabilidad de que un pedido tardío elegido al azar reciba
+un puntaje mayor que uno no tardío.</p></li>
+<li><p><strong>No depende del umbral.</strong> El corte 0,5 es arbitrario y lo decide la operación según su
+capacidad. Las métricas basadas en el umbral (accuracy, recall, F1) cambian mucho al moverlo;
+la ROC-AUC no (tabla de abajo).</p></li>
+<li><p><strong>Las clases están casi balanceadas</strong> (≈ 57 % tardías). Con este balance la ROC-AUC no se
+infla por la clase mayoritaria, y no hace falta una métrica para clases raras como la
+Average Precision, que se reporta solo como complemento.</p></li>
+<li><p><strong>Da referencias claras.</strong> El Dummy vale 0,5; el techo sin fuga, ≈ 0,775; con fuga se llega a
+≈ 0,975. Así la misma escala sirve para medir la mejora sobre la línea base y para <strong>detectar
+fuga</strong>.</p></li>
+<li><p><strong>Accuracy es engañosa como principal.</strong> El Dummy ya acierta el 57 % sin aprender nada, y el
+valor depende del umbral y de la prevalencia del periodo.</p></li>
+</ol>
+<p>Se descartó <strong>precision</strong> como métrica de reporte. Depende del umbral y, como la clase positiva
+es la mayoritaria, cualquier regla trivial ya tiene una precision cercana a la prevalencia, así
+que no informa sobre la capacidad de ordenar. Recall y F1 se mantienen solo para mostrar el
+efecto operativo del umbral elegido, y el <strong>Brier</strong> junto con la curva de calibración verifican
+que las probabilidades sean creíbles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">umb</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"umbral_alternativo.csv"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">prev</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"objetivo_distribucion.csv"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sens</span> <span class="o">=</span> <span class="n">umb</span><span class="p">[[</span><span class="s2">"Accuracy"</span><span class="p">,</span> <span class="s2">"Recall"</span><span class="p">,</span> <span class="s2">"F1"</span><span class="p">,</span> <span class="s2">"ROC-AUC"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">sens</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Dummy (prior)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Dummy (prior)"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"Accuracy"</span><span class="p">,</span> <span class="s2">"Recall"</span><span class="p">,</span> <span class="s2">"F1"</span><span class="p">,</span> <span class="s2">"ROC-AUC"</span><span class="p">]]</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sens</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">cambio</span> <span class="o">=</span> <span class="p">(</span><span class="n">umb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">umb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Al pasar del umbral 0,5 al de Youden, accuracy cambia </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">cambio</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">, recall </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">cambio</span><span class="p">[</span><span class="s1">'Recall'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> y F1 </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">cambio</span><span class="p">[</span><span class="s1">'F1'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">, "</span>
+       <span class="sa">f</span><span class="s2">"mientras que el ROC-AUC cambia **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">cambio</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">**. El Dummy obtiene F1 = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'Dummy (prior)'</span><span class="p">,</span><span class="w"> </span><span class="s1">'F1'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+       <span class="sa">f</span><span class="s2">"(mayor que la regresión logística) solo por predecir siempre «tardía»: otra razón para no usar F1 como métrica principal. "</span>
+       <span class="sa">f</span><span class="s2">"Con la ROC-AUC, el modelo (</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'Regresión logística'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ROC-AUC'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">; IC 95 % </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> – </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">) "</span>
+       <span class="sa">f</span><span class="s2">"supera claramente al Dummy (0,5) y alcanza el techo sin fuga (</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">techo</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Accuracy</th>
+      <th>Recall</th>
+      <th>F1</th>
+      <th>ROC-AUC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>umbral 0,5</th>
+      <td>0.7248</td>
+      <td>0.5885</td>
+      <td>0.7102</td>
+      <td>0.7746</td>
+    </tr>
+    <tr>
+      <th>umbral Youden OOF = 0.806</th>
+      <td>0.6663</td>
+      <td>0.4545</td>
+      <td>0.6095</td>
+      <td>0.7746</td>
+    </tr>
+    <tr>
+      <th>Dummy (prior)</th>
+      <td>0.5730</td>
+      <td>1.0000</td>
+      <td>0.7286</td>
+      <td>0.5000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>Al pasar del umbral 0,5 al de Youden, accuracy cambia -0,059, recall -0,134 y F1 -0,101, mientras que el ROC-AUC cambia <strong>0,000</strong>. El Dummy obtiene F1 = 0,729 (mayor que la regresión logística) solo por predecir siempre «tardía»: otra razón para no usar F1 como métrica principal. Con la ROC-AUC, el modelo (0,775; IC 95 % 0,767 – 0,782) supera claramente al Dummy (0,5) y alcanza el techo sin fuga (0,775).</p>
+</div>
+</div>
+</section>
+<section id="respuestas-a-las-preguntas-del-enunciado">
+<h2>Respuestas a las preguntas del enunciado<a class="headerlink" href="#respuestas-a-las-preguntas-del-enunciado" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preg</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"¿Qué se predice y para qué?"</span><span class="p">,</span> <span class="s2">"Si una línea de pedido llegará tarde (Late_delivery_risk = 1), al crear el pedido, para priorizar acciones antes del despacho."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"¿Por qué ROC-AUC?"</span><span class="p">,</span> <span class="s2">"Mide la calidad del orden por riesgo (el uso previsto), no depende del umbral y las clases están casi balanceadas (≈ 57/43). Ver «Métrica elegida»."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"¿Hay fuga?"</span><span class="p">,</span> <span class="s2">"Se excluyeron días reales, estado de entrega, estado del pedido y fecha de despacho (cap. 9). Partición y CV temporales con gap; bootstrap por pedido."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"¿Qué estructura tienen los datos?"</span><span class="p">,</span> <span class="s2">"Líneas anidadas en pedidos y clientes; marca temporal (eventos, sin estacionalidad en la tasa) y coordenadas del cliente (sin autocorrelación espacial del objetivo)."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Predictoras más relevantes"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"shipping_mode (AUC univariado </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">rank</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'AUC univariado'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">) y, solo en Same Day, la jornada del pedido (corte del mediodía). "</span>
+     <span class="s2">"El resto tiene AUC ≈ 0,50; payment_type solo parecía útil por los pedidos cancelados/fraude."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"¿Autocorrelación espacial del objetivo?"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"No: I de Moran = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">moran</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'I'</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">, p = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">moran</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'p_permutacion'</span><span class="p">],</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"¿Generaliza en el tiempo?"</span><span class="p">,</span> <span class="s2">"Sí: el ROC-AUC es igual antes y después del cambio de régimen de oct-2017; las variables del modelo no derivan."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"¿Es justo entre grupos?"</span><span class="p">,</span> <span class="s2">"ROC-AUC por mercado y segmento entre "</span> <span class="o">+</span> <span class="n">es</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">'market'</span><span class="p">,</span> <span class="s1">'customer_segment'</span><span class="p">])][</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" y "</span> <span class="o">+</span> <span class="n">es</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">'market'</span><span class="p">,</span> <span class="s1">'customer_segment'</span><span class="p">])][</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"."</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">preg</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"pregunta"</span><span class="p">,</span> <span class="s2">"respuesta"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pregunta</th>
+      <th>respuesta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>¿Qué se predice y para qué?</td>
+      <td>Si una línea de pedido llegará tarde (Late_delivery_risk = 1), al ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>¿Por qué ROC-AUC?</td>
+      <td>Mide la calidad del orden por riesgo (el uso previsto), no depende...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>¿Hay fuga?</td>
+      <td>Se excluyeron días reales, estado de entrega, estado del pedido y ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>¿Qué estructura tienen los datos?</td>
+      <td>Líneas anidadas en pedidos y clientes; marca temporal (eventos, si...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Predictoras más relevantes</td>
+      <td>shipping_mode (AUC univariado 0,727) y, solo en Same Day, la jorna...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>¿Autocorrelación espacial del objetivo?</td>
+      <td>No: I de Moran = 0,015, p = 0,57.</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>¿Generaliza en el tiempo?</td>
+      <td>Sí: el ROC-AUC es igual antes y después del cambio de régimen de o...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>¿Es justo entre grupos?</td>
+      <td>ROC-AUC por mercado y segmento entre 0,765 y 0,780.</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="hallazgos-principales-del-eda-que-guiaron-el-modelado">
+<h2>Hallazgos principales del EDA que guiaron el modelado<a class="headerlink" href="#hallazgos-principales-del-eda-que-guiaron-el-modelado" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>La etiqueta se genera con reglas simples</strong> (cap. 9): Standard y Second Class tienen días
+reales uniformes entre 2 y 6 (retraso aleatorio de 40 % y 80 %), First Class siempre llega
+tarde y Same Day llega tarde si se pide después del mediodía. Esto fija el techo sin fuga.</p></li>
+<li><p><strong>La hora importa solo en Same Day</strong> (cap. 7): una hora de corte; se modela con la
+interacción modo × jornada.</p></li>
+<li><p><strong>Pedidos cancelados/fraude</strong> tienen etiqueta 0 por construcción y convierten al medio de
+pago en un proxy (cap. 9): se excluyen de la población.</p></li>
+<li><p><strong>Los mercados de destino rotan en el tiempo</strong> (cap. 7–8): el destino está confundido con el
+periodo y no aporta; queda fuera del modelo, lo que lo protege de la deriva de la prueba.</p></li>
+<li><p><strong>Sin estructura temporal ni espacial en el objetivo</strong> (cap. 7–8): residuos sin ACF ni I de
+Moran (cap. 11).</p></li>
+<li><p><strong>Redundancias</strong>: seis columnas duplicadas, días programados ≡ modo de envío, y
+variables de ventas/ganancia aritméticamente ligadas (cap. 2 y 5).</p></li>
+</ol>
+</section>
+<section id="limitaciones">
+<h2>Limitaciones<a class="headerlink" href="#limitaciones" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">md_out</span><span class="p">(</span><span class="s2">"- **Datos simulados:** DataCo es una empresa ficticia; las reglas que generan la etiqueta son simples y "</span>
+       <span class="s2">"parte del resultado (retrasos uniformes en Standard y Second Class) es aleatoria por diseño. Las conclusiones no se extrapolan a una cadena real.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="s2">"- **Población:** solo pedidos despachados (sin cancelados ni fraude); clientes en EE. UU. y Puerto Rico; un catálogo deportivo.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="s2">"- **Geografía:** las coordenadas son del cliente/tienda (una por cliente) y algunas tienen errores de signo; el destino solo tiene país/región. "</span>
+       <span class="s2">"Hay fuerte sesgo de cobertura (áreas metropolitanas).</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="s2">"- **Tiempo:** zona horaria desconocida; la llegada de pedidos es casi determinística (artefacto de simulación); "</span>
+       <span class="s2">"cambio de régimen en oct-2017 (pedidos de una línea).</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="s2">"- **Modelo:** lineal y con una sola variable categórica; la separación casi completa hace que la magnitud de los coeficientes dependa de la regularización.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- **Incertidumbre:** los intervalos remuestrean pedidos, no clientes ni días; el ancho del IC del ROC-AUC es ≈ </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">ic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'ROC-AUC'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<ul class="simple">
+<li><p><strong>Datos simulados:</strong> DataCo es una empresa ficticia; las reglas que generan la etiqueta son simples y parte del resultado (retrasos uniformes en Standard y Second Class) es aleatoria por diseño. Las conclusiones no se extrapolan a una cadena real.</p></li>
+<li><p><strong>Población:</strong> solo pedidos despachados (sin cancelados ni fraude); clientes en EE. UU. y Puerto Rico; un catálogo deportivo.</p></li>
+<li><p><strong>Geografía:</strong> las coordenadas son del cliente/tienda (una por cliente) y algunas tienen errores de signo; el destino solo tiene país/región. Hay fuerte sesgo de cobertura (áreas metropolitanas).</p></li>
+<li><p><strong>Tiempo:</strong> zona horaria desconocida; la llegada de pedidos es casi determinística (artefacto de simulación); cambio de régimen en oct-2017 (pedidos de una línea).</p></li>
+<li><p><strong>Modelo:</strong> lineal y con una sola variable categórica; la separación casi completa hace que la magnitud de los coeficientes dependa de la regularización.</p></li>
+<li><p><strong>Incertidumbre:</strong> los intervalos remuestrean pedidos, no clientes ni días; el ancho del IC del ROC-AUC es ≈ 0,016.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="reproducibilidad-semillas-y-versiones">
+<h2>Reproducibilidad: semillas y versiones<a class="headerlink" href="#reproducibilidad-semillas-y-versiones" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span><span class="o">,</span><span class="w"> </span><span class="nn">scipy</span><span class="o">,</span><span class="w"> </span><span class="nn">matplotlib</span><span class="o">,</span><span class="w"> </span><span class="nn">statsmodels</span>
+<span class="n">versiones</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"paquete"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Python"</span><span class="p">,</span> <span class="s2">"numpy"</span><span class="p">,</span> <span class="s2">"pandas"</span><span class="p">,</span> <span class="s2">"scipy"</span><span class="p">,</span> <span class="s2">"scikit-learn"</span><span class="p">,</span> <span class="s2">"statsmodels"</span><span class="p">,</span> <span class="s2">"matplotlib"</span><span class="p">,</span> <span class="s2">"seaborn"</span><span class="p">],</span>
+                          <span class="s2">"versión"</span><span class="p">:</span> <span class="p">[</span><span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+                                      <span class="n">statsmodels</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">__version__</span><span class="p">]})</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Semilla global: **</span><span class="si">{</span><span class="n">RANDOM_STATE</span><span class="si">}</span><span class="s2">** (partición, pliegues, bootstrap, t-SNE, k-means, Isolation Forest, permutaciones). "</span>
+       <span class="sa">f</span><span class="s2">"Partición guardada en `tables/particion_pedidos.csv`."</span><span class="p">)</span>
+<span class="n">versiones</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p>Semilla global: <strong>42</strong> (partición, pliegues, bootstrap, t-SNE, k-means, Isolation Forest, permutaciones). Partición guardada en <code class="docutils literal notranslate"><span class="pre">tables/particion_pedidos.csv</span></code>.</p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>paquete</th>
+      <th>versión</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Python</td>
+      <td>3.9.25</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>numpy</td>
+      <td>2.0.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>pandas</td>
+      <td>2.2.3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>scipy</td>
+      <td>1.13.1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>scikit-learn</td>
+      <td>1.6.1</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>statsmodels</td>
+      <td>0.14.4</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>matplotlib</td>
+      <td>3.9.4</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>seaborn</td>
+      <td>0.13.2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="referencias">
+<h2>Referencias<a class="headerlink" href="#referencias" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id1">
+<div role="list" class="citation-list">
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Luc Anselin. Local indicators of spatial association—LISA. <em>Geographical Analysis</em>, 27(2):93–115, 1995. <a class="reference external" href="https://doi.org/10.1111/j.1538-4632.1995.tb00338.x">doi:10.1111/j.1538-4632.1995.tb00338.x</a>.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Arthur Getis and J. Keith Ord. The analysis of spatial association by use of distance statistics. <em>Geographical Analysis</em>, 24(3):189–206, 1992. <a class="reference external" href="https://doi.org/10.1111/j.1538-4632.1992.tb00261.x">doi:10.1111/j.1538-4632.1992.tb00261.x</a>.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Rob J. Hyndman and George Athanasopoulos. <em>Forecasting: Principles and Practice</em>. OTexts, Melbourne, 3 edition, 2021. URL: <a class="reference external" href="https://otexts.com/fpp3/">https://otexts.com/fpp3/</a>.</p>
+</div>
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p>Fabian Pedregosa, Gaël Varoquaux, Alexandre Gramfort, Vincent Michel, Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Peter Prettenhofer, Ron Weiss, Vincent Dubourg, Jake Vanderplas, Alexandre Passos, David Cournapeau, Matthieu Brucher, Matthieu Perrot, and Édouard Duchesnay. Scikit-learn: machine learning in Python. <em>Journal of Machine Learning Research</em>, 12:2825–2830, 2011. URL: <a class="reference external" href="https://jmlr.org/papers/v12/pedregosa11a.html">https://jmlr.org/papers/v12/pedregosa11a.html</a>.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p>Skipper Seabold and Josef Perktold. Statsmodels: econometric and statistical modeling with Python. In <em>Proceedings of the 9th Python in Science Conference</em>, 92–96. 2010.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="11_modelo_base.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">11. Modelo base: línea base trivial y regresión logística</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">Resumen ejecutivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrica-elegida-roc-auc">Métrica elegida: ROC-AUC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#respuestas-a-las-preguntas-del-enunciado">Respuestas a las preguntas del enunciado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-principales-del-eda-que-guiaron-el-modelado">Hallazgos principales del EDA que guiaron el modelado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones">Limitaciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibilidad-semillas-y-versiones">Reproducibilidad: semillas y versiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencias">Referencias</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Proyecto de Machine Learning — Polo y Pallares
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

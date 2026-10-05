@@ -1,0 +1,1691 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9. Auditoría de fuga de datos (2.5): «DataCo sin fuga» &#8212; Riesgo de entrega tardía en DataCo (sin fuga)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/09_data_leakage';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Preprocesamiento y Pipeline (2.9)" href="10_preprocesamiento.html" />
+    <link rel="prev" title="8. Componente espacial (2.7) y espacio-temporal (2.8)" href="08_eda_espacial.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="01_introduccion.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Riesgo de entrega tardía en DataCo (sin fuga)</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduccion.html">
+                    1. Introducción: riesgo de entrega tardía en DataCo
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base de datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_datos.html">2. La base de datos: estructura, tamaño, calidad y representatividad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_eda_objetivo.html">3. Análisis de la variable objetivo (2.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_eda_univariado.html">4. Análisis univariado (2.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_eda_bivariado.html">5. Análisis bivariado (2.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_eda_multivariado.html">6. Análisis multivariado (2.4)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_eda_temporal.html">7. Componente temporal (2.6)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_eda_espacial.html">8. Componente espacial (2.7) y espacio-temporal (2.8)</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modelado</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_preprocesamiento.html">10. Preprocesamiento y Pipeline (2.9)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_base.html">11. Modelo base: línea base trivial y regresión logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_conclusiones.html">12. Conclusiones, limitaciones y checklist</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/juandpolo22/Avance_1_Polo_Pallares" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/09_data_leakage.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disponibilidad-de-cada-variable-al-momento-de-prediccion">1. Disponibilidad de cada variable al momento de predicción</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-derivadas-del-objetivo-y-auc-univariado">2. Variables derivadas del objetivo y AUC univariado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demostracion-dataco-con-fuga-vs-sin-fuga">3. Demostración: DataCo <strong>con fuga</strong> vs <strong>sin fuga</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#como-se-genera-la-etiqueta-el-techo-sin-fuga">¿Cómo se genera la etiqueta? El techo sin fuga</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pedidos-cancelados-y-sospechosos-de-fraude">4. Pedidos cancelados y sospechosos de fraude</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entidades-repetidas-y-duplicados-entre-particiones">5. Entidades repetidas y duplicados entre particiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-de-la-auditoria">6. Conclusión de la auditoría</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="auditoria-de-fuga-de-datos-2-5-dataco-sin-fuga">
+<h1>9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»<a class="headerlink" href="#auditoria-de-fuga-de-datos-2-5-dataco-sin-fuga" title="Link to this heading">#</a></h1>
+<p>El <strong>momento de predicción</strong> es la <strong>creación del pedido</strong>: el cliente acaba de comprar,
+el modo de envío y los días prometidos ya están definidos, pero el pedido aún no se ha
+despachado ni entregado. Se audita cada variable (original y derivada): disponibilidad en
+ese momento, derivación del objetivo, identificadores y proxies, AUC univariado,
+población de pedidos cancelados y entidades repetidas entre particiones.</p>
+<p>DataCo es conocido por producir modelos de «retraso» con AUC ≈ 1: casi siempre se debe a
+usar <code class="docutils literal notranslate"><span class="pre">Days</span> <span class="pre">for</span> <span class="pre">shipping</span> <span class="pre">(real)</span></code> o <code class="docutils literal notranslate"><span class="pre">Delivery</span> <span class="pre">Status</span></code>, que <strong>son</strong> el resultado. Este capítulo
+lo demuestra y define la versión <strong>sin fuga</strong> que usa el resto del libro.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">"_config.yml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">project_root</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">"No se encontró _config.yml. Ejecuta el notebook dentro de la carpeta del libro."</span><span class="p">)</span>
+    <span class="n">project_root</span> <span class="o">=</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">_folder</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tables"</span><span class="p">,</span> <span class="s2">"figures"</span><span class="p">):</span>          <span class="c1"># se crean si no existen</span>
+    <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="n">_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.project_utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">configure_plots</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">project_root</span> <span class="o">/</span> <span class="s2">"tables"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">md_out</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">(</span><span class="n">include_canceled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span>
+<span class="n">folds</span> <span class="o">=</span> <span class="n">temporal_folds</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="disponibilidad-de-cada-variable-al-momento-de-prediccion">
+<h2>1. Disponibilidad de cada variable al momento de predicción<a class="headerlink" href="#disponibilidad-de-cada-variable-al-momento-de-prediccion" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">POSTERIOR</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"days_shipping_real"</span><span class="p">:</span> <span class="s2">"Se conoce cuando el pedido se envía/entrega; el objetivo es días reales &gt; programados."</span><span class="p">,</span>
+    <span class="s2">"delivery_status"</span><span class="p">:</span> <span class="s2">"Estado final de la entrega; «Late delivery» ES la etiqueta 1."</span><span class="p">,</span>
+    <span class="s2">"order_status"</span><span class="p">:</span> <span class="s2">"Estado del pedido en el sistema (COMPLETE, CLOSED, CANCELED, SUSPECTED_FRAUD...); se actualiza después de la compra."</span><span class="p">,</span>
+    <span class="s2">"shipping_date"</span><span class="p">:</span> <span class="s2">"Fecha de despacho = fecha del pedido + días reales; posterior y equivalente a days_shipping_real."</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">disponibilidad</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">TARGET</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"No"</span><span class="p">,</span> <span class="s2">"Variable objetivo."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">POSTERIOR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"No"</span><span class="p">,</span> <span class="n">POSTERIOR</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">PII_COLS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"Sí, pero excluida"</span><span class="p">,</span> <span class="s2">"Dato personal o enmascarado; sin valor predictivo legítimo."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ORDER_COL</span><span class="p">,</span> <span class="n">ITEM_COL</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"Solo agrupar"</span><span class="p">,</span> <span class="s2">"Identificador; correlaciona con el tiempo (es secuencial) y no describe el pedido."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="n">CUSTOMER_COL</span><span class="p">,</span> <span class="s2">"order_customer_id"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"Solo agrupar"</span><span class="p">,</span> <span class="s2">"Identificador del cliente (entidad); usarlo como predictor memorizaría clientes."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ID_COLS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"Sí, como código"</span><span class="p">,</span> <span class="s2">"Identificador numérico de una categoría ya presente como texto (redundante)."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">DATE_COL</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"Sí"</span><span class="p">,</span> <span class="s2">"Marca temporal del pedido; se usa para la partición y para derivar calendario."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"benefit_per_order"</span><span class="p">,</span> <span class="s2">"order_profit_per_order"</span><span class="p">,</span> <span class="s2">"order_item_profit_ratio"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"Sí, con cautela"</span><span class="p">,</span> <span class="s2">"Ganancia calculada con precio, descuento y costo del producto; en DataCo se registra con la venta."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"days_shipping_scheduled"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"Sí"</span><span class="p">,</span> <span class="s2">"Promesa de entrega definida por el modo de envío al comprar."</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"items_in_order"</span><span class="p">,</span> <span class="s2">"orders_prev_7d"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"order_"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">"_sin"</span><span class="p">,</span> <span class="s2">"_cos"</span><span class="p">))</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"order_year"</span><span class="p">,</span> <span class="s2">"order_month"</span><span class="p">,</span> <span class="s2">"order_dow"</span><span class="p">,</span> <span class="s2">"order_hour"</span><span class="p">,</span> <span class="s2">"order_weekend"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"Sí"</span><span class="p">,</span> <span class="s2">"Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda)."</span>
+    <span class="k">return</span> <span class="s2">"Sí"</span><span class="p">,</span> <span class="s2">"Atributo del pedido, producto, cliente o destino conocido al comprar."</span>
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">train</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">"_sin"</span><span class="p">,</span> <span class="s2">"_cos"</span><span class="p">))]</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">c</span><span class="p">,</span> <span class="o">*</span><span class="n">disponibilidad</span><span class="p">(</span><span class="n">c</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"disponible_al_predecir"</span><span class="p">,</span> <span class="s2">"evidencia"</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">disp</span><span class="p">[</span><span class="n">disp</span><span class="p">[</span><span class="s2">"disponible_al_predecir"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"Sí"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>disponible_al_predecir</th>
+      <th>evidencia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>days_shipping_real</td>
+      <td>No</td>
+      <td>Se conoce cuando el pedido se envía/entrega; el objetivo es días r...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>benefit_per_order</td>
+      <td>Sí, con cautela</td>
+      <td>Ganancia calculada con precio, descuento y costo del producto; en ...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>delivery_status</td>
+      <td>No</td>
+      <td>Estado final de la entrega; «Late delivery» ES la etiqueta 1.</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>late_delivery_risk</td>
+      <td>No</td>
+      <td>Variable objetivo.</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>category_id</td>
+      <td>Sí, como código</td>
+      <td>Identificador numérico de una categoría ya presente como texto (re...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>customer_email</td>
+      <td>Sí, pero excluida</td>
+      <td>Dato personal o enmascarado; sin valor predictivo legítimo.</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>customer_fname</td>
+      <td>Sí, pero excluida</td>
+      <td>Dato personal o enmascarado; sin valor predictivo legítimo.</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>customer_id</td>
+      <td>Solo agrupar</td>
+      <td>Identificador del cliente (entidad); usarlo como predictor memoriz...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>customer_lname</td>
+      <td>Sí, pero excluida</td>
+      <td>Dato personal o enmascarado; sin valor predictivo legítimo.</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>customer_password</td>
+      <td>Sí, pero excluida</td>
+      <td>Dato personal o enmascarado; sin valor predictivo legítimo.</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>customer_street</td>
+      <td>Sí, pero excluida</td>
+      <td>Dato personal o enmascarado; sin valor predictivo legítimo.</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>customer_zipcode</td>
+      <td>Sí, pero excluida</td>
+      <td>Dato personal o enmascarado; sin valor predictivo legítimo.</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>department_id</td>
+      <td>Sí, como código</td>
+      <td>Identificador numérico de una categoría ya presente como texto (re...</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>order_customer_id</td>
+      <td>Solo agrupar</td>
+      <td>Identificador del cliente (entidad); usarlo como predictor memoriz...</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>order_id</td>
+      <td>Solo agrupar</td>
+      <td>Identificador; correlaciona con el tiempo (es secuencial) y no des...</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>order_item_cardprod_id</td>
+      <td>Sí, como código</td>
+      <td>Identificador numérico de una categoría ya presente como texto (re...</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>order_item_id</td>
+      <td>Solo agrupar</td>
+      <td>Identificador; correlaciona con el tiempo (es secuencial) y no des...</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>order_item_profit_ratio</td>
+      <td>Sí, con cautela</td>
+      <td>Ganancia calculada con precio, descuento y costo del producto; en ...</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>order_profit_per_order</td>
+      <td>Sí, con cautela</td>
+      <td>Ganancia calculada con precio, descuento y costo del producto; en ...</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>order_status</td>
+      <td>No</td>
+      <td>Estado del pedido en el sistema (COMPLETE, CLOSED, CANCELED, SUSPE...</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>product_card_id</td>
+      <td>Sí, como código</td>
+      <td>Identificador numérico de una categoría ya presente como texto (re...</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>product_category_id</td>
+      <td>Sí, como código</td>
+      <td>Identificador numérico de una categoría ya presente como texto (re...</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>shipping_date</td>
+      <td>No</td>
+      <td>Fecha de despacho = fecha del pedido + días reales; posterior y eq...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="variables-derivadas-del-objetivo-y-auc-univariado">
+<h2>2. Variables derivadas del objetivo y AUC univariado<a class="headerlink" href="#variables-derivadas-del-objetivo-y-auc-univariado" title="Link to this heading">#</a></h2>
+<p>AUC univariado de <strong>todas</strong> las variables, incluidas las sospechosas. Valores cercanos a 1
+son señal de alerta. Las categóricas se codifican fuera de pliegue (temporal).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">[</span><span class="s2">"retraso_real_menos_programado"</span><span class="p">]</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">]</span> <span class="o">-</span> <span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_scheduled"</span><span class="p">]</span>
+<span class="n">train</span><span class="p">[</span><span class="s2">"horas_hasta_despacho"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"shipping_date"</span><span class="p">]</span> <span class="o">-</span> <span class="n">train</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">3600</span>
+<span class="n">num_like</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"retraso_real_menos_programado"</span><span class="p">,</span> <span class="s2">"horas_hasta_despacho"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">DATE_COL</span><span class="p">,</span> <span class="s2">"shipping_date"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_numeric_dtype</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PII_COLS</span><span class="p">]</span>
+<span class="n">cat_like</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">num_like</span> <span class="o">+</span> <span class="p">[</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">DATE_COL</span><span class="p">,</span> <span class="s2">"shipping_date"</span><span class="p">]</span> <span class="o">+</span> <span class="n">PII_COLS</span>
+            <span class="ow">and</span> <span class="n">train</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">5000</span> <span class="ow">and</span> <span class="n">train</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">filas</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s2">"tipo"</span><span class="p">:</span> <span class="s2">"numérica"</span><span class="p">,</span> <span class="s2">"AUC univariado"</span><span class="p">:</span> <span class="n">univariate_auc</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">y</span><span class="p">)}</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">num_like</span><span class="p">]</span>
+<span class="n">filas</span> <span class="o">+=</span> <span class="p">[{</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s2">"tipo"</span><span class="p">:</span> <span class="s2">"categórica"</span><span class="p">,</span> <span class="s2">"AUC univariado"</span><span class="p">:</span> <span class="n">categorical_auc_oof</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">folds</span><span class="p">)}</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cat_like</span><span class="p">]</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"AUC univariado"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">auc</span><span class="p">[</span><span class="s2">"alerta"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">auc</span><span class="p">[</span><span class="s2">"AUC univariado"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.90</span><span class="p">,</span> <span class="n">auc</span><span class="p">[</span><span class="s2">"AUC univariado"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.75</span><span class="p">],</span> <span class="p">[</span><span class="s2">"ALERTA (&gt;0,90)"</span><span class="p">,</span> <span class="s2">"revisar (&gt;0,75)"</span><span class="p">],</span> <span class="s2">"sin alerta"</span><span class="p">)</span>
+<span class="n">auc</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"auc_univariado_todas.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">auc</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">top</span> <span class="o">=</span> <span class="n">auc</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">],</span> <span class="n">top</span><span class="p">[</span><span class="s2">"AUC univariado"</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">top</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">POSTERIOR</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"retraso_real_menos_programado"</span><span class="p">,</span> <span class="s2">"horas_hasta_despacho"</span><span class="p">]),</span> <span class="s2">"#e45756"</span><span class="p">,</span> <span class="s2">"#4c78a8"</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e45756"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"AUC univariado (rojo = posterior al pedido)"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"09_auc_univariado.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"delivery_status"</span><span class="p">],</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>tipo</th>
+      <th>AUC univariado</th>
+      <th>alerta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>delivery_status</td>
+      <td>categórica</td>
+      <td>1.0000</td>
+      <td>ALERTA (&gt;0,90)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>retraso_real_menos_programado</td>
+      <td>numérica</td>
+      <td>0.9747</td>
+      <td>ALERTA (&gt;0,90)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>mode_x_daypart</td>
+      <td>categórica</td>
+      <td>0.7581</td>
+      <td>revisar (&gt;0,75)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>shipping_mode</td>
+      <td>categórica</td>
+      <td>0.7265</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>days_shipping_real</td>
+      <td>numérica</td>
+      <td>0.7098</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>horas_hasta_despacho</td>
+      <td>numérica</td>
+      <td>0.7084</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>days_shipping_scheduled</td>
+      <td>numérica</td>
+      <td>0.6978</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>order_status</td>
+      <td>categórica</td>
+      <td>0.5415</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>payment_type</td>
+      <td>categórica</td>
+      <td>0.5323</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>order_afternoon</td>
+      <td>numérica</td>
+      <td>0.5297</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>order_hour</td>
+      <td>numérica</td>
+      <td>0.5280</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>order_zipcode</td>
+      <td>numérica</td>
+      <td>0.5094</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>customer_city</td>
+      <td>categórica</td>
+      <td>0.5080</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>customer_country</td>
+      <td>categórica</td>
+      <td>0.5062</td>
+      <td>sin alerta</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>customer_segment</td>
+      <td>categórica</td>
+      <td>0.5033</td>
+      <td>sin alerta</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/57e78a072cc9736051da6a17f5644f588bf318d30c1cdba8896670a258e4d454.png" src="../_images/57e78a072cc9736051da6a17f5644f588bf318d30c1cdba8896670a258e4d454.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>late_delivery_risk</th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+    <tr>
+      <th>delivery_status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Advance shipping</th>
+      <td>32954</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Late delivery</th>
+      <td>0</td>
+      <td>78549</td>
+    </tr>
+    <tr>
+      <th>Shipping canceled</th>
+      <td>6032</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Shipping on time</th>
+      <td>25540</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> <code class="docutils literal notranslate"><span class="pre">delivery_status</span></code> separa perfectamente (AUC = 1): es la etiqueta con
+otro nombre. La diferencia <code class="docutils literal notranslate"><span class="pre">días</span> <span class="pre">reales</span> <span class="pre">−</span> <span class="pre">programados</span></code> reproduce la regla que define el
+objetivo (AUC ≈ 0,97). <strong>Lección importante:</strong> <code class="docutils literal notranslate"><span class="pre">days_shipping_real</span></code> <strong>sola</strong> tiene un AUC de
+≈ 0,71, parecido al del modo de envío, y no dispararía la alerta univariada; la fuga aparece al
+<strong>combinarla</strong> con los días programados. Por eso la auditoría no se basa solo en el AUC, sino
+en la <strong>disponibilidad temporal</strong> de cada variable. <code class="docutils literal notranslate"><span class="pre">order_status</span></code> también es posterior y
+delata cancelaciones. <strong>Todas se excluyen.</strong> <code class="docutils literal notranslate"><span class="pre">days_shipping_scheduled</span></code>
+y <code class="docutils literal notranslate"><span class="pre">shipping_mode</span></code> tienen AUC ≈ 0,7, alto pero legítimo: la promesa de entrega se conoce al
+comprar. Los identificadores secuenciales (<code class="docutils literal notranslate"><span class="pre">order_id</span></code>, <code class="docutils literal notranslate"><span class="pre">order_item_id</span></code>) tienen AUC ≈ 0,5, pero
+codifican el tiempo y no describen el pedido: se excluyen.</p>
+</section>
+<section id="demostracion-dataco-con-fuga-vs-sin-fuga">
+<h2>3. Demostración: DataCo <strong>con fuga</strong> vs <strong>sin fuga</strong><a class="headerlink" href="#demostracion-dataco-con-fuga-vs-sin-fuga" title="Link to this heading">#</a></h2>
+<p>Misma regresión logística, mismos pliegues temporales con <em>gap</em>. Solo cambia si se
+incluyen variables posteriores al pedido.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">OneHotEncoder</span><span class="p">,</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lr</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">cat</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s2">"prep"</span><span class="p">,</span> <span class="n">ColumnTransformer</span><span class="p">([(</span><span class="s2">"n"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">num</span><span class="p">),</span> <span class="p">(</span><span class="s2">"c"</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">),</span> <span class="n">cat</span><span class="p">)])),</span>
+                     <span class="p">(</span><span class="s2">"clf"</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">))])</span>
+<span class="n">escenarios</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"Con fuga: días reales + modo de envío"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"days_shipping_real"</span><span class="p">,</span> <span class="s2">"days_shipping_scheduled"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"shipping_mode"</span><span class="p">]),</span>
+    <span class="s2">"Con fuga: estado del pedido + modo de envío"</span><span class="p">:</span> <span class="p">([],</span> <span class="p">[</span><span class="s2">"order_status"</span><span class="p">,</span> <span class="s2">"shipping_mode"</span><span class="p">]),</span>
+    <span class="s2">"Sin fuga: solo modo de envío"</span><span class="p">:</span> <span class="p">([],</span> <span class="p">[</span><span class="s2">"shipping_mode"</span><span class="p">]),</span>
+<span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">nombre</span><span class="p">,</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">cat</span><span class="p">)</span> <span class="ow">in</span> <span class="n">escenarios</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">lr</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">cat</span><span class="p">),</span> <span class="n">train</span><span class="p">[</span><span class="n">num</span> <span class="o">+</span> <span class="n">cat</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">folds</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"escenario"</span><span class="p">:</span> <span class="n">nombre</span><span class="p">,</span> <span class="s2">"ROC-AUC media (CV temporal)"</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"desv. est."</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()})</span>
+<span class="n">con_sin</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">con_sin</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"con_fuga_vs_sin_fuga.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">con_sin</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>escenario</th>
+      <th>ROC-AUC media (CV temporal)</th>
+      <th>desv. est.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Con fuga: días reales + modo de envío</td>
+      <td>0.9748</td>
+      <td>0.0024</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Con fuga: estado del pedido + modo de envío</td>
+      <td>0.7617</td>
+      <td>0.0021</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Sin fuga: solo modo de envío</td>
+      <td>0.7273</td>
+      <td>0.0027</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> Con los días reales el modelo alcanza un ROC-AUC casi perfecto: no
+predice, <strong>lee la respuesta</strong> (no llega a 1 solo porque los cancelados tienen etiqueta 0). Con el estado del pedido mejora sobre el modo de
+envío porque detecta las cancelaciones. Sin fuga, el modo de envío solo da un AUC ≈ 0,73.
+Ese es el techo realista contra el que se compara el modelo base.</p>
+<section id="como-se-genera-la-etiqueta-el-techo-sin-fuga">
+<h3>¿Cómo se genera la etiqueta? El techo sin fuga<a class="headerlink" href="#como-se-genera-la-etiqueta-el-techo-sin-fuga" title="Link to this heading">#</a></h3>
+<p>Las variables con fuga no entran al modelo, pero sí sirven para <strong>entender</strong> el mecanismo
+que genera la etiqueta. Se cruza, para los pedidos despachados, el modo de envío con los días
+reales y la jornada del pedido.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">desp</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">train</span><span class="p">[</span><span class="s2">"delivery_status"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"Shipping canceled"</span><span class="p">]</span>
+<span class="n">dist_real</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">desp</span><span class="p">[</span><span class="s2">"shipping_mode"</span><span class="p">],</span> <span class="n">desp</span><span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">dist_real</span><span class="p">[</span><span class="s2">"días programados"</span><span class="p">]</span> <span class="o">=</span> <span class="n">desp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"shipping_mode"</span><span class="p">)[</span><span class="s2">"days_shipping_scheduled"</span><span class="p">]</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">dist_real</span><span class="p">)</span>
+<span class="n">celda</span> <span class="o">=</span> <span class="n">desp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"mode_x_daypart"</span><span class="p">)[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"mean"</span><span class="p">:</span> <span class="s2">"P(tardía)"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">:</span> <span class="s2">"líneas"</span><span class="p">})</span>
+<span class="n">display</span><span class="p">(</span><span class="n">celda</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">p_bayes</span> <span class="o">=</span> <span class="n">desp</span><span class="p">[</span><span class="s2">"mode_x_daypart"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">celda</span><span class="p">[</span><span class="s2">"P(tardía)"</span><span class="p">])</span>
+<span class="n">techo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">"referencia"</span><span class="p">:</span> <span class="s2">"Techo sin fuga (tasa por modo × jornada, en entrenamiento)"</span><span class="p">,</span>
+                       <span class="s2">"ROC-AUC"</span><span class="p">:</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">desp</span><span class="p">[</span><span class="n">TARGET</span><span class="p">],</span> <span class="n">p_bayes</span><span class="p">),</span>
+                       <span class="s2">"Accuracy"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(((</span><span class="n">p_bayes</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">==</span> <span class="n">desp</span><span class="p">[</span><span class="n">TARGET</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">())}])</span>
+<span class="n">techo</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"techo_sin_fuga.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">techo</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>days_shipping_real</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>días programados</th>
+    </tr>
+    <tr>
+      <th>shipping_mode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>First Class</th>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>1.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Same Day</th>
+      <td>0.531</td>
+      <td>0.469</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Second Class</th>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.202</td>
+      <td>0.200</td>
+      <td>0.199</td>
+      <td>0.201</td>
+      <td>0.199</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Standard Class</th>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.202</td>
+      <td>0.201</td>
+      <td>0.198</td>
+      <td>0.195</td>
+      <td>0.203</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>P(tardía)</th>
+      <th>líneas</th>
+    </tr>
+    <tr>
+      <th>mode_x_daypart</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>First Class | AM</th>
+      <td>1.000</td>
+      <td>10056</td>
+    </tr>
+    <tr>
+      <th>First Class | PM</th>
+      <td>1.000</td>
+      <td>10986</td>
+    </tr>
+    <tr>
+      <th>Same Day | AM</th>
+      <td>0.000</td>
+      <td>3911</td>
+    </tr>
+    <tr>
+      <th>Same Day | PM</th>
+      <td>1.000</td>
+      <td>3456</td>
+    </tr>
+    <tr>
+      <th>Second Class | AM</th>
+      <td>0.797</td>
+      <td>13600</td>
+    </tr>
+    <tr>
+      <th>Second Class | PM</th>
+      <td>0.800</td>
+      <td>13283</td>
+    </tr>
+    <tr>
+      <th>Standard Class | AM</th>
+      <td>0.396</td>
+      <td>41003</td>
+    </tr>
+    <tr>
+      <th>Standard Class | PM</th>
+      <td>0.401</td>
+      <td>40748</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>referencia</th>
+      <th>ROC-AUC</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Techo sin fuga (tasa por modo × jornada, en entrenamiento)</td>
+      <td>0.7754</td>
+      <td>0.7227</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación: el dataset es simulado con reglas simples.</strong></p>
+<ul class="simple">
+<li><p><strong>Standard Class</strong> promete 4 días y los días reales son <strong>uniformes entre 2 y 6</strong> → tarde con
+probabilidad 2/5 = 40 %, <strong>al azar</strong>.</p></li>
+<li><p><strong>Second Class</strong> promete 2 días y los reales son uniformes entre 2 y 6 → tarde 4/5 = 80 %.</p></li>
+<li><p><strong>First Class</strong> promete 1 día y tarda <strong>siempre 2</strong> → tarde el 100 %.</p></li>
+<li><p><strong>Same Day</strong> promete 0 días: tarda 0 si se pide antes del mediodía y 1 si se pide después →
+la jornada lo determina.</p></li>
+</ul>
+<p>Con la información disponible al crear el pedido, lo mejor que se puede hacer es asignar esas
+probabilidades: el <strong>techo sin fuga es ROC-AUC ≈ 0,77 y accuracy ≈ 0,73</strong>. Dentro de Standard y
+Second Class el resultado es <strong>aleatorio</strong>: ninguna variable del pedido, del cliente o del
+destino puede explicarlo, y por eso todas tienen AUC ≈ 0,5. Cualquier modelo que supere
+claramente este techo está usando fuga.</p>
+</section>
+</section>
+<section id="pedidos-cancelados-y-sospechosos-de-fraude">
+<h2>4. Pedidos cancelados y sospechosos de fraude<a class="headerlink" href="#pedidos-cancelados-y-sospechosos-de-fraude" title="Link to this heading">#</a></h2>
+<p>Un pedido cancelado o sospechoso de fraude <strong>nunca se entrega</strong>, así que su etiqueta es 0
+por definición (no «llegó a tiempo»). Mezclarlos con entregas reales cambia la pregunta y
+convierte a variables asociadas con el fraude (por ejemplo, el medio de pago) en proxies de
+la cancelación. <strong>Criterio fijado antes de mirar el resultado:</strong> excluir de la población de
+modelado los estados de entrega cuya tasa de retraso sea &lt; 2 %.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">canc</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s2">"delivery_status"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Shipping canceled"</span>
+<span class="n">tabla</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"delivery_status"</span><span class="p">)[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">"size"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"size"</span><span class="p">:</span> <span class="s2">"líneas"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">:</span> <span class="s2">"tasa_tardía"</span><span class="p">})</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tabla</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"payment_type"</span><span class="p">],</span> <span class="n">train</span><span class="p">[</span><span class="s2">"order_status"</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"order_status"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"CANCELED"</span><span class="p">,</span> <span class="s2">"SUSPECTED_FRAUD"</span><span class="p">]),</span> <span class="s2">"resto"</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">"index"</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">auc_pago_todo</span> <span class="o">=</span> <span class="n">categorical_auc_oof</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"payment_type"</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">folds</span><span class="p">)</span>
+<span class="n">tr_ok</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="o">~</span><span class="n">canc</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">auc_pago_desp</span> <span class="o">=</span> <span class="n">categorical_auc_oof</span><span class="p">(</span><span class="n">tr_ok</span><span class="p">[</span><span class="s2">"payment_type"</span><span class="p">],</span> <span class="n">tr_ok</span><span class="p">[</span><span class="n">TARGET</span><span class="p">],</span> <span class="n">temporal_folds</span><span class="p">(</span><span class="n">tr_ok</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]))</span>
+<span class="n">rate_c</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">canc</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="n">excluir</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">canc</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">and</span> <span class="n">rate_c</span> <span class="o">&lt;</span> <span class="mf">0.02</span><span class="p">)</span>
+<span class="n">decision</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">"excluir_cancelados"</span><span class="p">:</span> <span class="n">excluir</span><span class="p">,</span> <span class="s2">"estado"</span><span class="p">:</span> <span class="s2">"Shipping canceled (CANCELED + SUSPECTED_FRAUD)"</span><span class="p">,</span>
+                          <span class="s2">"n_excluidos_train"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">canc</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s2">"pct_excluidos"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">canc</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+                          <span class="s2">"tasa_tardia_cancelados"</span><span class="p">:</span> <span class="n">rate_c</span><span class="p">,</span> <span class="s2">"tasa_tardia_resto"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">canc</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()),</span>
+                          <span class="s2">"criterio"</span><span class="p">:</span> <span class="s2">"excluir si la tasa de retraso del estado es &lt; 2 % (no entregados)"</span><span class="p">}])</span>
+<span class="n">decision</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"decision_poblacion.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Líneas canceladas/fraude en entrenamiento: **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">canc</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">** (</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">canc</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">), tasa de retraso **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">rate_c</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">**.</span><span class="se">\n\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"AUC univariado de `payment_type`: **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">auc_pago_todo</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">** con cancelados y **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">auc_pago_desp</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">** solo con pedidos despachados. "</span>
+       <span class="s2">"Toda su «señal» venía de que el fraude se concentra en transferencias.</span><span class="se">\n\n</span><span class="s2">"</span>
+       <span class="o">+</span> <span class="p">(</span><span class="s2">"**Decisión:** se **excluyen** los pedidos cancelados y sospechosos de fraude de la población de modelado, en entrenamiento y prueba. "</span>
+          <span class="s2">"La regla se basa en el estado de entrega (no en el resultado del modelo) y se aplica **después** de la partición. "</span>
+          <span class="s2">"La pregunta del modelo queda: *dado que el pedido se despachará, ¿llegará tarde?* Los capítulos 10 y 11 leen esta decisión."</span>
+          <span class="k">if</span> <span class="n">excluir</span> <span class="k">else</span> <span class="s2">"**Decisión:** se conservan."</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>líneas</th>
+      <th>tasa_tardía</th>
+    </tr>
+    <tr>
+      <th>delivery_status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Advance shipping</th>
+      <td>32954</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Late delivery</th>
+      <td>78549</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Shipping canceled</th>
+      <td>6032</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Shipping on time</th>
+      <td>25540</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>order_status</th>
+      <th>CANCELED</th>
+      <th>SUSPECTED_FRAUD</th>
+      <th>resto</th>
+    </tr>
+    <tr>
+      <th>payment_type</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>CASH</th>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>1.0000</td>
+    </tr>
+    <tr>
+      <th>DEBIT</th>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>1.0000</td>
+    </tr>
+    <tr>
+      <th>PAYMENT</th>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>1.0000</td>
+    </tr>
+    <tr>
+      <th>TRANSFER</th>
+      <td>0.0735</td>
+      <td>0.0799</td>
+      <td>0.8466</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>Líneas canceladas/fraude en entrenamiento: <strong>6.032</strong> (4,22 %), tasa de retraso <strong>0,00 %</strong>.</p>
+<p>AUC univariado de <code class="docutils literal notranslate"><span class="pre">payment_type</span></code>: <strong>0,532</strong> con cancelados y <strong>0,504</strong> solo con pedidos despachados. Toda su «señal» venía de que el fraude se concentra en transferencias.</p>
+<p><strong>Decisión:</strong> se <strong>excluyen</strong> los pedidos cancelados y sospechosos de fraude de la población de modelado, en entrenamiento y prueba. La regla se basa en el estado de entrega (no en el resultado del modelo) y se aplica <strong>después</strong> de la partición. La pregunta del modelo queda: <em>dado que el pedido se despachará, ¿llegará tarde?</em> Los capítulos 10 y 11 leen esta decisión.</p>
+</div>
+</div>
+</section>
+<section id="entidades-repetidas-y-duplicados-entre-particiones">
+<h2>5. Entidades repetidas y duplicados entre particiones<a class="headerlink" href="#entidades-repetidas-y-duplicados-entre-particiones" title="Link to this heading">#</a></h2>
+<p>Se lee la prueba <strong>solo</strong> para comprobar identificadores y patrones (sin etiquetas ni
+estadísticas que guíen decisiones).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_full</span> <span class="o">=</span> <span class="n">load_test</span><span class="p">(</span><span class="n">include_canceled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pred_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">RENAME</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">ITEM_COL</span><span class="p">,</span> <span class="n">ORDER_COL</span><span class="p">,</span> <span class="n">DATE_COL</span><span class="p">,</span> <span class="s2">"shipping_date"</span><span class="p">]</span> <span class="o">+</span> <span class="n">LEAKAGE_COLS</span><span class="p">]</span>
+<span class="n">h_tr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">hash_pandas_object</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">pred_cols</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">h_te</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">hash_pandas_object</span><span class="p">(</span><span class="n">test_full</span><span class="p">[</span><span class="n">pred_cols</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">compartidos</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">h_tr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">h_te</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">perm</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">));</span> <span class="n">cut</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span>
+<span class="n">naive_share</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">perm</span><span class="p">[</span><span class="n">cut</span><span class="p">:]][</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">perm</span><span class="p">[:</span><span class="n">cut</span><span class="p">]][</span><span class="n">ORDER_COL</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">dup</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">"comprobación"</span><span class="p">:</span> <span class="s2">"pedidos en entrenamiento y prueba"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_full</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">]))},</span>
+    <span class="p">{</span><span class="s2">"comprobación"</span><span class="p">:</span> <span class="s2">"líneas (order_item_id) en ambos"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">ITEM_COL</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_full</span><span class="p">[</span><span class="n">ITEM_COL</span><span class="p">]))},</span>
+    <span class="p">{</span><span class="s2">"comprobación"</span><span class="p">:</span> <span class="s2">"pedido más reciente de train vs más antiguo de test (días)"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">:</span> <span class="p">(</span><span class="n">test_full</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="n">train</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">days</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"comprobación"</span><span class="p">:</span> <span class="s2">"clientes con pedidos en ambos (esperado, no se usan como predictor)"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">CUSTOMER_COL</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_full</span><span class="p">[</span><span class="n">CUSTOMER_COL</span><span class="p">]))},</span>
+    <span class="p">{</span><span class="s2">"comprobación"</span><span class="p">:</span> <span class="s2">"patrones de predictoras idénticos en ambos (sin ids)"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">compartidos</span><span class="p">)},</span>
+    <span class="p">{</span><span class="s2">"comprobación"</span><span class="p">:</span> <span class="s2">"</span><span class="si">% d</span><span class="s2">e líneas de validación cuyo pedido estaría en train con partición ALEATORIA por filas"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">naive_share</span><span class="p">,</span> <span class="mi">1</span><span class="p">)},</span>
+<span class="p">])</span>
+<span class="n">dup</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"auditoria_duplicados.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">dup</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>comprobación</th>
+      <th>resultado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>pedidos en entrenamiento y prueba</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>líneas (order_item_id) en ambos</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>pedido más reciente de train vs más antiguo de test (días)</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>clientes con pedidos en ambos (esperado, no se usan como predictor)</td>
+      <td>6426.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>patrones de predictoras idénticos en ambos (sin ids)</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>% de líneas de validación cuyo pedido estaría en train con partici...</td>
+      <td>89.6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> La partición cronológica no comparte pedidos ni líneas y deja 7 días
+de separación. Una partición aleatoria por filas pondría en validación líneas cuyo pedido
+(con la <strong>misma etiqueta</strong>) está en entrenamiento: eso inflaría las métricas. No hay filas con
+patrones de predictoras idénticos entre entrenamiento y prueba: no hay fuga por duplicación.</p>
+</section>
+<section id="conclusion-de-la-auditoria">
+<h2>6. Conclusión de la auditoría<a class="headerlink" href="#conclusion-de-la-auditoria" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">auc</span><span class="p">[[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"AUC univariado"</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s2">"variable"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">decision_var</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">TARGET</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Objetivo"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">POSTERIOR</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Excluir: fuga (posterior al pedido)"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">PII_COLS</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Excluir: dato personal"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ORDER_COL</span><span class="p">,</span> <span class="n">ITEM_COL</span><span class="p">,</span> <span class="n">CUSTOMER_COL</span><span class="p">,</span> <span class="s2">"order_customer_id"</span><span class="p">):</span> <span class="k">return</span> <span class="s2">"Excluir: identificador (solo agrupar)"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ID_COLS</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Excluir: código redundante"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">DATE_COL</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Usar solo para partición y calendario"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"product_description"</span><span class="p">,</span> <span class="s2">"product_status"</span><span class="p">,</span> <span class="s2">"product_image"</span><span class="p">,</span> <span class="s2">"order_zipcode"</span><span class="p">):</span> <span class="k">return</span> <span class="s2">"Excluir: vacía, constante o redundante"</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"sales_per_customer"</span><span class="p">,</span> <span class="s2">"order_item_total"</span><span class="p">,</span> <span class="s2">"order_profit_per_order"</span><span class="p">,</span> <span class="s2">"order_item_product_price"</span><span class="p">,</span> <span class="s2">"product_price"</span><span class="p">,</span> <span class="s2">"benefit_per_order"</span><span class="p">,</span>
+             <span class="s2">"order_item_discount"</span><span class="p">,</span> <span class="s2">"days_shipping_scheduled"</span><span class="p">,</span> <span class="s2">"customer_country"</span><span class="p">,</span> <span class="s2">"customer_city"</span><span class="p">,</span> <span class="s2">"customer_state"</span><span class="p">,</span>
+             <span class="s2">"order_city"</span><span class="p">,</span> <span class="s2">"order_state"</span><span class="p">,</span> <span class="s2">"product_name"</span><span class="p">,</span> <span class="s2">"customer_zipcode"</span><span class="p">,</span> <span class="s2">"order_year"</span><span class="p">,</span> <span class="s2">"order_month"</span><span class="p">,</span> <span class="s2">"order_dow"</span><span class="p">,</span> <span class="s2">"order_hour"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"Excluir: redundante o reemplazada (cap. 10)"</span>
+    <span class="k">return</span> <span class="s2">"Candidata (se decide en cap. 10)"</span>
+<span class="n">final</span><span class="p">[</span><span class="s2">"decisión"</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">decision_var</span><span class="p">)</span>
+<span class="n">final</span><span class="p">[</span><span class="s2">"riesgo_de_fuga"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">final</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">POSTERIOR</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">TARGET</span><span class="p">]),</span> <span class="n">final</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">ORDER_COL</span><span class="p">,</span> <span class="n">ITEM_COL</span><span class="p">])],</span>
+                                    <span class="p">[</span><span class="s2">"Alto"</span><span class="p">,</span> <span class="s2">"Medio (codifica tiempo)"</span><span class="p">],</span> <span class="s2">"Bajo"</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"auditoria_fuga.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">final</span><span class="p">[[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"disponible_al_predecir"</span><span class="p">,</span> <span class="s2">"AUC univariado"</span><span class="p">,</span> <span class="s2">"riesgo_de_fuga"</span><span class="p">,</span> <span class="s2">"decisión"</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>disponible_al_predecir</th>
+      <th>AUC univariado</th>
+      <th>riesgo_de_fuga</th>
+      <th>decisión</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>payment_type</td>
+      <td>Sí</td>
+      <td>0.5323</td>
+      <td>Bajo</td>
+      <td>Candidata (se decide en cap. 10)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>days_shipping_real</td>
+      <td>No</td>
+      <td>0.7098</td>
+      <td>Alto</td>
+      <td>Excluir: fuga (posterior al pedido)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>days_shipping_scheduled</td>
+      <td>Sí</td>
+      <td>0.6978</td>
+      <td>Bajo</td>
+      <td>Excluir: redundante o reemplazada (cap. 10)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>benefit_per_order</td>
+      <td>Sí, con cautela</td>
+      <td>0.5019</td>
+      <td>Bajo</td>
+      <td>Excluir: redundante o reemplazada (cap. 10)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>sales_per_customer</td>
+      <td>Sí</td>
+      <td>0.5009</td>
+      <td>Bajo</td>
+      <td>Excluir: redundante o reemplazada (cap. 10)</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>order_weekend</td>
+      <td>Sí</td>
+      <td>0.5016</td>
+      <td>Bajo</td>
+      <td>Candidata (se decide en cap. 10)</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>order_afternoon</td>
+      <td>Sí</td>
+      <td>0.5297</td>
+      <td>Bajo</td>
+      <td>Candidata (se decide en cap. 10)</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>mode_x_daypart</td>
+      <td>Sí</td>
+      <td>0.7581</td>
+      <td>Bajo</td>
+      <td>Candidata (se decide en cap. 10)</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>items_in_order</td>
+      <td>Sí</td>
+      <td>0.5030</td>
+      <td>Bajo</td>
+      <td>Candidata (se decide en cap. 10)</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>orders_prev_7d</td>
+      <td>Sí</td>
+      <td>0.5004</td>
+      <td>Bajo</td>
+      <td>Candidata (se decide en cap. 10)</td>
+    </tr>
+  </tbody>
+</table>
+<p>62 rows × 5 columns</p>
+</div></div></div>
+</div>
+<p><strong>Lista de variables descartadas o en observación.</strong></p>
+<ul class="simple">
+<li><p><strong>Descartadas por fuga:</strong> <code class="docutils literal notranslate"><span class="pre">days_shipping_real</span></code>, <code class="docutils literal notranslate"><span class="pre">delivery_status</span></code>, <code class="docutils literal notranslate"><span class="pre">order_status</span></code>,
+<code class="docutils literal notranslate"><span class="pre">shipping_date</span></code> (y cualquier derivada de ellas).</p></li>
+<li><p><strong>Descartadas por ser identificadores o datos personales:</strong> ids de pedido, línea, cliente,
+producto y categoría; nombre, apellido, correo, contraseña, calle y código postal.</p></li>
+<li><p><strong>Población:</strong> se excluyen los pedidos <strong>cancelados o sospechosos de fraude</strong> (etiqueta 0 por
+construcción); <code class="docutils literal notranslate"><span class="pre">payment_type</span></code> deja de tener señal una vez excluidos.</p></li>
+<li><p><strong>En observación:</strong> la ganancia (<code class="docutils literal notranslate"><span class="pre">order_item_profit_ratio</span></code>) se considera conocida al vender
+en DataCo, pero en una empresa real podría incluir ajustes posteriores; su AUC ≈ 0,50 descarta
+que sea un proxy. El destino (mercado/región/país) no es fuga, pero está confundido con el
+periodo (cap. 7–8).</p></li>
+</ul>
+<p>Con esto, el resto del libro trabaja con <strong>«DataCo (sin fuga)»</strong> y su métrica principal,
+<strong>ROC-AUC</strong>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08_eda_espacial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">8. Componente espacial (2.7) y espacio-temporal (2.8)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="10_preprocesamiento.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">10. Preprocesamiento y Pipeline (2.9)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disponibilidad-de-cada-variable-al-momento-de-prediccion">1. Disponibilidad de cada variable al momento de predicción</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-derivadas-del-objetivo-y-auc-univariado">2. Variables derivadas del objetivo y AUC univariado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demostracion-dataco-con-fuga-vs-sin-fuga">3. Demostración: DataCo <strong>con fuga</strong> vs <strong>sin fuga</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#como-se-genera-la-etiqueta-el-techo-sin-fuga">¿Cómo se genera la etiqueta? El techo sin fuga</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pedidos-cancelados-y-sospechosos-de-fraude">4. Pedidos cancelados y sospechosos de fraude</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entidades-repetidas-y-duplicados-entre-particiones">5. Entidades repetidas y duplicados entre particiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-de-la-auditoria">6. Conclusión de la auditoría</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Proyecto de Machine Learning — Polo y Pallares
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

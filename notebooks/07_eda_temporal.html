@@ -1,0 +1,1522 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7. Componente temporal (2.6) &#8212; Riesgo de entrega tardía en DataCo (sin fuga)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/07_eda_temporal';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Componente espacial (2.7) y espacio-temporal (2.8)" href="08_eda_espacial.html" />
+    <link rel="prev" title="6. Análisis multivariado (2.4)" href="06_eda_multivariado.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="01_introduccion.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Riesgo de entrega tardía en DataCo (sin fuga)</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduccion.html">
+                    1. Introducción: riesgo de entrega tardía en DataCo
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base de datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_datos.html">2. La base de datos: estructura, tamaño, calidad y representatividad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_eda_objetivo.html">3. Análisis de la variable objetivo (2.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_eda_univariado.html">4. Análisis univariado (2.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_eda_bivariado.html">5. Análisis bivariado (2.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_eda_multivariado.html">6. Análisis multivariado (2.4)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Componente temporal (2.6)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_eda_espacial.html">8. Componente espacial (2.7) y espacio-temporal (2.8)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="09_data_leakage.html">9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modelado</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_preprocesamiento.html">10. Preprocesamiento y Pipeline (2.9)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_base.html">11. Modelo base: línea base trivial y regresión logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_conclusiones.html">12. Conclusiones, limitaciones y checklist</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/juandpolo22/Avance_1_Polo_Pallares" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/07_eda_temporal.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>7. Componente temporal (2.6)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-de-la-variable-temporal">Validación de la variable temporal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-serie-completa-y-agregaciones">Visualización: serie completa y agregaciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hora-del-pedido-modo-de-envio-el-corte-del-mediodia">Hora del pedido × modo de envío: el corte del mediodía</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descomposicion-stl">Descomposición STL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estacionariedad-medias-y-varianzas-moviles-adf-y-kpss">Estacionariedad: medias y varianzas móviles, ADF y KPSS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencia-temporal-acf-pacf-y-correlacion-cruzada">Dependencia temporal: ACF, PACF y correlación cruzada</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cambios-de-regimen-puntos-de-cambio-y-efectos-de-calendario">Cambios de régimen, puntos de cambio y efectos de calendario</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriva-temporal-dentro-del-entrenamiento-covariate-shift-y-concept-drift">Deriva temporal dentro del entrenamiento (<em>covariate shift</em> y <em>concept drift</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#panel-series-por-entidad-mercado-de-destino">Panel: series por entidad (mercado de destino)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consecuencias-para-el-modelado-e-interpretacion">Consecuencias para el modelado e interpretación</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="componente-temporal-2-6">
+<h1>7. Componente temporal (2.6)<a class="headerlink" href="#componente-temporal-2-6" title="Link to this heading">#</a></h1>
+<p>Obligatorio porque el dataset trae la <strong>fecha y hora del pedido</strong>. Se valida la variable
+temporal, se visualiza la serie y su estacionalidad, se descompone (STL), se prueba la
+estacionariedad (ADF y KPSS), se mide la dependencia temporal (ACF, PACF, correlación
+cruzada), se buscan cambios de régimen y efectos de calendario y se mide la deriva
+entre periodos. <strong>Solo entrenamiento</strong> (pedidos hasta el inicio del <em>gap</em>).</p>
+<p>Se usan las herramientas de series de tiempo de <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> <span id="id1">[<a class="reference internal" href="12_conclusiones.html#id4" title="Skipper Seabold and Josef Perktold. Statsmodels: econometric and statistical modeling with Python. In Proceedings of the 9th Python in Science Conference, 92–96. 2010.">Seabold and Perktold, 2010</a>]</span> siguiendo
+<span id="id2">[<a class="reference internal" href="12_conclusiones.html#id5" title="Rob J. Hyndman and George Athanasopoulos. Forecasting: Principles and Practice. OTexts, Melbourne, 3 edition, 2021. URL: https://otexts.com/fpp3/.">Hyndman and Athanasopoulos, 2021</a>]</span>. La unidad es el pedido (evento irregular), así que para el análisis de series se
+<strong>agregan</strong> las líneas por día: número de líneas y proporción de entregas tardías.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">"_config.yml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">project_root</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">"No se encontró _config.yml. Ejecuta el notebook dentro de la carpeta del libro."</span><span class="p">)</span>
+    <span class="n">project_root</span> <span class="o">=</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">_folder</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tables"</span><span class="p">,</span> <span class="s2">"figures"</span><span class="p">):</span>          <span class="c1"># se crean si no existen</span>
+    <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="n">_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.project_utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">configure_plots</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">project_root</span> <span class="o">/</span> <span class="s2">"tables"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">md_out</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.seasonal</span><span class="w"> </span><span class="kn">import</span> <span class="n">STL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.stattools</span><span class="w"> </span><span class="kn">import</span> <span class="n">adfuller</span><span class="p">,</span> <span class="n">kpss</span><span class="p">,</span> <span class="n">ccf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.graphics.tsaplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_acf</span><span class="p">,</span> <span class="n">plot_pacf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">acorr_ljungbox</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.tseries.holiday</span><span class="w"> </span><span class="kn">import</span> <span class="n">USFederalHolidayCalendar</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">".*InterpolationWarning.*"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tools.sm_exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterpolationWarning</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">InterpolationWarning</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span>
+<span class="n">diario</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">normalize</span><span class="p">())</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lineas</span><span class="o">=</span><span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">),</span> <span class="n">pedidos</span><span class="o">=</span><span class="p">(</span><span class="n">ORDER_COL</span><span class="p">,</span> <span class="s2">"nunique"</span><span class="p">),</span> <span class="n">tardias</span><span class="o">=</span><span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="s2">"sum"</span><span class="p">))</span>
+<span class="n">diario</span> <span class="o">=</span> <span class="n">diario</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">"D"</span><span class="p">)</span>
+<span class="n">diario</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span> <span class="o">=</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"tardias"</span><span class="p">]</span> <span class="o">/</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="validacion-de-la-variable-temporal">
+<h2>Validación de la variable temporal<a class="headerlink" href="#validacion-de-la-variable-temporal" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_txt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ensure_data</span><span class="p">(),</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ENCODING</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">"order date (DateOrders)"</span><span class="p">])[</span><span class="s2">"order date (DateOrders)"</span><span class="p">]</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">raw_txt</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"%m/</span><span class="si">%d</span><span class="s2">/%Y %H:%M"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span>
+<span class="n">pedidos_t</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">ORDER_COL</span><span class="p">)[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+<span class="n">dif_min</span> <span class="o">=</span> <span class="n">pedidos_t</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">"Formato original"</span><span class="p">,</span> <span class="s2">"texto «M/D/AAAA H:MM» (sin segundos)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Valores que no se pueden interpretar como fecha (todo el archivo)"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Zona horaria"</span><span class="p">,</span> <span class="s2">"no informada; se asume hora local única (sin conversión)"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Primer pedido de entrenamiento"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">d</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">%Y-%m-%d %H:%M</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Último pedido de entrenamiento"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">%Y-%m-%d %H:%M</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Días del periodo"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">diario</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Días sin pedidos (huecos)"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">diario</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Frecuencia"</span><span class="p">,</span> <span class="s2">"irregular (eventos); se agrega por día"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Mediana de minutos entre pedidos consecutivos"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">dif_min</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Pedidos con la misma marca de tiempo que otro pedido"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pedidos_t</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Líneas con marca duplicada (líneas de un mismo pedido, esperado)"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="mi">0</span><span class="p">)),</span>
+<span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"comprobación"</span><span class="p">,</span> <span class="s2">"resultado"</span><span class="p">])</span>
+<span class="n">val</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"validacion_temporal.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Los minutos entre pedidos consecutivos toman pocos valores: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1"> min (</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s1"> veces)'</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">dif_min</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">())</span><span class="si">}</span><span class="s2">. "</span>
+       <span class="s2">"La llegada de pedidos es **casi determinística** (un pedido cada ~20 minutos), señal de que los datos son simulados."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>comprobación</th>
+      <th>resultado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Formato original</td>
+      <td>texto «M/D/AAAA H:MM» (sin segundos)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Valores que no se pueden interpretar como fecha (todo el archivo)</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Zona horaria</td>
+      <td>no informada; se asume hora local única (sin conversión)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Primer pedido de entrenamiento</td>
+      <td>2015-01-01 00:00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Último pedido de entrenamiento</td>
+      <td>2017-04-14 23:42</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Días del periodo</td>
+      <td>835</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Días sin pedidos (huecos)</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Frecuencia</td>
+      <td>irregular (eventos); se agrega por día</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Mediana de minutos entre pedidos consecutivos</td>
+      <td>21,0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Pedidos con la misma marca de tiempo que otro pedido</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Líneas con marca duplicada (líneas de un mismo pedido, esperado)</td>
+      <td>95.356</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>Los minutos entre pedidos consecutivos toman pocos valores: 21 min (39.034 veces), 42 min (6.255 veces), 63 min (1.027 veces), 22 min (807 veces). La llegada de pedidos es <strong>casi determinística</strong> (un pedido cada ~20 minutos), señal de que los datos son simulados.</p>
+</div>
+</div>
+<p><strong>Interpretación.</strong> No hay fechas inválidas ni huecos: todos los días tienen pedidos. Las
+marcas duplicadas son las líneas de un mismo pedido (esperado). El ritmo de llegada es
+casi constante, lo que anticipa poca estacionalidad en el volumen.</p>
+</section>
+<section id="visualizacion-serie-completa-y-agregaciones">
+<h2>Visualización: serie completa y agregaciones<a class="headerlink" href="#visualizacion-serie-completa-y-agregaciones" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">diario</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"líneas/día"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">diario</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e45756"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"media móvil 30 d"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">diario</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e45756"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"% tardías (día)"</span><span class="p">)</span>
+<span class="n">sem</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">"W"</span><span class="p">))[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sem</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">(),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">sem</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#54a24b"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"% tardías (semana)"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Serie diaria de volumen y tasa de entregas tardías (entrenamiento)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_serie_diaria.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f70d9c4e35b77c9dfa99748468aa7be353fa50db9d7ca667c5872d6b88683e79.png" src="../_images/f70d9c4e35b77c9dfa99748468aa7be353fa50db9d7ca667c5872d6b88683e79.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">rate_table</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"order_hour"</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="s2">"categoria"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"h"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="s2">"h"</span><span class="p">],</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span><span class="p">[</span><span class="s2">"ic_inf"</span><span class="p">]),</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="s2">"ic_sup"</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">])],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">"o-"</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"hora del pedido"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"% tardías"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Por hora (IC 95 %)"</span><span class="p">)</span>
+<span class="n">diario_</span> <span class="o">=</span> <span class="n">diario</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">dow</span><span class="o">=</span><span class="n">diario</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span><span class="p">,</span> <span class="n">mes</span><span class="o">=</span><span class="n">diario</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">diario_</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">"dow"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">diario_</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#72b7b2"</span><span class="p">,</span> <span class="n">fliersize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"día de la semana (0 = lunes)"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"% tardías diaria"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Por día de la semana"</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">diario_</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">"mes"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">diario_</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#72b7b2"</span><span class="p">,</span> <span class="n">fliersize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"mes"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Por mes"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_estacionalidad.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">kw_dow</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">kruskal</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">g</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">diario_</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"dow"</span><span class="p">)])</span>
+<span class="n">kw_mes</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">kruskal</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">g</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">diario_</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"mes"</span><span class="p">)])</span>
+<span class="n">v_h</span><span class="p">,</span> <span class="n">chi_h</span><span class="p">,</span> <span class="n">p_h</span> <span class="o">=</span> <span class="n">cramers_v</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"order_hour"</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- Hora: χ² = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">chi_h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">, p = </span><span class="si">{</span><span class="n">p_h</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">, V de Cramér = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">v_h</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- Día de la semana (tasa diaria): Kruskal-Wallis H = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">kw_dow</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">, p = </span><span class="si">{</span><span class="n">kw_dow</span><span class="o">.</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- Mes (tasa diaria): Kruskal-Wallis H = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">kw_mes</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">, p = </span><span class="si">{</span><span class="n">kw_mes</span><span class="o">.</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3a4b1de4869513db623feea373b7909dc7f506d4549bc4bec28e6936068f7c4c.png" src="../_images/3a4b1de4869513db623feea373b7909dc7f506d4549bc4bec28e6936068f7c4c.png" />
+<ul class="simple">
+<li><p>Hora: χ² = 586,8, p = 2.7e-109, V de Cramér = 0,063.</p></li>
+<li><p>Día de la semana (tasa diaria): Kruskal-Wallis H = 1,80, p = 0.937.</p></li>
+<li><p>Mes (tasa diaria): Kruskal-Wallis H = 4,78, p = 0.941.</p></li>
+</ul>
+</div>
+</div>
+<p><strong>Interpretación.</strong> El volumen diario es estable (≈ 175 líneas/día) y la tasa diaria
+fluctúa alrededor del 55 % sin tendencia visible. <strong>No hay estacionalidad semanal ni
+mensual</strong> (Kruskal-Wallis no significativo). La única regularidad es <strong>por hora del
+pedido</strong>: la tasa salta al mediodía. Se investiga a continuación por modo de envío.</p>
+<section id="hora-del-pedido-modo-de-envio-el-corte-del-mediodia">
+<h3>Hora del pedido × modo de envío: el corte del mediodía<a class="headerlink" href="#hora-del-pedido-modo-de-envio-el-corte-del-mediodia" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hm</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">"shipping_mode"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">"order_hour"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">hm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu_r"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">".0f"</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"size"</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span> <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"% tardías"</span><span class="p">},</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"hora del pedido"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"</span><span class="si">% d</span><span class="s2">e entregas tardías por modo de envío y hora del pedido"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_hora_por_modo.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">jornada</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"shipping_mode"</span><span class="p">,</span> <span class="s2">"order_afternoon"</span><span class="p">])[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">])</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="n">jornada</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="s1">'PM'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'AM'</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">jornada</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="n">jornada</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"tasa_modo_jornada.csv"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">jornada</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/83d4118e536ac01824985cd2b66dc8d58659e74fc61a49b6d07e9682a12eb0f8.png" src="../_images/83d4118e536ac01824985cd2b66dc8d58659e74fc61a49b6d07e9682a12eb0f8.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_AM</th>
+      <th>mean_PM</th>
+      <th>size_AM</th>
+      <th>size_PM</th>
+    </tr>
+    <tr>
+      <th>shipping_mode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>First Class</th>
+      <td>0.956</td>
+      <td>0.955</td>
+      <td>10517</td>
+      <td>11501</td>
+    </tr>
+    <tr>
+      <th>Same Day</th>
+      <td>0.000</td>
+      <td>0.959</td>
+      <td>4110</td>
+      <td>3602</td>
+    </tr>
+    <tr>
+      <th>Second Class</th>
+      <td>0.769</td>
+      <td>0.766</td>
+      <td>14091</td>
+      <td>13874</td>
+    </tr>
+    <tr>
+      <th>Standard Class</th>
+      <td>0.380</td>
+      <td>0.383</td>
+      <td>42781</td>
+      <td>42599</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> El efecto de la hora <strong>no</strong> es general: existe solo en <strong>Same Day</strong>. Los
+pedidos Same Day hechos <strong>antes de las 12:00</strong> casi nunca llegan tarde y los hechos <strong>desde
+las 12:00</strong> casi siempre llegan tarde: es una <strong>hora de corte</strong> operativa (el despacho del
+mismo día ya salió). En Standard y Second Class la hora no influye, y <strong>First Class</strong> llega
+tarde prácticamente siempre, a cualquier hora. Ambas variables (modo y hora) se conocen al
+crear el pedido, así que este patrón <strong>no es fuga</strong>: es la señal más útil del EDA temporal.
+<strong>Consecuencia para el modelado:</strong> un modelo aditivo (modo + hora) no puede representar un
+efecto de la hora que solo existe en un modo; se crea la interacción <code class="docutils literal notranslate"><span class="pre">mode_x_daypart</span></code>
+(modo × jornada AM/PM).</p>
+</section>
+</section>
+<section id="descomposicion-stl">
+<h2>Descomposición STL<a class="headerlink" href="#descomposicion-stl" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">serie</span> <span class="o">=</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"tasa"</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+<span class="n">stl</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">serie</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">stl</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span> <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"STL de la tasa diaria (periodo 7)"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_stl.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fuerza_tend</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">stl</span><span class="o">.</span><span class="n">resid</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">stl</span><span class="o">.</span><span class="n">trend</span> <span class="o">+</span> <span class="n">stl</span><span class="o">.</span><span class="n">resid</span><span class="p">))</span>
+<span class="n">fuerza_est</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">stl</span><span class="o">.</span><span class="n">resid</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">stl</span><span class="o">.</span><span class="n">seasonal</span> <span class="o">+</span> <span class="n">stl</span><span class="o">.</span><span class="n">resid</span><span class="p">))</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Fuerza de la tendencia = **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">fuerza_tend</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">**; fuerza de la estacionalidad semanal = **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">fuerza_est</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">** "</span>
+       <span class="s2">"(0 = nada, 1 = domina; Hyndman y Athanasopoulos, 2021, cap. 6). Ambas son bajas: STL siempre extrae algún patrón del ruido, "</span>
+       <span class="s2">"y la prueba de Kruskal-Wallis por día de la semana no lo confirma."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fcf35f73633ebaaf1e76fa0f00a430b46b636145b48803583d3b9b3625e5c8c0.png" src="../_images/fcf35f73633ebaaf1e76fa0f00a430b46b636145b48803583d3b9b3625e5c8c0.png" />
+<p>Fuerza de la tendencia = <strong>0,110</strong>; fuerza de la estacionalidad semanal = <strong>0,227</strong> (0 = nada, 1 = domina; Hyndman y Athanasopoulos, 2021, cap. 6). Ambas son bajas: STL siempre extrae algún patrón del ruido, y la prueba de Kruskal-Wallis por día de la semana no lo confirma.</p>
+</div>
+</div>
+</section>
+<section id="estacionariedad-medias-y-varianzas-moviles-adf-y-kpss">
+<h2>Estacionariedad: medias y varianzas móviles, ADF y KPSS<a class="headerlink" href="#estacionariedad-medias-y-varianzas-moviles-adf-y-kpss" title="Link to this heading">#</a></h2>
+<p>ADF: H₀ = raíz unitaria (no estacionaria). KPSS: H₀ = estacionaria. La conclusión es
+firme cuando ambas coinciden.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">serie</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">"media móvil 60 d"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">serie</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">"desv. est. móvil 60 d"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"puntos %"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Media y varianza móviles de la tasa diaria"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_moviles.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">filas</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">nombre</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"tasa diaria de tardías"</span><span class="p">,</span> <span class="n">serie</span><span class="p">),</span> <span class="p">(</span><span class="s2">"líneas por día"</span><span class="p">,</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">())]:</span>
+    <span class="n">adf</span> <span class="o">=</span> <span class="n">adfuller</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">autolag</span><span class="o">=</span><span class="s2">"AIC"</span><span class="p">);</span> <span class="n">kp</span> <span class="o">=</span> <span class="n">kpss</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">regression</span><span class="o">=</span><span class="s2">"c"</span><span class="p">,</span> <span class="n">nlags</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
+    <span class="n">filas</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"serie"</span><span class="p">:</span> <span class="n">nombre</span><span class="p">,</span> <span class="s2">"ADF estadístico"</span><span class="p">:</span> <span class="n">adf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"ADF p"</span><span class="p">:</span> <span class="n">adf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">"KPSS estadístico"</span><span class="p">:</span> <span class="n">kp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"KPSS p"</span><span class="p">:</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                  <span class="s2">"conclusión"</span><span class="p">:</span> <span class="s2">"estacionaria"</span> <span class="k">if</span> <span class="n">adf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">kp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s2">"revisar"</span><span class="p">})</span>
+<span class="n">estac</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas</span><span class="p">)</span>
+<span class="n">estac</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"estacionariedad.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">estac</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a79cbcde42b1267332d20c2f9bc69162a498511ad42ffc057a3916d0e62a33c8.png" src="../_images/a79cbcde42b1267332d20c2f9bc69162a498511ad42ffc057a3916d0e62a33c8.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>serie</th>
+      <th>ADF estadístico</th>
+      <th>ADF p</th>
+      <th>KPSS estadístico</th>
+      <th>KPSS p</th>
+      <th>conclusión</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>tasa diaria de tardías</td>
+      <td>-21.5872</td>
+      <td>0.0</td>
+      <td>0.0466</td>
+      <td>0.1</td>
+      <td>estacionaria</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>líneas por día</td>
+      <td>-28.7777</td>
+      <td>0.0</td>
+      <td>0.0567</td>
+      <td>0.1</td>
+      <td>estacionaria</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="dependencia-temporal-acf-pacf-y-correlacion-cruzada">
+<h2>Dependencia temporal: ACF, PACF y correlación cruzada<a class="headerlink" href="#dependencia-temporal-acf-pacf-y-correlacion-cruzada" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">))</span>
+<span class="n">plot_acf</span><span class="p">(</span><span class="n">serie</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"ACF tasa diaria"</span><span class="p">)</span>
+<span class="n">plot_pacf</span><span class="p">(</span><span class="n">serie</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">"ywm"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"PACF tasa diaria"</span><span class="p">)</span>
+<span class="n">vol</span> <span class="o">=</span> <span class="n">diario</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+<span class="n">cc</span> <span class="o">=</span> <span class="n">ccf</span><span class="p">((</span><span class="n">vol</span> <span class="o">-</span> <span class="n">vol</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">vol</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span> <span class="p">(</span><span class="n">serie</span> <span class="o">-</span> <span class="n">serie</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">serie</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span> <span class="n">adjusted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nlags</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cc</span><span class="p">)),</span> <span class="n">cc</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">1.96</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">serie</span><span class="p">)),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">-</span><span class="mf">1.96</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">serie</span><span class="p">)),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"rezago (días): volumen en t − k vs tasa en t"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Correlación cruzada volumen → tasa"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_acf_pacf_ccf.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">lb</span> <span class="o">=</span> <span class="n">acorr_ljungbox</span><span class="p">(</span><span class="n">serie</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span> <span class="n">return_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lb</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"ljung_box_tasa.csv"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bec3be063690bf3653ced51ed7826dfd349d8c690e8e8c6d7660d770e7076202.png" src="../_images/bec3be063690bf3653ced51ed7826dfd349d8c690e8e8c6d7660d770e7076202.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lb_stat</th>
+      <th>lb_pvalue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>5.2689</td>
+      <td>0.6272</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>9.4708</td>
+      <td>0.7998</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>22.3339</td>
+      <td>0.7656</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> La tasa diaria se comporta como <strong>ruido blanco</strong>: ACF y PACF dentro
+de las bandas y Ljung-Box sin rechazo. La carga del día o de días previos <strong>no</strong>
+anticipa la tasa de retrasos (correlación cruzada dentro de las bandas). ADF y KPSS
+coinciden en que la serie es <strong>estacionaria</strong>. Consecuencia: los rezagos del objetivo no
+aportarían información; la variable de carga <code class="docutils literal notranslate"><span class="pre">orders_prev_7d</span></code> se conserva solo como
+control (construida con el pasado).</p>
+</section>
+<section id="cambios-de-regimen-puntos-de-cambio-y-efectos-de-calendario">
+<h2>Cambios de régimen, puntos de cambio y efectos de calendario<a class="headerlink" href="#cambios-de-regimen-puntos-de-cambio-y-efectos-de-calendario" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mens</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">"M"</span><span class="p">))</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lineas</span><span class="o">=</span><span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">),</span> <span class="n">pedidos</span><span class="o">=</span><span class="p">(</span><span class="n">ORDER_COL</span><span class="p">,</span> <span class="s2">"nunique"</span><span class="p">),</span>
+                                             <span class="n">productos</span><span class="o">=</span><span class="p">(</span><span class="s2">"product_name"</span><span class="p">,</span> <span class="s2">"nunique"</span><span class="p">),</span> <span class="n">tasa</span><span class="o">=</span><span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">))</span>
+<span class="n">mens</span><span class="p">[</span><span class="s2">"lineas_por_pedido"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mens</span><span class="p">[</span><span class="s2">"lineas"</span><span class="p">]</span> <span class="o">/</span> <span class="n">mens</span><span class="p">[</span><span class="s2">"pedidos"</span><span class="p">]</span>
+<span class="n">display</span><span class="p">(</span><span class="n">mens</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># CUSUM de la tasa diaria: un cambio de nivel aparece como un quiebre de pendiente.</span>
+<span class="n">cusum</span> <span class="o">=</span> <span class="p">(</span><span class="n">serie</span> <span class="o">-</span> <span class="n">serie</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<span class="n">k_cp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cusum</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())))</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">rango_obs</span> <span class="o">=</span> <span class="n">cusum</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">cusum</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">rangos</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">serie</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="o">-</span> <span class="n">serie</span><span class="o">.</span><span class="n">mean</span><span class="p">())))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">999</span><span class="p">)]</span>
+<span class="n">p_cusum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rangos</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">rango_obs</span><span class="p">))</span> <span class="o">/</span> <span class="mi">1000</span>
+
+<span class="n">hol</span> <span class="o">=</span> <span class="n">USFederalHolidayCalendar</span><span class="p">()</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">d</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">cerca</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">hol</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">hol</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">hol</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">bf</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;=</span> <span class="mi">23</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span> <span class="o">&lt;=</span> <span class="mi">31</span><span class="p">)</span>
+<span class="n">cal</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">{</span><span class="s2">"periodo"</span><span class="p">:</span> <span class="s2">"± 1 día de festivo federal de EE. UU."</span><span class="p">,</span> <span class="s2">"líneas"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">cerca</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s2">"tardía_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">cerca</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()},</span>
+    <span class="p">{</span><span class="s2">"periodo"</span><span class="p">:</span> <span class="s2">"resto"</span><span class="p">,</span> <span class="s2">"líneas"</span><span class="p">:</span> <span class="nb">int</span><span class="p">((</span><span class="o">~</span><span class="n">cerca</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s2">"tardía_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">cerca</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()},</span>
+    <span class="p">{</span><span class="s2">"periodo"</span><span class="p">:</span> <span class="s2">"temporada alta (23-nov a 31-dic)"</span><span class="p">,</span> <span class="s2">"líneas"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">bf</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s2">"tardía_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">bf</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()},</span>
+    <span class="p">{</span><span class="s2">"periodo"</span><span class="p">:</span> <span class="s2">"fuera de temporada alta"</span><span class="p">,</span> <span class="s2">"líneas"</span><span class="p">:</span> <span class="nb">int</span><span class="p">((</span><span class="o">~</span><span class="n">bf</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s2">"tardía_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">bf</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()},</span>
+<span class="p">])</span>
+<span class="n">cal</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"efectos_calendario.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">cal</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">3.6</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cusum</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cusum</span><span class="o">.</span><span class="n">values</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cusum</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k_cp</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e45756"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CUSUM de la tasa diaria (prueba de permutación p = </span><span class="si">{</span><span class="n">p_cusum</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mens</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">(),</span> <span class="n">mens</span><span class="p">[</span><span class="s2">"productos"</span><span class="p">],</span> <span class="s2">"o-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"productos distintos"</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">twinx</span><span class="p">();</span> <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mens</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">(),</span> <span class="n">mens</span><span class="p">[</span><span class="s2">"lineas_por_pedido"</span><span class="p">],</span> <span class="s2">"s-"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e45756"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"líneas por pedido"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Catálogo y tamaño de pedido por mes"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"lower left"</span><span class="p">);</span> <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"lower right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_regimen.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Máximo del CUSUM en </span><span class="si">{</span><span class="n">cusum</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k_cp</span><span class="p">]</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">; p de permutación = </span><span class="si">{</span><span class="n">p_cusum</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> "</span>
+       <span class="o">+</span> <span class="p">(</span><span class="s2">"→ **no hay evidencia de un cambio de nivel** en la tasa."</span> <span class="k">if</span> <span class="n">p_cusum</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s2">"→ posible cambio de nivel; revisar."</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lineas</th>
+      <th>pedidos</th>
+      <th>productos</th>
+      <th>tasa</th>
+      <th>lineas_por_pedido</th>
+    </tr>
+    <tr>
+      <th>order_date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2016-09</th>
+      <td>5160</td>
+      <td>1730</td>
+      <td>54</td>
+      <td>0.550</td>
+      <td>2.983</td>
+    </tr>
+    <tr>
+      <th>2016-10</th>
+      <td>5398</td>
+      <td>1776</td>
+      <td>54</td>
+      <td>0.548</td>
+      <td>3.039</td>
+    </tr>
+    <tr>
+      <th>2016-11</th>
+      <td>5210</td>
+      <td>1721</td>
+      <td>54</td>
+      <td>0.546</td>
+      <td>3.027</td>
+    </tr>
+    <tr>
+      <th>2016-12</th>
+      <td>5269</td>
+      <td>1763</td>
+      <td>54</td>
+      <td>0.561</td>
+      <td>2.989</td>
+    </tr>
+    <tr>
+      <th>2017-01</th>
+      <td>5217</td>
+      <td>1745</td>
+      <td>54</td>
+      <td>0.536</td>
+      <td>2.990</td>
+    </tr>
+    <tr>
+      <th>2017-02</th>
+      <td>4906</td>
+      <td>1614</td>
+      <td>54</td>
+      <td>0.547</td>
+      <td>3.040</td>
+    </tr>
+    <tr>
+      <th>2017-03</th>
+      <td>5347</td>
+      <td>1782</td>
+      <td>54</td>
+      <td>0.553</td>
+      <td>3.001</td>
+    </tr>
+    <tr>
+      <th>2017-04</th>
+      <td>2405</td>
+      <td>815</td>
+      <td>54</td>
+      <td>0.539</td>
+      <td>2.951</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>periodo</th>
+      <th>líneas</th>
+      <th>tardía_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>± 1 día de festivo federal de EE. UU.</td>
+      <td>11689</td>
+      <td>55.01</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>resto</td>
+      <td>131386</td>
+      <td>54.89</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>temporada alta (23-nov a 31-dic)</td>
+      <td>13429</td>
+      <td>54.94</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>fuera de temporada alta</td>
+      <td>129646</td>
+      <td>54.90</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/07dbf044414c3decb4a47ab28b1405ac40a49cf38af2e33c302f0ffe91fe90a0.png" src="../_images/07dbf044414c3decb4a47ab28b1405ac40a49cf38af2e33c302f0ffe91fe90a0.png" />
+<p>Máximo del CUSUM en 2016-06-18; p de permutación = 0.780 → <strong>no hay evidencia de un cambio de nivel</strong> en la tasa.</p>
+</div>
+</div>
+<p><strong>Interpretación.</strong> En el entrenamiento la tasa <strong>no</strong> presenta cambios de nivel
+(CUSUM no significativo), y los festivos de EE. UU. y la temporada de fin de año no
+alteran la proporción de retrasos. El catálogo (54 productos) y el tamaño medio del
+pedido (≈ 3 líneas) son estables en el entrenamiento. En el archivo completo, la ficha y
+el volumen mensual muestran que <strong>desde octubre de 2017 cada pedido tiene una sola
+línea</strong> y el catálogo se reduce: ese periodo cae en la prueba y se trata como <strong>deriva
+esperada de las covariables</strong> (se evalúa en el cap. 11, sin usar la prueba para decidir).</p>
+</section>
+<section id="deriva-temporal-dentro-del-entrenamiento-covariate-shift-y-concept-drift">
+<h2>Deriva temporal dentro del entrenamiento (<em>covariate shift</em> y <em>concept drift</em>)<a class="headerlink" href="#deriva-temporal-dentro-del-entrenamiento-covariate-shift-y-concept-drift" title="Link to this heading">#</a></h2>
+<p>Se compara el primer año (2015) con el último tramo del entrenamiento (desde 2016-07):
+<strong>PSI</strong> para las covariables (&lt; 0,1 estable; 0,1–0,25 moderada; &gt; 0,25 fuerte) y la tasa de
+tardías <strong>por modo de envío</strong> en cada trimestre (cambio en P(y | x)).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temprano</span><span class="p">,</span> <span class="n">tardio</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">d</span> <span class="o">&lt;</span> <span class="s2">"2016-01-01"</span><span class="p">],</span> <span class="n">train</span><span class="p">[</span><span class="n">d</span> <span class="o">&gt;=</span> <span class="s2">"2016-07-01"</span><span class="p">]</span>
+<span class="n">cols_psi</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"shipping_mode"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"payment_type"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"market"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"customer_segment"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"category_name"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">"product_name"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"sales"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"order_item_quantity"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"order_item_discount_rate"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">"order_item_profit_ratio"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"items_in_order"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"orders_prev_7d"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"order_hour"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="n">deriva</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s2">"PSI"</span><span class="p">:</span> <span class="n">psi</span><span class="p">(</span><span class="n">temprano</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">tardio</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">categorical</span><span class="o">=</span><span class="n">cat</span><span class="p">)}</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">cols_psi</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+<span class="n">deriva</span><span class="p">[</span><span class="s2">"nivel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">deriva</span><span class="p">[</span><span class="s2">"PSI"</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">99</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"estable"</span><span class="p">,</span> <span class="s2">"moderada"</span><span class="p">,</span> <span class="s2">"fuerte"</span><span class="p">])</span>
+<span class="n">deriva</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"deriva_psi_train.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">deriva</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"PSI"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">md_out</span><span class="p">(</span><span class="s2">"El PSI de `market` es enorme. La tabla de líneas por trimestre y mercado lo explica:"</span><span class="p">)</span>
+<span class="n">mq</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">"Q"</span><span class="p">),</span> <span class="n">train</span><span class="p">[</span><span class="s2">"market"</span><span class="p">])</span>
+<span class="n">mq</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"mercado_por_trimestre.csv"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">mq</span><span class="p">)</span>
+
+<span class="n">trim</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">"Q"</span><span class="p">),</span> <span class="s2">"shipping_mode"</span><span class="p">])[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">trim</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trim</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">(),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">trim</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="s2">"o-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"% tardías"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Concepto: tasa de tardías por modo de envío y trimestre"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_concept_drift.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">rango</span> <span class="o">=</span> <span class="p">(</span><span class="n">trim</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">trim</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">md_out</span><span class="p">(</span><span class="s2">"Rango (máx − mín) de la tasa trimestral por modo, en puntos porcentuales: "</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rango</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="s2">"."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>PSI</th>
+      <th>nivel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>market</td>
+      <td>5.9968</td>
+      <td>fuerte</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>orders_prev_7d</td>
+      <td>0.0519</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>product_name</td>
+      <td>0.0019</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>payment_type</td>
+      <td>0.0008</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>category_name</td>
+      <td>0.0007</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>sales</td>
+      <td>0.0004</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>order_item_quantity</td>
+      <td>0.0004</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>order_item_profit_ratio</td>
+      <td>0.0003</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>order_hour</td>
+      <td>0.0002</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>customer_segment</td>
+      <td>0.0002</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>shipping_mode</td>
+      <td>0.0001</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>items_in_order</td>
+      <td>0.0001</td>
+      <td>estable</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>order_item_discount_rate</td>
+      <td>0.0000</td>
+      <td>estable</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>El PSI de <code class="docutils literal notranslate"><span class="pre">market</span></code> es enorme. La tabla de líneas por trimestre y mercado lo explica:</p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>market</th>
+      <th>Africa</th>
+      <th>Europe</th>
+      <th>LATAM</th>
+      <th>Pacific Asia</th>
+      <th>USCA</th>
+    </tr>
+    <tr>
+      <th>order_date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015Q1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>15413</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2015Q2</th>
+      <td>0</td>
+      <td>5255</td>
+      <td>10362</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2015Q3</th>
+      <td>0</td>
+      <td>15712</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2015Q4</th>
+      <td>0</td>
+      <td>3947</td>
+      <td>0</td>
+      <td>11961</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2016Q1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>15421</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2016Q2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>159</td>
+      <td>15294</td>
+    </tr>
+    <tr>
+      <th>2016Q3</th>
+      <td>3071</td>
+      <td>983</td>
+      <td>0</td>
+      <td>1959</td>
+      <td>9786</td>
+    </tr>
+    <tr>
+      <th>2016Q4</th>
+      <td>7285</td>
+      <td>2889</td>
+      <td>0</td>
+      <td>5102</td>
+      <td>601</td>
+    </tr>
+    <tr>
+      <th>2017Q1</th>
+      <td>1258</td>
+      <td>563</td>
+      <td>12493</td>
+      <td>1038</td>
+      <td>118</td>
+    </tr>
+    <tr>
+      <th>2017Q2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>2405</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/9a2e02e9e7be89a73649c23adca13562fd66ed4c3652f936d20a079ad375ade0.png" src="../_images/9a2e02e9e7be89a73649c23adca13562fd66ed4c3652f936d20a079ad375ade0.png" />
+<p>Rango (máx − mín) de la tasa trimestral por modo, en puntos porcentuales: First Class: 3,9, Same Day: 13,5, Second Class: 6,0, Standard Class: 1,6.</p>
+</div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><strong>Covariate shift fuerte en el destino:</strong> los mercados <strong>se turnan en el tiempo</strong> (2015-T1
+solo LATAM, 2015-T3 solo Europa, 2016-T1 solo Pacific Asia, 2016-T2 sobre todo USCA…). Es un
+artefacto de la simulación: el destino del pedido es casi una función de la fecha. Por
+eso mercado, región y país de destino <strong>confunden geografía con tiempo</strong> (cap. 8) y la
+prueba tendrá una mezcla de mercados distinta de la del entrenamiento reciente.</p></li>
+<li><p>El resto de covariables es <strong>estable</strong> (PSI &lt; 0,1).</p></li>
+<li><p><strong>Concept drift:</strong> la tasa de tardías por modo de envío es estable entre trimestres
+(Standard y First Class varían pocos puntos; Same Day, el modo con menos casos, varía más
+por tamaño de muestra). La relación entre el modo y el objetivo no cambia.</p></li>
+</ul>
+</section>
+<section id="panel-series-por-entidad-mercado-de-destino">
+<h2>Panel: series por entidad (mercado de destino)<a class="headerlink" href="#panel-series-por-entidad-mercado-de-destino" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">"Q"</span><span class="p">),</span> <span class="s2">"market"</span><span class="p">])[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">3.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">pm</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">(),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">pm</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="s2">"o-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"% tardías"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Tasa trimestral por mercado de destino"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"07_panel_mercado.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">"Q"</span><span class="p">),</span> <span class="n">train</span><span class="p">[</span><span class="s2">"market"</span><span class="p">]],</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">chi2</span><span class="p">,</span> <span class="n">p_het</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"tasa_mercado_trimestre.csv"</span><span class="p">)</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Heterogeneidad entre mercado × trimestre: χ² = </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">chi2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2"> g.l.), p = </span><span class="si">{</span><span class="n">p_het</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">. "</span>
+       <span class="sa">f</span><span class="s2">"Desviación estándar media entre series en un mismo trimestre: </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pm</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> puntos porcentuales."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/47b784172cbf8187f00966ca14c466b17e1da129cdcef29273b7443f5a8e8452.png" src="../_images/47b784172cbf8187f00966ca14c466b17e1da129cdcef29273b7443f5a8e8452.png" />
+<p>Heterogeneidad entre mercado × trimestre: χ² = 70,7 (22 g.l.), p = 0.000. Desviación estándar media entre series en un mismo trimestre: 2,21 puntos porcentuales.</p>
+</div>
+</div>
+<p><strong>Interpretación.</strong> Las series por mercado se solapan poco en el tiempo (cada mercado
+aparece en ventanas distintas) y, cuando coinciden, sus tasas son parecidas. La
+heterogeneidad detectada por χ² se concentra en celdas pequeñas (por ejemplo, USCA en
+2017-T1 con ≈ 100 líneas). No hay evidencia de que un mercado sea sistemáticamente más
+lento.</p>
+</section>
+<section id="consecuencias-para-el-modelado-e-interpretacion">
+<h2>Consecuencias para el modelado e interpretación<a class="headerlink" href="#consecuencias-para-el-modelado-e-interpretacion" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Partición cronológica</strong>, nunca aleatoria (cap. 1): entrenamiento hasta 2017-04-14,
+<em>gap</em> de 7 días y prueba desde 2017-04-22.</p></li>
+<li><p><strong>Validación cruzada</strong> con ventana creciente y <em>gap</em> de 7 días (<code class="docutils literal notranslate"><span class="pre">temporal_folds</span></code>, la
+versión en días de <code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit(gap=…)</span></code>): el <em>gap</em> evita usar pedidos cuya etiqueta aún
+no se conocería y cubre la dependencia de corto plazo.</p></li>
+<li><p><strong>Ingeniería de características</strong> solo con información del momento del pedido o del
+pasado: interacción <strong>modo × jornada</strong> (corte del mediodía en Same Day), componentes
+cíclicos de hora, día y mes (seno/coseno), indicador de fin de semana y carga de pedidos de
+los 7 días previos (ventana cerrada a la izquierda). No se usan rezagos del objetivo: la ACF muestra
+que no aportan, y requerirían etiquetas que llegan con retraso.</p></li>
+<li><p><strong>Interpretación:</strong> sin tendencia ni estacionalidad en la tasa, proceso estable y sin
+deriva de concepto en el entrenamiento; único patrón temporal: la hora de corte del
+mediodía en los envíos Same Day. Los
+riesgos son la <strong>rotación de mercados en el tiempo</strong> (geografía de destino confundida con
+el periodo) y el <strong>cambio de régimen de finales de 2017</strong> (pedidos de una línea), que
+afectan a las covariables de la prueba.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06_eda_multivariado.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">6. Análisis multivariado (2.4)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="08_eda_espacial.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">8. Componente espacial (2.7) y espacio-temporal (2.8)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-de-la-variable-temporal">Validación de la variable temporal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-serie-completa-y-agregaciones">Visualización: serie completa y agregaciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hora-del-pedido-modo-de-envio-el-corte-del-mediodia">Hora del pedido × modo de envío: el corte del mediodía</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descomposicion-stl">Descomposición STL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estacionariedad-medias-y-varianzas-moviles-adf-y-kpss">Estacionariedad: medias y varianzas móviles, ADF y KPSS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencia-temporal-acf-pacf-y-correlacion-cruzada">Dependencia temporal: ACF, PACF y correlación cruzada</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cambios-de-regimen-puntos-de-cambio-y-efectos-de-calendario">Cambios de régimen, puntos de cambio y efectos de calendario</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriva-temporal-dentro-del-entrenamiento-covariate-shift-y-concept-drift">Deriva temporal dentro del entrenamiento (<em>covariate shift</em> y <em>concept drift</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#panel-series-por-entidad-mercado-de-destino">Panel: series por entidad (mercado de destino)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consecuencias-para-el-modelado-e-interpretacion">Consecuencias para el modelado e interpretación</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Proyecto de Machine Learning — Polo y Pallares
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

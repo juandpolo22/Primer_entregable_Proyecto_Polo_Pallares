@@ -1,0 +1,1630 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. La base de datos: estructura, tamaño, calidad y representatividad &#8212; Riesgo de entrega tardía en DataCo (sin fuga)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02_datos';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Análisis de la variable objetivo (2.1)" href="03_eda_objetivo.html" />
+    <link rel="prev" title="1. Introducción: riesgo de entrega tardía en DataCo" href="01_introduccion.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="01_introduccion.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Riesgo de entrega tardía en DataCo (sin fuga)</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduccion.html">
+                    1. Introducción: riesgo de entrega tardía en DataCo
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base de datos</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. La base de datos: estructura, tamaño, calidad y representatividad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_eda_objetivo.html">3. Análisis de la variable objetivo (2.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_eda_univariado.html">4. Análisis univariado (2.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_eda_bivariado.html">5. Análisis bivariado (2.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_eda_multivariado.html">6. Análisis multivariado (2.4)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_eda_temporal.html">7. Componente temporal (2.6)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_eda_espacial.html">8. Componente espacial (2.7) y espacio-temporal (2.8)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="09_data_leakage.html">9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modelado</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_preprocesamiento.html">10. Preprocesamiento y Pipeline (2.9)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_base.html">11. Modelo base: línea base trivial y regresión logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_conclusiones.html">12. Conclusiones, limitaciones y checklist</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/juandpolo22/Avance_1_Polo_Pallares" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/02_datos.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. La base de datos: estructura, tamaño, calidad y representatividad</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-datos">Diccionario de datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-de-los-datos">Estructura de los datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes-patron">Valores faltantes: patrón</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes-mecanismo-mcar-mar-o-mnar">Valores faltantes: mecanismo (MCAR, MAR o MNAR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duplicados-y-casi-duplicados">Duplicados y casi-duplicados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-atipicos">Valores atípicos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-imposibles-o-inconsistentes">Valores imposibles o inconsistentes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sesgos-de-muestreo-y-representatividad">Sesgos de muestreo y representatividad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consideraciones-eticas">Consideraciones éticas</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="la-base-de-datos-estructura-tamano-calidad-y-representatividad">
+<h1>2. La base de datos: estructura, tamaño, calidad y representatividad<a class="headerlink" href="#la-base-de-datos-estructura-tamano-calidad-y-representatividad" title="Link to this heading">#</a></h1>
+<p>Este capítulo caracteriza los datos <strong>de entrenamiento</strong> antes de analizarlos:
+diccionario de variables, estructura, tamaño y entidades independientes, valores
+faltantes (patrón y mecanismo), duplicados, valores atípicos e inconsistentes,
+sesgos de muestreo y ética. La prueba no se mira.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">"_config.yml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">project_root</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">"No se encontró _config.yml. Ejecuta el notebook dentro de la carpeta del libro."</span><span class="p">)</span>
+    <span class="n">project_root</span> <span class="o">=</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">_folder</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tables"</span><span class="p">,</span> <span class="s2">"figures"</span><span class="p">):</span>          <span class="c1"># se crean si no existen</span>
+    <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="n">_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.project_utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">configure_plots</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">project_root</span> <span class="o">/</span> <span class="s2">"tables"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">md_out</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="n">train</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="diccionario-de-datos">
+<h2>Diccionario de datos<a class="headerlink" href="#diccionario-de-datos" title="Link to this heading">#</a></h2>
+<p>Una fila por variable: nombre original, tipo, significado, unidad, valores,
+faltantes y papel en el análisis. Las variables derivadas (calendario, ítems por
+pedido y carga de los 7 días previos) se marcan como «(derivada)»; los componentes
+seno/coseno se omiten porque son transformaciones de las de calendario.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dic</span> <span class="o">=</span> <span class="n">build_dictionary</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">dic</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"diccionario_datos.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">dic</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>nombre_original</th>
+      <th>tipo</th>
+      <th>significado</th>
+      <th>unidad</th>
+      <th>valores</th>
+      <th>únicos</th>
+      <th>faltantes</th>
+      <th>faltantes_%</th>
+      <th>papel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>payment_type</td>
+      <td>Type</td>
+      <td>categórica nominal</td>
+      <td>Tipo de transacción o medio de pago (DEBIT, TRANSFER, CASH, PAYMENT)</td>
+      <td>no aplica</td>
+      <td>CASH, DEBIT, PAYMENT, TRANSFER</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>days_shipping_real</td>
+      <td>Days for shipping (real)</td>
+      <td>numérica discreta</td>
+      <td>Días reales entre la compra y el envío/entrega</td>
+      <td>días</td>
+      <td>0, 1, 2, 3, 4, 5, 6</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>posterior al pedido; excluida (fuga)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>days_shipping_scheduled</td>
+      <td>Days for shipment (scheduled)</td>
+      <td>numérica discreta</td>
+      <td>Días de envío programados (promesa al cliente)</td>
+      <td>días</td>
+      <td>0, 1, 2, 4</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>benefit_per_order</td>
+      <td>Benefit per order</td>
+      <td>numérica continua</td>
+      <td>Ganancia por ítem de pedido</td>
+      <td>USD</td>
+      <td>rango: -1375 a 250</td>
+      <td>18482</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>sales_per_customer</td>
+      <td>Sales per customer</td>
+      <td>numérica continua</td>
+      <td>Venta total por cliente en la línea (igual a order_item_total)</td>
+      <td>USD</td>
+      <td>rango: 7.49 a 500</td>
+      <td>1951</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>order_weekend</td>
+      <td>(derivada)</td>
+      <td>derivada temporal</td>
+      <td>1 si el pedido se hizo en sábado o domingo (derivada)</td>
+      <td>no aplica</td>
+      <td>0, 1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>order_afternoon</td>
+      <td>(derivada)</td>
+      <td>derivada temporal</td>
+      <td>1 si el pedido se hizo a partir de las 12:00 (derivada)</td>
+      <td>no aplica</td>
+      <td>0, 1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>mode_x_daypart</td>
+      <td>(derivada)</td>
+      <td>derivada categórica</td>
+      <td>Interacción modo de envío × jornada (AM/PM) del pedido (derivada)</td>
+      <td>no aplica</td>
+      <td>First Class | AM, First Class | PM, Same Day | AM, Same Day | PM, ...</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>items_in_order</td>
+      <td>(derivada)</td>
+      <td>derivada numérica</td>
+      <td>Número de líneas del pedido (derivada, conocida al cerrar la compra)</td>
+      <td>ítems</td>
+      <td>1, 2, 3, 4, 5</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>orders_prev_7d</td>
+      <td>(derivada)</td>
+      <td>derivada temporal</td>
+      <td>Pedidos registrados en los 7 días previos (derivada, carga logísti...</td>
+      <td>pedidos</td>
+      <td>rango: 0 a 426</td>
+      <td>427</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>predictora candidata</td>
+    </tr>
+  </tbody>
+</table>
+<p>62 rows × 10 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="estructura-de-los-datos">
+<h2>Estructura de los datos<a class="headerlink" href="#estructura-de-los-datos" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Unidad de observación:</strong> una <strong>línea de pedido</strong> (un producto dentro de un pedido).</p></li>
+<li><p><strong>Nivel de agregación:</strong> transaccional (sin agregar). Las líneas se anidan en
+<strong>pedidos</strong> y los pedidos en <strong>clientes</strong>.</p></li>
+<li><p><strong>Tipo:</strong> datos <strong>transversales con marca de tiempo</strong> (eventos irregulares en el
+tiempo, no una serie regular) y con <strong>componente espacial</strong> (latitud/longitud).
+Por eso es un problema de clasificación <strong>espacio-temporal</strong>: se analizan el
+tiempo (cap. 7) y el espacio (cap. 8) y la partición es cronológica.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lineas_por_pedido</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">ORDER_COL</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">pedidos_por_cliente</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">CUSTOMER_COL</span><span class="p">)[</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+<span class="n">etiqueta_unica</span> <span class="o">=</span> <span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">ORDER_COL</span><span class="p">)[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">predictoras</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">RENAME</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TARGET</span><span class="p">]</span> <span class="o">+</span> <span class="n">LEAKAGE_COLS</span> <span class="o">+</span> <span class="n">ID_COLS</span> <span class="o">+</span> <span class="n">PII_COLS</span> <span class="o">+</span> <span class="p">[</span><span class="n">DATE_COL</span><span class="p">]]</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictoras</span><span class="p">)</span>
+<span class="n">tam</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">"Líneas (filas) de entrenamiento"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Variables originales"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">RENAME</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Predictoras candidatas originales (sin objetivo, fuga, ids ni datos personales)"</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Relación n/p"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Casos clase 1 (entrega tardía)"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Casos clase 0 (no tardía)"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Pedidos distintos"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Clientes distintos"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">CUSTOMER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Líneas por pedido (media; máx.)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">lineas_por_pedido</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="n">lineas_por_pedido</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Pedidos por cliente (media; máx.)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">pedidos_por_cliente</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="n">pedidos_por_cliente</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Pedidos con la misma etiqueta en todas sus líneas"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">etiqueta_unica</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Ubicaciones (lat, lon) distintas"</span><span class="p">,</span> <span class="n">es</span><span class="p">(</span><span class="n">train</span><span class="p">[[</span><span class="n">LAT</span><span class="p">,</span> <span class="n">LON</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)),</span>
+<span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"medida"</span><span class="p">,</span> <span class="s2">"valor"</span><span class="p">])</span>
+<span class="n">tam</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"tamano_muestra.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tam</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">))</span>
+<span class="n">lineas_por_pedido</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"líneas por pedido"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"pedidos"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Tamaño de los pedidos"</span><span class="p">)</span>
+<span class="n">pedidos_por_cliente</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#72b7b2"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"pedidos por cliente (30 = 30 o más)"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Pedidos por cliente"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"02_entidades.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>medida</th>
+      <th>valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Líneas (filas) de entrenamiento</td>
+      <td>143.075</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Variables originales</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Predictoras candidatas originales (sin objetivo, fuga, ids ni dato...</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Relación n/p</td>
+      <td>4.471</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Casos clase 1 (entrega tardía)</td>
+      <td>78.549</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Casos clase 0 (no tardía)</td>
+      <td>64.526</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Pedidos distintos</td>
+      <td>47.719</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Clientes distintos</td>
+      <td>12.187</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Líneas por pedido (media; máx.)</td>
+      <td>3,00; 5</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Pedidos por cliente (media; máx.)</td>
+      <td>3,92; 13</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Pedidos con la misma etiqueta en todas sus líneas</td>
+      <td>100,0 %</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Ubicaciones (lat, lon) distintas</td>
+      <td>8.431</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/d9fa7c0f6b8f17c7e259c208120d00d53783c3296b6cef1b2a4dde7fc92e756c.png" src="../_images/d9fa7c0f6b8f17c7e259c208120d00d53783c3296b6cef1b2a4dde7fc92e756c.png" />
+</div>
+</div>
+<p><strong>Interpretación.</strong> El tamaño efectivo de la muestra está <strong>entre el número de
+pedidos y el de líneas</strong>: todas las líneas de un pedido comparten la etiqueta
+(100 %), así que no aportan evidencia independiente. Por eso (i) la partición
+nunca separa un pedido, (ii) el bootstrap del capítulo 11 remuestrea <strong>pedidos</strong>
+y no filas. Los clientes repiten compras, pero sus pedidos ocurren en fechas
+distintas y el modelo no usa su identificador. Con n/p del orden de miles la
+muestra es holgada para un modelo lineal.</p>
+</section>
+<section id="valores-faltantes-patron">
+<h2>Valores faltantes: patrón<a class="headerlink" href="#valores-faltantes-patron" title="Link to this heading">#</a></h2>
+<p>Se muestra el porcentaje por columna y la matriz de nulos (muestra de 2.000 filas
+ordenadas en el tiempo).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">miss</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">RENAME</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s2">"faltantes"</span><span class="p">)</span>
+<span class="n">miss</span><span class="p">[</span><span class="s2">"faltantes_%"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">miss</span><span class="p">[</span><span class="s2">"faltantes"</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">miss</span> <span class="o">=</span> <span class="n">miss</span><span class="p">[</span><span class="n">miss</span><span class="p">[</span><span class="s2">"faltantes"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"faltantes_%"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">miss</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"faltantes_por_columna.csv"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">miss</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">sample</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+<span class="n">cols_m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">miss</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"market"</span><span class="p">,</span> <span class="s2">"order_country"</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">3.6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">miss</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="p">[</span><span class="s2">"#e8e8e8"</span><span class="p">,</span> <span class="s2">"#e45756"</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"filas (muestra ordenada por fecha)"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Matriz de nulos (rojo = faltante)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"02_faltantes.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>faltantes</th>
+      <th>faltantes_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>product_description</th>
+      <td>143075</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>order_zipcode</th>
+      <td>118235</td>
+      <td>82.64</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/50494ec2090c475beb1f00543118d42d7d3531a05be19b6697d52a49220fb218.png" src="../_images/50494ec2090c475beb1f00543118d42d7d3531a05be19b6697d52a49220fb218.png" />
+</div>
+</div>
+</section>
+<section id="valores-faltantes-mecanismo-mcar-mar-o-mnar">
+<h2>Valores faltantes: mecanismo (MCAR, MAR o MNAR)<a class="headerlink" href="#valores-faltantes-mecanismo-mcar-mar-o-mnar" title="Link to this heading">#</a></h2>
+<p>MCAR: la ausencia no depende de nada; MAR: depende de variables observadas; MNAR:
+depende del propio valor no observado. Para cada indicador de ausencia se mide su
+asociación con variables observadas (V de Cramér o rank-biserial) y se compara la
+distribución entre filas completas e incompletas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">miss</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ind</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">m</span><span class="p">,</span> <span class="s2">"comparada_con"</span><span class="p">:</span> <span class="s2">"—"</span><span class="p">,</span> <span class="s2">"efecto"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">"p_valor"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+                     <span class="s2">"nota"</span><span class="p">:</span> <span class="s2">"100 </span><span class="si">% f</span><span class="s2">altante: no hay variación que comparar"</span><span class="p">})</span>
+        <span class="k">continue</span>
+    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"market"</span><span class="p">,</span> <span class="s2">"order_region"</span><span class="p">,</span> <span class="s2">"shipping_mode"</span><span class="p">,</span> <span class="s2">"customer_segment"</span><span class="p">,</span> <span class="n">TARGET</span><span class="p">]:</span>
+        <span class="n">v</span><span class="p">,</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">pv</span> <span class="o">=</span> <span class="n">cramers_v</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">o</span><span class="p">],</span> <span class="n">ind</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">m</span><span class="p">,</span> <span class="s2">"comparada_con"</span><span class="p">:</span> <span class="n">o</span><span class="p">,</span> <span class="s2">"efecto"</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s2">"p_valor"</span><span class="p">:</span> <span class="n">pv</span><span class="p">,</span> <span class="s2">"nota"</span><span class="p">:</span> <span class="s2">"V de Cramér"</span><span class="p">})</span>
+    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"sales"</span><span class="p">,</span> <span class="s2">"order_item_quantity"</span><span class="p">,</span> <span class="s2">"order_item_profit_ratio"</span><span class="p">]:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">o</span><span class="p">],</span> <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">o</span><span class="p">]</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">pv</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">mannwhitneyu</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">m</span><span class="p">,</span> <span class="s2">"comparada_con"</span><span class="p">:</span> <span class="n">o</span><span class="p">,</span> <span class="s2">"efecto"</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">u</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">"p_valor"</span><span class="p">:</span> <span class="n">pv</span><span class="p">,</span>
+                     <span class="s2">"nota"</span><span class="p">:</span> <span class="s2">"|rank-biserial|"</span><span class="p">})</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="n">screen</span><span class="p">[</span><span class="s2">"p_fdr"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fdr_bh</span><span class="p">(</span><span class="n">screen</span><span class="p">[</span><span class="s2">"p_valor"</span><span class="p">])</span>
+<span class="n">screen</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"asociacion_faltantes.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">zip_por_mercado</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s2">"order_zipcode"</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"market"</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"con_zipcode_%"</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">display</span><span class="p">(</span><span class="n">zip_por_mercado</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>comparada_con</th>
+      <th>efecto</th>
+      <th>p_valor</th>
+      <th>nota</th>
+      <th>p_fdr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>product_description</td>
+      <td>—</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>100 % faltante: no hay variación que comparar</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>order_zipcode</td>
+      <td>market</td>
+      <td>0.9772</td>
+      <td>0.0000</td>
+      <td>V de Cramér</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>order_zipcode</td>
+      <td>order_region</td>
+      <td>0.9999</td>
+      <td>0.0000</td>
+      <td>V de Cramér</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>order_zipcode</td>
+      <td>shipping_mode</td>
+      <td>0.0053</td>
+      <td>0.0717</td>
+      <td>V de Cramér</td>
+      <td>0.1583</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>order_zipcode</td>
+      <td>customer_segment</td>
+      <td>0.0046</td>
+      <td>0.0792</td>
+      <td>V de Cramér</td>
+      <td>0.1583</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>order_zipcode</td>
+      <td>late_delivery_risk</td>
+      <td>0.0000</td>
+      <td>0.6465</td>
+      <td>V de Cramér</td>
+      <td>0.6465</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>order_zipcode</td>
+      <td>sales</td>
+      <td>0.0026</td>
+      <td>0.5189</td>
+      <td>|rank-biserial|</td>
+      <td>0.5930</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>order_zipcode</td>
+      <td>order_item_quantity</td>
+      <td>0.0058</td>
+      <td>0.1206</td>
+      <td>|rank-biserial|</td>
+      <td>0.1930</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>order_zipcode</td>
+      <td>order_item_profit_ratio</td>
+      <td>0.0056</td>
+      <td>0.1638</td>
+      <td>|rank-biserial|</td>
+      <td>0.2184</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>con_zipcode_%</th>
+    </tr>
+    <tr>
+      <th>market</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Africa</th>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>Europe</th>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>LATAM</th>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>Pacific Asia</th>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>USCA</th>
+      <td>96.28</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">order_zipcode</span></code> falta en todos los pedidos fuera de <strong>USCA</strong> y casi nunca dentro de
+USCA (V de Cramér con <code class="docutils literal notranslate"><span class="pre">market</span></code> ≈ 1). La ausencia está <strong>completamente explicada por
+una variable observada</strong> → mecanismo <strong>MAR estructural</strong>: el código postal solo
+existe para destinos de EE. UU./Canadá; no es un dato «perdido» sino «no aplica».
+Su asociación con el objetivo es nula, y además la información geográfica ya está
+en <code class="docutils literal notranslate"><span class="pre">order_country</span></code>/<code class="docutils literal notranslate"><span class="pre">order_region</span></code>. <strong>Decisión:</strong> no se usa (capítulo 10).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">product_description</span></code> está <strong>100 % vacía</strong>: no tiene información. <strong>Decisión:</strong> eliminar.</p></li>
+<li><p>No se aplica la prueba de Little porque no hay variables numéricas con faltantes
+parciales relevantes; la comparación por grupos es evidencia suficiente.</p></li>
+</ul>
+</section>
+<section id="duplicados-y-casi-duplicados">
+<h2>Duplicados y casi-duplicados<a class="headerlink" href="#duplicados-y-casi-duplicados" title="Link to this heading">#</a></h2>
+<p>Se buscan (i) filas duplicadas exactas ignorando el identificador de línea,
+(ii) casi-duplicados: el mismo producto repetido en un mismo pedido, y
+(iii) <strong>columnas duplicadas</strong> (una copia exacta de otra).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sin_id</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">RENAME</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">ITEM_COL</span><span class="p">])</span>
+<span class="n">dup_exactos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sin_id</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">casi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">,</span> <span class="s2">"product_card_id"</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">col_dup</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">DUPLICATE_PAIRS</span><span class="p">:</span>
+    <span class="n">col_dup</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"columna"</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s2">"copia_de"</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span> <span class="s2">"coincidencia_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">float</span><span class="p">((</span><span class="n">train</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">==</span> <span class="n">train</span><span class="p">[</span><span class="n">b</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">())})</span>
+<span class="n">col_dup</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"columna"</span><span class="p">:</span> <span class="s2">"product_image"</span><span class="p">,</span> <span class="s2">"copia_de"</span><span class="p">:</span> <span class="s2">"product_name (1 a 1)"</span><span class="p">,</span>
+                <span class="s2">"coincidencia_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"product_name"</span><span class="p">)[</span><span class="s2">"product_image"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())})</span>
+<span class="n">col_dup</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"columna"</span><span class="p">:</span> <span class="s2">"days_shipping_scheduled"</span><span class="p">,</span> <span class="s2">"copia_de"</span><span class="p">:</span> <span class="s2">"shipping_mode (1 a 1)"</span><span class="p">,</span>
+                <span class="s2">"coincidencia_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"shipping_mode"</span><span class="p">)[</span><span class="s2">"days_shipping_scheduled"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())})</span>
+<span class="n">col_dup</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">col_dup</span><span class="p">)</span>
+<span class="n">col_dup</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"columnas_duplicadas.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- Duplicados exactos (sin el id de línea): **</span><span class="si">{</span><span class="n">dup_exactos</span><span class="si">}</span><span class="s2">**.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- Casi-duplicados (mismo producto dos veces en un pedido): **</span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">casi</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">** líneas. Son compras legítimas registradas en "</span>
+       <span class="s2">"líneas separadas y comparten etiqueta con su pedido, así que se conservan; el agrupamiento por pedido evita que inflen la evaluación."</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">col_dup</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<ul class="simple">
+<li><p>Duplicados exactos (sin el id de línea): <strong>0</strong>.</p></li>
+<li><p>Casi-duplicados (mismo producto dos veces en un pedido): <strong>17.248</strong> líneas. Son compras legítimas registradas en líneas separadas y comparten etiqueta con su pedido, así que se conservan; el agrupamiento por pedido evita que inflen la evaluación.</p></li>
+</ul>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>columna</th>
+      <th>copia_de</th>
+      <th>coincidencia_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>order_customer_id</td>
+      <td>customer_id</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>order_profit_per_order</td>
+      <td>benefit_per_order</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>order_item_total</td>
+      <td>sales_per_customer</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>order_item_product_price</td>
+      <td>product_price</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>product_category_id</td>
+      <td>category_id</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>order_item_cardprod_id</td>
+      <td>product_card_id</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>product_image</td>
+      <td>product_name (1 a 1)</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>days_shipping_scheduled</td>
+      <td>shipping_mode (1 a 1)</td>
+      <td>100.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> Seis columnas son <strong>copias exactas</strong> de otras, <code class="docutils literal notranslate"><span class="pre">product_image</span></code>
+equivale al nombre del producto y <code class="docutils literal notranslate"><span class="pre">days_shipping_scheduled</span></code> está determinada
+por <code class="docutils literal notranslate"><span class="pre">shipping_mode</span></code> (Standard = 4, Second = 2, First = 1, Same Day = 0 días). Mantener
+ambas versiones introduce <strong>multicolinealidad perfecta</strong> (capítulo 5); en cada par se
+conserva una sola columna (capítulo 10).</p>
+</section>
+<section id="valores-atipicos">
+<h2>Valores atípicos<a class="headerlink" href="#valores-atipicos" title="Link to this heading">#</a></h2>
+<p>Regla del IQR (fuera de [Q1 − 1,5·IQR, Q3 + 1,5·IQR]) en las numéricas originales.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_orig</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">,</span> <span class="s2">"days_shipping_scheduled"</span><span class="p">,</span> <span class="s2">"benefit_per_order"</span><span class="p">,</span> <span class="s2">"sales_per_customer"</span><span class="p">,</span>
+            <span class="s2">"order_item_discount"</span><span class="p">,</span> <span class="s2">"order_item_discount_rate"</span><span class="p">,</span> <span class="s2">"order_item_product_price"</span><span class="p">,</span> <span class="s2">"order_item_profit_ratio"</span><span class="p">,</span>
+            <span class="s2">"order_item_quantity"</span><span class="p">,</span> <span class="s2">"sales"</span><span class="p">,</span> <span class="n">LAT</span><span class="p">,</span> <span class="n">LON</span><span class="p">]</span>
+<span class="n">res_num</span> <span class="o">=</span> <span class="n">numeric_summary</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">num_orig</span><span class="p">])</span>
+<span class="n">res_num</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"atipicos_numericas.csv"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">res_num</span><span class="p">[[</span><span class="s2">"media"</span><span class="p">,</span> <span class="s2">"mediana"</span><span class="p">,</span> <span class="s2">"mínimo"</span><span class="p">,</span> <span class="s2">"máximo"</span><span class="p">,</span> <span class="s2">"asimetría"</span><span class="p">,</span> <span class="s2">"outliers_IQR_%"</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>media</th>
+      <th>mediana</th>
+      <th>mínimo</th>
+      <th>máximo</th>
+      <th>asimetría</th>
+      <th>outliers_IQR_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>days_shipping_real</th>
+      <td>3.499</td>
+      <td>3.000</td>
+      <td>0.000</td>
+      <td>6.000</td>
+      <td>0.082</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>days_shipping_scheduled</th>
+      <td>2.932</td>
+      <td>4.000</td>
+      <td>0.000</td>
+      <td>4.000</td>
+      <td>-0.732</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>benefit_per_order</th>
+      <td>21.156</td>
+      <td>31.120</td>
+      <td>-1374.860</td>
+      <td>249.980</td>
+      <td>-3.532</td>
+      <td>10.547</td>
+    </tr>
+    <tr>
+      <th>sales_per_customer</th>
+      <td>177.011</td>
+      <td>159.990</td>
+      <td>7.490</td>
+      <td>499.950</td>
+      <td>0.706</td>
+      <td>0.714</td>
+    </tr>
+    <tr>
+      <th>order_item_discount</th>
+      <td>19.974</td>
+      <td>14.000</td>
+      <td>0.000</td>
+      <td>124.990</td>
+      <td>1.558</td>
+      <td>4.440</td>
+    </tr>
+    <tr>
+      <th>order_item_discount_rate</th>
+      <td>0.102</td>
+      <td>0.100</td>
+      <td>0.000</td>
+      <td>0.250</td>
+      <td>0.341</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_item_product_price</th>
+      <td>131.294</td>
+      <td>59.990</td>
+      <td>9.990</td>
+      <td>399.980</td>
+      <td>1.267</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_item_profit_ratio</th>
+      <td>0.120</td>
+      <td>0.270</td>
+      <td>-2.750</td>
+      <td>0.500</td>
+      <td>-2.886</td>
+      <td>9.633</td>
+    </tr>
+    <tr>
+      <th>order_item_quantity</th>
+      <td>2.204</td>
+      <td>1.000</td>
+      <td>1.000</td>
+      <td>5.000</td>
+      <td>0.782</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>sales</th>
+      <td>196.985</td>
+      <td>179.970</td>
+      <td>9.990</td>
+      <td>499.950</td>
+      <td>0.658</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>latitude</th>
+      <td>29.746</td>
+      <td>33.145</td>
+      <td>-33.938</td>
+      <td>48.782</td>
+      <td>-0.102</td>
+      <td>0.004</td>
+    </tr>
+    <tr>
+      <th>longitude</th>
+      <td>-84.936</td>
+      <td>-76.891</td>
+      <td>-158.026</td>
+      <td>115.263</td>
+      <td>-0.458</td>
+      <td>0.795</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> Los valores extremos de ventas y precios corresponden a
+<strong>productos caros reales</strong> (por ejemplo, equipos de gimnasia o electrónica), no a
+errores de captura; los de ganancia negativa son líneas vendidas con pérdida
+(margen de hasta −275 %), también plausibles en una tienda con descuentos. Se
+conservan y la asimetría se trata con <code class="docutils literal notranslate"><span class="pre">log1p</span></code> en el Pipeline (capítulo 10).</p>
+</section>
+<section id="valores-imposibles-o-inconsistentes">
+<h2>Valores imposibles o inconsistentes<a class="headerlink" href="#valores-imposibles-o-inconsistentes" title="Link to this heading">#</a></h2>
+<p>Comprobaciones de rangos, unidades, coherencia aritmética entre columnas y
+categorías mal escritas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tol</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">checks</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"Latitud fuera de [-90, 90] o longitud fuera de [-180, 180]"</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="o">~</span><span class="n">train</span><span class="p">[</span><span class="n">LAT</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span> <span class="o">|</span> <span class="o">~</span><span class="n">train</span><span class="p">[</span><span class="n">LON</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Coordenadas (0, 0)"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(((</span><span class="n">train</span><span class="p">[</span><span class="n">LAT</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">LON</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Precio &lt;= 0"</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">train</span><span class="p">[</span><span class="s2">"product_price"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Cantidad &lt;= 0"</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">train</span><span class="p">[</span><span class="s2">"order_item_quantity"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Tasa de descuento fuera de [0, 1]"</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="o">~</span><span class="n">train</span><span class="p">[</span><span class="s2">"order_item_discount_rate"</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"sales ≠ precio × cantidad"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(((</span><span class="n">train</span><span class="p">[</span><span class="s2">"sales"</span><span class="p">]</span> <span class="o">-</span> <span class="n">train</span><span class="p">[</span><span class="s2">"order_item_product_price"</span><span class="p">]</span> <span class="o">*</span> <span class="n">train</span><span class="p">[</span><span class="s2">"order_item_quantity"</span><span class="p">])</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"order_item_total ≠ sales − descuento"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(((</span><span class="n">train</span><span class="p">[</span><span class="s2">"order_item_total"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"sales"</span><span class="p">]</span> <span class="o">-</span> <span class="n">train</span><span class="p">[</span><span class="s2">"order_item_discount"</span><span class="p">]))</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Fecha de despacho anterior a la del pedido"</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">train</span><span class="p">[</span><span class="s2">"shipping_date"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">train</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Días reales ≠ días de calendario entre pedido y despacho"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(((</span><span class="n">train</span><span class="p">[</span><span class="s2">"shipping_date"</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span> <span class="o">-</span> <span class="n">train</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">normalize</span><span class="p">())</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span> <span class="o">!=</span> <span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Tardía según días reales &gt; programados pero etiqueta 0"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(((</span><span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_scheduled"</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"Etiqueta 1 con días reales &lt;= programados"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(((</span><span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_scheduled"</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())),</span>
+    <span class="p">(</span><span class="s2">"product_status constante"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"product_status"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"customer_email / password enmascarados (un solo valor)"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s2">"customer_email"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">train</span><span class="p">[</span><span class="s2">"customer_password"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)),</span>
+<span class="p">]</span>
+<span class="n">checks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">checks</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"comprobación"</span><span class="p">,</span> <span class="s2">"casos"</span><span class="p">])</span>
+<span class="n">checks</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"valores_inconsistentes.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">checks</span><span class="p">)</span>
+<span class="n">inc</span> <span class="o">=</span> <span class="n">train</span><span class="p">[(</span><span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_real"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">train</span><span class="p">[</span><span class="s2">"days_shipping_scheduled"</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">inc</span><span class="p">[</span><span class="s2">"delivery_status"</span><span class="p">],</span> <span class="n">inc</span><span class="p">[</span><span class="s2">"order_status"</span><span class="p">]))</span>
+<span class="n">md_out</span><span class="p">(</span><span class="s2">"Nombres en dos idiomas: `customer_country` usa «EE. UU.» y «Puerto Rico» (español), y `order_country` mezcla nombres en español "</span>
+       <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s1">'order_country'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span><span class="si">}</span><span class="s2">). No son errores de codificación sino de convención; se tratan como categorías."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>comprobación</th>
+      <th>casos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Latitud fuera de [-90, 90] o longitud fuera de [-180, 180]</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Coordenadas (0, 0)</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Precio &lt;= 0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Cantidad &lt;= 0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Tasa de descuento fuera de [0, 1]</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>sales ≠ precio × cantidad</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>order_item_total ≠ sales − descuento</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Fecha de despacho anterior a la del pedido</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Días reales ≠ días de calendario entre pedido y despacho</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Tardía según días reales &gt; programados pero etiqueta 0</td>
+      <td>3362</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Etiqueta 1 con días reales &lt;= programados</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>product_status constante</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>customer_email / password enmascarados (un solo valor)</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>order_status</th>
+      <th>CANCELED</th>
+      <th>SUSPECTED_FRAUD</th>
+    </tr>
+    <tr>
+      <th>delivery_status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Shipping canceled</th>
+      <td>1578</td>
+      <td>1784</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>Nombres en dos idiomas: <code class="docutils literal notranslate"><span class="pre">customer_country</span></code> usa «EE. UU.» y «Puerto Rico» (español), y <code class="docutils literal notranslate"><span class="pre">order_country</span></code> mezcla nombres en español (Estados Unidos, México, Francia, Australia, Brasil). No son errores de codificación sino de convención; se tratan como categorías.</p>
+</div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">days_shipping_real</span></code> coincide con la diferencia <strong>en días de calendario</strong> entre el pedido y el
+despacho (no en horas: un envío de 12 horas que cruza la medianoche cuenta 1 día).</p></li>
+<li><p>La aritmética entre precio, cantidad, venta y total es coherente y no hay
+coordenadas imposibles ni (0, 0).</p></li>
+<li><p><strong>Inconsistencia relevante:</strong> hay líneas con días reales mayores que los
+programados pero etiqueta 0. Todas son pedidos <strong>cancelados o sospechosos de
+fraude</strong> (<code class="docutils literal notranslate"><span class="pre">delivery_status</span> <span class="pre">=</span> <span class="pre">Shipping</span> <span class="pre">canceled</span></code>): la etiqueta 0 no significa «llegó a tiempo»,
+sino «no se entregó». Esta población se discute como riesgo de fuga en el
+capítulo 9.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">product_status</span></code> es constante y <code class="docutils literal notranslate"><span class="pre">customer_email</span></code>/<code class="docutils literal notranslate"><span class="pre">customer_password</span></code> están
+enmascarados: no aportan información.</p></li>
+</ul>
+</section>
+<section id="sesgos-de-muestreo-y-representatividad">
+<h2>Sesgos de muestreo y representatividad<a class="headerlink" href="#sesgos-de-muestreo-y-representatividad" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Datos simulados de una empresa ficticia.</strong> Los autores construyeron el
+conjunto con fines académicos; las relaciones pueden ser más simples (o más
+aleatorias) que en una cadena de suministro real. Las conclusiones aplican a
+DataCo, no a la logística en general.</p></li>
+<li><p><strong>Clientes solo en EE. UU. y Puerto Rico</strong> (<code class="docutils literal notranslate"><span class="pre">customer_country</span></code>), pero pedidos con
+destino en 164 países (<code class="docutils literal notranslate"><span class="pre">order_country</span></code>). La ubicación del cliente/tienda y el destino
+son, por tanto, dimensiones distintas; las coordenadas no describen el destino.</p></li>
+<li><p><strong>Cambio de régimen al final del periodo</strong> (desde octubre de 2017 hay un solo
+producto por pedido y se reduce el catálogo; capítulo 7). Afecta a la prueba y se
+evalúa como deriva.</p></li>
+<li><p><strong>Un único canal y catálogo</strong> (artículos deportivos, ropa, electrónica): no
+representa otros sectores ni otros transportistas.</p></li>
+</ul>
+</section>
+<section id="consideraciones-eticas">
+<h2>Consideraciones éticas<a class="headerlink" href="#consideraciones-eticas" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Datos personales:</strong> nombre, apellido, dirección y código postal del cliente.
+Aunque la empresa sea ficticia, se tratan como si fueran reales: se excluyen del
+modelo, no se muestran en el libro y no se combinan entre sí.</p></li>
+<li><p><strong>Reidentificación:</strong> las coordenadas son <strong>una por cliente</strong> y, junto con fecha y
+hora exactas de cada pedido, podrían permitir reidentificar a una persona en un
+conjunto real. En el análisis espacial (capítulo 8) se trabaja con <strong>celdas de 1°</strong>
+agregadas, no con puntos individuales etiquetados.</p></li>
+<li><p><strong>Uso del modelo:</strong> priorizar pedidos por riesgo no debe traducirse en peor
+servicio para mercados o segmentos con más retrasos; el capítulo 11 revisa el
+desempeño por mercado y segmento.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_introduccion.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. Introducción: riesgo de entrega tardía en DataCo</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_eda_objetivo.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3. Análisis de la variable objetivo (2.1)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-datos">Diccionario de datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-de-los-datos">Estructura de los datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes-patron">Valores faltantes: patrón</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes-mecanismo-mcar-mar-o-mnar">Valores faltantes: mecanismo (MCAR, MAR o MNAR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duplicados-y-casi-duplicados">Duplicados y casi-duplicados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-atipicos">Valores atípicos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-imposibles-o-inconsistentes">Valores imposibles o inconsistentes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sesgos-de-muestreo-y-representatividad">Sesgos de muestreo y representatividad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consideraciones-eticas">Consideraciones éticas</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Proyecto de Machine Learning — Polo y Pallares
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

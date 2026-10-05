@@ -1,0 +1,931 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Introducción: riesgo de entrega tardía en DataCo &#8212; Riesgo de entrega tardía en DataCo (sin fuga)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_introduccion';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. La base de datos: estructura, tamaño, calidad y representatividad" href="02_datos.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Riesgo de entrega tardía en DataCo (sin fuga)</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    1. Introducción: riesgo de entrega tardía en DataCo
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base de datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_datos.html">2. La base de datos: estructura, tamaño, calidad y representatividad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_eda_objetivo.html">3. Análisis de la variable objetivo (2.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_eda_univariado.html">4. Análisis univariado (2.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_eda_bivariado.html">5. Análisis bivariado (2.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_eda_multivariado.html">6. Análisis multivariado (2.4)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_eda_temporal.html">7. Componente temporal (2.6)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_eda_espacial.html">8. Componente espacial (2.7) y espacio-temporal (2.8)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="09_data_leakage.html">9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modelado</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_preprocesamiento.html">10. Preprocesamiento y Pipeline (2.9)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_base.html">11. Modelo base: línea base trivial y regresión logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_conclusiones.html">12. Conclusiones, limitaciones y checklist</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/juandpolo22/Avance_1_Polo_Pallares" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/01_introduccion.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Introducción: riesgo de entrega tardía en DataCo</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1. Introducción: riesgo de entrega tardía en DataCo</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#autores-juan-david-polo-y-gabriela-pallares">Autores: Juan David Polo y Gabriela Pallares</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problema-y-pregunta-de-investigacion">Problema y pregunta de investigación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrica-principal-roc-auc">Métrica principal: ROC-AUC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuente-licencia-y-alcance-del-dataset">Fuente, licencia y alcance del dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eleccion-de-la-ruta-del-enunciado">Elección de la ruta del enunciado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-entrenamiento-prueba">Partición entrenamiento / prueba</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapa-de-capitulos">Mapa de capítulos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consideraciones-eticas-resumen">Consideraciones éticas (resumen)</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduccion-riesgo-de-entrega-tardia-en-dataco">
+<h1>1. Introducción: riesgo de entrega tardía en DataCo<a class="headerlink" href="#introduccion-riesgo-de-entrega-tardia-en-dataco" title="Link to this heading">#</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="autores-juan-david-polo-y-gabriela-pallares">
+<h1>Autores: Juan David Polo y Gabriela Pallares<a class="headerlink" href="#autores-juan-david-polo-y-gabriela-pallares" title="Link to this heading">#</a></h1>
+<section id="problema-y-pregunta-de-investigacion">
+<h2>Problema y pregunta de investigación<a class="headerlink" href="#problema-y-pregunta-de-investigacion" title="Link to this heading">#</a></h2>
+<p><strong>Pregunta:</strong> ¿Es posible predecir, <strong>en el momento en que se registra un pedido</strong>
+y solo con información disponible en ese instante, si su entrega llegará <strong>tarde</strong>
+respecto al plazo prometido?</p>
+<p>Una buena predicción permite priorizar pedidos (reasignar transporte, avisar al
+cliente, reforzar el despacho) <strong>antes</strong> de que el retraso ocurra. Por eso el
+momento de predicción es la creación del pedido, y cualquier variable que se
+conozca después (días reales de envío, estado de la entrega, estado del pedido,
+fecha de despacho) es <strong>fuga de datos</strong> y se excluye (capítulo 9). Este libro
+trabaja siempre con la versión <strong>«DataCo (sin fuga)»</strong>.</p>
+</section>
+<section id="variable-objetivo">
+<h2>Variable objetivo<a class="headerlink" href="#variable-objetivo" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Late_delivery_risk</span></code> (renombrada <code class="docutils literal notranslate"><span class="pre">late_delivery_risk</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> → la entrega fue tardía (los días reales superan los programados);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> → la entrega fue adelantada, a tiempo o el pedido fue cancelado.</p></li>
+</ul>
+</section>
+<section id="metrica-principal-roc-auc">
+<h2>Métrica principal: ROC-AUC<a class="headerlink" href="#metrica-principal-roc-auc" title="Link to this heading">#</a></h2>
+<p>La métrica principal es el <strong>área bajo la curva ROC (ROC-AUC)</strong>:</p>
+<ul class="simple">
+<li><p>el uso previsto es <strong>ordenar</strong> pedidos por riesgo para priorizarlos, y la ROC-AUC mide
+exactamente la calidad de ese orden (probabilidad de que un pedido tardío reciba
+un puntaje mayor que uno puntual);</p></li>
+<li><p>no depende del umbral, que la operación puede ajustar después según su capacidad;</p></li>
+<li><p>las clases están <strong>moderadamente balanceadas</strong> (capítulo 3), de modo que la ROC-AUC
+no queda inflada por una clase mayoritaria; aun así se reportan accuracy,
+precision, recall, F1, Average Precision, Brier, matriz de confusión y calibración.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">"_config.yml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">project_root</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">"No se encontró _config.yml. Ejecuta el notebook dentro de la carpeta del libro."</span><span class="p">)</span>
+    <span class="n">project_root</span> <span class="o">=</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">_folder</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tables"</span><span class="p">,</span> <span class="s2">"figures"</span><span class="p">):</span>          <span class="c1"># se crean si no existen</span>
+    <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="n">_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.project_utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">configure_plots</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">project_root</span> <span class="o">/</span> <span class="s2">"tables"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">md_out</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fuente-licencia-y-alcance-del-dataset">
+<h2>Fuente, licencia y alcance del dataset<a class="headerlink" href="#fuente-licencia-y-alcance-del-dataset" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Autores:</strong> Fabian Constante, Fernando Silva y António Pereira (2019).</p></li>
+<li><p><strong>Fuente original:</strong> Mendeley Data, DOI <a class="reference external" href="https://data.mendeley.com/datasets/8gx2fvg2k6/5"><code class="docutils literal notranslate"><span class="pre">10.17632/8gx2fvg2k6.5</span></code></a>.</p></li>
+<li><p><strong>Réplica usada:</strong> <a class="reference external" href="https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis">Kaggle — DataCo Smart Supply Chain for Big Data Analysis</a>.</p></li>
+<li><p><strong>Licencia:</strong> CC BY 4.0 (Mendeley Data); uso académico con atribución.</p></li>
+<li><p><strong>Archivo:</strong> <code class="docutils literal notranslate"><span class="pre">DataCoSupplyChainDataset.csv</span></code> (codificación latin-1).</p></li>
+</ul>
+<p>La empresa (DataCo Global) es ficticia y vende artículos deportivos, ropa y
+electrónica; los registros simulan su cadena de suministro entre 2015 y 2018. La
+<strong>unidad de observación es una línea (ítem) de un pedido</strong>; un pedido contiene
+de 1 a 5 líneas y un cliente realiza varios pedidos.</p>
+<p>El libro busca primero <code class="docutils literal notranslate"><span class="pre">data/DataCoSupplyChainDataset.csv</span></code>; si no está, lo
+extrae del ZIP incluido en <code class="docutils literal notranslate"><span class="pre">data/</span></code>; si tampoco existe, intenta descargar una
+copia pública y, si falla, indica exactamente qué archivo copiar. No se usan
+rutas absolutas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span> <span class="o">=</span> <span class="n">load_raw</span><span class="p">()</span>
+<span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">n_orig</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">RENAME</span><span class="p">)</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- **Filas (líneas de pedido):** </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> (esperadas según la ficha: </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">EXPECTED_ROWS</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- **Columnas originales:** </span><span class="si">{</span><span class="n">n_orig</span><span class="si">}</span><span class="s2">; tras derivar variables de calendario: </span><span class="si">{</span><span class="n">n_cols</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- **Pedidos distintos:** </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">; **clientes distintos:** </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">CUSTOMER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- **Periodo:** </span><span class="si">{</span><span class="n">raw</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2"> a </span><span class="si">{</span><span class="n">raw</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- **Mínimo del enunciado:** 20.000 observaciones → </span><span class="si">{</span><span class="s1">'cumple'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">n_rows</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">20000</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'NO cumple'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">n_rows</span> <span class="o">==</span> <span class="n">EXPECTED_ROWS</span><span class="p">,</span> <span class="s2">"El archivo no tiene el número de filas documentado"</span>
+<span class="n">muestra</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">RENAME</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PII_COLS</span><span class="p">][:</span><span class="mi">14</span><span class="p">]</span>
+<span class="n">raw</span><span class="p">[</span><span class="n">muestra</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<ul class="simple">
+<li><p><strong>Filas (líneas de pedido):</strong> 180.519 (esperadas según la ficha: 180.519)</p></li>
+<li><p><strong>Columnas originales:</strong> 53; tras derivar variables de calendario: 68</p></li>
+<li><p><strong>Pedidos distintos:</strong> 65.752; <strong>clientes distintos:</strong> 20.652</p></li>
+<li><p><strong>Periodo:</strong> 2015-01-01 a 2018-01-31</p></li>
+<li><p><strong>Mínimo del enunciado:</strong> 20.000 observaciones → cumple</p></li>
+</ul>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>payment_type</th>
+      <td>CASH</td>
+      <td>PAYMENT</td>
+      <td>PAYMENT</td>
+    </tr>
+    <tr>
+      <th>days_shipping_real</th>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>days_shipping_scheduled</th>
+      <td>4</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>benefit_per_order</th>
+      <td>88.790001</td>
+      <td>91.18</td>
+      <td>68.25</td>
+    </tr>
+    <tr>
+      <th>sales_per_customer</th>
+      <td>239.979996</td>
+      <td>193.990005</td>
+      <td>227.5</td>
+    </tr>
+    <tr>
+      <th>delivery_status</th>
+      <td>Advance shipping</td>
+      <td>Advance shipping</td>
+      <td>Advance shipping</td>
+    </tr>
+    <tr>
+      <th>late_delivery_risk</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>category_id</th>
+      <td>43</td>
+      <td>48</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>category_name</th>
+      <td>Camping &amp; Hiking</td>
+      <td>Water Sports</td>
+      <td>Women's Apparel</td>
+    </tr>
+    <tr>
+      <th>customer_city</th>
+      <td>Hickory</td>
+      <td>Chicago</td>
+      <td>Chicago</td>
+    </tr>
+    <tr>
+      <th>customer_country</th>
+      <td>EE. UU.</td>
+      <td>EE. UU.</td>
+      <td>EE. UU.</td>
+    </tr>
+    <tr>
+      <th>customer_id</th>
+      <td>11599</td>
+      <td>256</td>
+      <td>256</td>
+    </tr>
+    <tr>
+      <th>customer_segment</th>
+      <td>Consumer</td>
+      <td>Consumer</td>
+      <td>Consumer</td>
+    </tr>
+    <tr>
+      <th>customer_state</th>
+      <td>NC</td>
+      <td>IL</td>
+      <td>IL</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="eleccion-de-la-ruta-del-enunciado">
+<h2>Elección de la ruta del enunciado<a class="headerlink" href="#eleccion-de-la-ruta-del-enunciado" title="Link to this heading">#</a></h2>
+<p>El enunciado distingue cuatro rutas según el tipo de dataset y pide añadir las
+secciones 2.6 a 2.8 cuando una clasificación tiene tiempo o espacio. Se comprueba
+buscando esas columnas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fechas</span> <span class="o">=</span> <span class="p">[</span><span class="n">ORIGINAL_NAME</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">RENAME</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"date"</span><span class="p">,</span> <span class="n">c</span><span class="p">)]</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">ORIGINAL_NAME</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="n">LAT</span><span class="p">,</span> <span class="n">LON</span><span class="p">)]</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- Objetivo: `</span><span class="si">{</span><span class="n">ORIGINAL_NAME</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="si">}</span><span class="s2">` con valores </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">raw</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="si">}</span><span class="s2"> → **clasificación binaria (ruta A)**.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- Columnas con fecha u hora: **</span><span class="si">{</span><span class="n">fechas</span><span class="si">}</span><span class="s2">**.</span><span class="se">\n</span><span class="s2">"</span>
+       <span class="sa">f</span><span class="s2">"- Columnas con coordenadas: **</span><span class="si">{</span><span class="n">coords</span><span class="si">}</span><span class="s2">**.</span><span class="se">\n\n</span><span class="s2">"</span>
+       <span class="s2">"**Conclusión:** se sigue la **ruta A** y se añaden las secciones **2.6 (temporal)**, **2.7 (espacial)** y **2.8 (espacio-temporal)** "</span>
+       <span class="s2">"(capítulos 7 y 8). La fecha del pedido define el momento de predicción; la fecha de despacho es posterior y se trata como fuga."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<ul class="simple">
+<li><p>Objetivo: <code class="docutils literal notranslate"><span class="pre">Late_delivery_risk</span></code> con valores [0, 1] → <strong>clasificación binaria (ruta A)</strong>.</p></li>
+<li><p>Columnas con fecha u hora: <strong>[‘order date (DateOrders)’, ‘shipping date (DateOrders)’]</strong>.</p></li>
+<li><p>Columnas con coordenadas: <strong>[‘Latitude’, ‘Longitude’]</strong>.</p></li>
+</ul>
+<p><strong>Conclusión:</strong> se sigue la <strong>ruta A</strong> y se añaden las secciones <strong>2.6 (temporal)</strong>, <strong>2.7 (espacial)</strong> y <strong>2.8 (espacio-temporal)</strong> (capítulos 7 y 8). La fecha del pedido define el momento de predicción; la fecha de despacho es posterior y se trata como fuga.</p>
+</div>
+</div>
+</section>
+<section id="particion-entrenamiento-prueba">
+<h2>Partición entrenamiento / prueba<a class="headerlink" href="#particion-entrenamiento-prueba" title="Link to this heading">#</a></h2>
+<p>El enunciado exige <strong>reservar la prueba antes de cualquier decisión</strong> y que la
+partición respete la estructura: <strong>cronológica</strong> si hay tiempo y <strong>por grupos</strong> si
+hay varias filas por entidad.</p>
+<ul class="simple">
+<li><p><strong>Cronológica:</strong> el modelo se usará sobre pedidos futuros; se entrena con el
+pasado y se evalúa con el <strong>último 20 % del periodo</strong> (en filas).</p></li>
+<li><p><strong>Separación (<em>gap</em>) de 7 días:</strong> la etiqueta de un pedido solo se conoce
+cuando se entrega (hasta 6 días después). Se descartan los pedidos de la semana
+anterior al corte, porque en operación su resultado aún no se conocería.</p></li>
+<li><p><strong>Por pedido:</strong> las líneas de un pedido comparten fecha y etiqueta; al cortar
+por fecha ningún pedido queda dividido (se verifica abajo).</p></li>
+</ul>
+<p>La validación cruzada del capítulo 11 usa el mismo esquema (ventana creciente
+con <em>gap</em> de 7 días). La partición queda guardada en <code class="docutils literal notranslate"><span class="pre">tables/particion_pedidos.csv</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_all</span><span class="p">,</span> <span class="n">test_all</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">(),</span> <span class="n">load_test</span><span class="p">()</span>
+<span class="n">gap_all</span> <span class="o">=</span> <span class="n">load_gap</span><span class="p">()</span>
+<span class="n">gap_start</span><span class="p">,</span> <span class="n">cutoff</span> <span class="o">=</span> <span class="n">split_boundaries</span><span class="p">()</span>
+<span class="n">shared_orders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">train_all</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_all</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">])</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_orders</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Hay pedidos en entrenamiento y prueba a la vez"</span>
+<span class="k">assert</span> <span class="n">train_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">gap_start</span> <span class="o">&lt;=</span> <span class="n">cutoff</span> <span class="o">&lt;=</span> <span class="n">test_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="n">resumen</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">"conjunto"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Entrenamiento"</span><span class="p">,</span> <span class="s2">"Gap (descartado)"</span><span class="p">,</span> <span class="s2">"Prueba"</span><span class="p">],</span>
+    <span class="s2">"desde"</span><span class="p">:</span> <span class="p">[</span><span class="n">train_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">gap_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">test_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()],</span>
+    <span class="s2">"hasta"</span><span class="p">:</span> <span class="p">[</span><span class="n">train_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">gap_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">test_all</span><span class="p">[</span><span class="n">DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+    <span class="s2">"líneas"</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">train_all</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">gap_all</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_all</span><span class="p">)],</span>
+    <span class="s2">"pedidos"</span><span class="p">:</span> <span class="p">[</span><span class="n">train_all</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="n">gap_all</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="n">test_all</span><span class="p">[</span><span class="n">ORDER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()],</span>
+    <span class="s2">"entrega_tardía_%"</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span> <span class="o">*</span> <span class="n">train_all</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">gap_all</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">test_all</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()],</span>
+<span class="p">})</span>
+<span class="n">display</span><span class="p">(</span><span class="n">resumen</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">clientes_comp</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train_all</span><span class="p">[</span><span class="n">CUSTOMER_COL</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_all</span><span class="p">[</span><span class="n">CUSTOMER_COL</span><span class="p">]))</span>
+<span class="n">md_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Corte: pedidos anteriores a **</span><span class="si">{</span><span class="n">gap_start</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">** para entrenamiento y desde **</span><span class="si">{</span><span class="n">cutoff</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">** para prueba. "</span>
+       <span class="sa">f</span><span class="s2">"Pedidos en ambos conjuntos: **</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">shared_orders</span><span class="p">)</span><span class="si">}</span><span class="s2">**. Clientes con pedidos en ambos: </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">clientes_comp</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+       <span class="s2">"(es lo esperado en operación: los clientes vuelven; `customer_id` nunca se usa como predictor). "</span>
+       <span class="sa">f</span><span class="s2">"La tasa de entregas tardías es </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">train_all</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"> en entrenamiento y </span><span class="si">{</span><span class="n">es</span><span class="p">(</span><span class="n">test_all</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"> en prueba. "</span>
+       <span class="s2">"A partir de aquí, **todo el EDA y todas las decisiones usan solo el entrenamiento**; la prueba se usa de nuevo en el capítulo 11."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>conjunto</th>
+      <th>desde</th>
+      <th>hasta</th>
+      <th>líneas</th>
+      <th>pedidos</th>
+      <th>entrega_tardía_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Entrenamiento</td>
+      <td>2015-01-01 00:00:00</td>
+      <td>2017-04-14 23:42:00</td>
+      <td>143075</td>
+      <td>47719</td>
+      <td>54.90</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Gap (descartado)</td>
+      <td>2017-04-15 00:03:00</td>
+      <td>2017-04-21 23:52:00</td>
+      <td>1222</td>
+      <td>403</td>
+      <td>50.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Prueba</td>
+      <td>2017-04-22 00:13:00</td>
+      <td>2018-01-31 23:38:00</td>
+      <td>36222</td>
+      <td>17630</td>
+      <td>54.71</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>Corte: pedidos anteriores a <strong>2017-04-15</strong> para entrenamiento y desde <strong>2017-04-22</strong> para prueba. Pedidos en ambos conjuntos: <strong>0</strong>. Clientes con pedidos en ambos: 6.426 (es lo esperado en operación: los clientes vuelven; <code class="docutils literal notranslate"><span class="pre">customer_id</span></code> nunca se usa como predictor). La tasa de entregas tardías es 54,9 % en entrenamiento y 54,7 % en prueba. A partir de aquí, <strong>todo el EDA y todas las decisiones usan solo el entrenamiento</strong>; la prueba se usa de nuevo en el capítulo 11.</p>
+</div>
+</div>
+</section>
+<section id="mapa-de-capitulos">
+<h2>Mapa de capítulos<a class="headerlink" href="#mapa-de-capitulos" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Capítulo</p></th>
+<th class="head"><p>Contenido</p></th>
+<th class="head"><p>Sección del enunciado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Base de datos: estructura, tamaño, calidad, sesgos, ética</p></td>
+<td><p>Base de datos (10 %)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Variable objetivo</p></td>
+<td><p>2.1</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Análisis univariado</p></td>
+<td><p>2.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Análisis bivariado</p></td>
+<td><p>2.3</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Análisis multivariado</p></td>
+<td><p>2.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Componente temporal</p></td>
+<td><p>2.6</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Componente espacial y espacio-temporal</p></td>
+<td><p>2.7 y 2.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>Auditoría de fuga de datos (DataCo sin fuga)</p></td>
+<td><p>2.5</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Preprocesamiento y Pipeline</p></td>
+<td><p>2.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>Modelo base (Dummy y regresión logística, ROC-AUC)</p></td>
+<td><p>Modelo base (30 %)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>Conclusiones y checklist</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="consideraciones-eticas-resumen">
+<h2>Consideraciones éticas (resumen)<a class="headerlink" href="#consideraciones-eticas-resumen" title="Link to this heading">#</a></h2>
+<p>El archivo contiene nombres, direcciones y códigos postales de clientes
+(correo y contraseña vienen enmascarados). Aunque la empresa es ficticia, se
+tratan como datos personales: <strong>no se usan en el modelo ni se muestran</strong> en el
+libro. El capítulo 2 discute el riesgo de reidentificación y el capítulo 12 los
+usos apropiados.</p>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="02_datos.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2. La base de datos: estructura, tamaño, calidad y representatividad</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1. Introducción: riesgo de entrega tardía en DataCo</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#autores-juan-david-polo-y-gabriela-pallares">Autores: Juan David Polo y Gabriela Pallares</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problema-y-pregunta-de-investigacion">Problema y pregunta de investigación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrica-principal-roc-auc">Métrica principal: ROC-AUC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuente-licencia-y-alcance-del-dataset">Fuente, licencia y alcance del dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eleccion-de-la-ruta-del-enunciado">Elección de la ruta del enunciado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-entrenamiento-prueba">Partición entrenamiento / prueba</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapa-de-capitulos">Mapa de capítulos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consideraciones-eticas-resumen">Consideraciones éticas (resumen)</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Proyecto de Machine Learning — Polo y Pallares
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

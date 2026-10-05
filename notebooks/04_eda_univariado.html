@@ -1,0 +1,1244 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4. Análisis univariado (2.2) &#8212; Riesgo de entrega tardía en DataCo (sin fuga)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04_eda_univariado';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Análisis bivariado (2.3)" href="05_eda_bivariado.html" />
+    <link rel="prev" title="3. Análisis de la variable objetivo (2.1)" href="03_eda_objetivo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="01_introduccion.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Riesgo de entrega tardía en DataCo (sin fuga)</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="01_introduccion.html">
+                    1. Introducción: riesgo de entrega tardía en DataCo
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Base de datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_datos.html">2. La base de datos: estructura, tamaño, calidad y representatividad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_eda_objetivo.html">3. Análisis de la variable objetivo (2.1)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Análisis univariado (2.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_eda_bivariado.html">5. Análisis bivariado (2.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_eda_multivariado.html">6. Análisis multivariado (2.4)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_eda_temporal.html">7. Componente temporal (2.6)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_eda_espacial.html">8. Componente espacial (2.7) y espacio-temporal (2.8)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="09_data_leakage.html">9. Auditoría de fuga de datos (2.5): «DataCo sin fuga»</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modelado</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_preprocesamiento.html">10. Preprocesamiento y Pipeline (2.9)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_base.html">11. Modelo base: línea base trivial y regresión logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_conclusiones.html">12. Conclusiones, limitaciones y checklist</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/juandpolo22/Avance_1_Polo_Pallares" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/04_eda_univariado.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>4. Análisis univariado (2.2)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-estadisticos">Variables numéricas: estadísticos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalidad-y-atipicos">Normalidad y atípicos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-cardinalidad-frecuencias-y-categorias-raras">Variables categóricas: cardinalidad, frecuencias y categorías raras</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-univariado-2-2">
+<h1>4. Análisis univariado (2.2)<a class="headerlink" href="#analisis-univariado-2-2" title="Link to this heading">#</a></h1>
+<p>Para cada variable candidata (sin objetivo, identificadores, datos personales ni
+variables posteriores al pedido): tipo y cardinalidad, estadísticos, distribución,
+asimetría y curtosis, normalidad, atípicos y, en las categóricas, frecuencias y
+categorías raras. Solo entrenamiento.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">project_root</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="s2">"_config.yml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">project_root</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">"No se encontró _config.yml. Ejecuta el notebook dentro de la carpeta del libro."</span><span class="p">)</span>
+    <span class="n">project_root</span> <span class="o">=</span> <span class="n">project_root</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">project_root</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">_folder</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tables"</span><span class="p">,</span> <span class="s2">"figures"</span><span class="p">):</span>          <span class="c1"># se crean si no existen</span>
+    <span class="p">(</span><span class="n">project_root</span> <span class="o">/</span> <span class="n">_folder</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.project_utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">configure_plots</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">project_root</span> <span class="o">/</span> <span class="s2">"tables"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">md_out</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">load_train</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span>
+<span class="n">NUM</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"sales"</span><span class="p">,</span> <span class="s2">"order_item_product_price"</span><span class="p">,</span> <span class="s2">"order_item_quantity"</span><span class="p">,</span> <span class="s2">"order_item_discount"</span><span class="p">,</span> <span class="s2">"order_item_discount_rate"</span><span class="p">,</span>
+       <span class="s2">"order_item_profit_ratio"</span><span class="p">,</span> <span class="s2">"benefit_per_order"</span><span class="p">,</span> <span class="s2">"sales_per_customer"</span><span class="p">,</span> <span class="s2">"days_shipping_scheduled"</span><span class="p">,</span>
+       <span class="s2">"items_in_order"</span><span class="p">,</span> <span class="s2">"orders_prev_7d"</span><span class="p">,</span> <span class="s2">"order_hour"</span><span class="p">,</span> <span class="s2">"order_dow"</span><span class="p">,</span> <span class="s2">"order_month"</span><span class="p">,</span> <span class="n">LAT</span><span class="p">,</span> <span class="n">LON</span><span class="p">]</span>
+<span class="n">CAT</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"shipping_mode"</span><span class="p">,</span> <span class="s2">"payment_type"</span><span class="p">,</span> <span class="s2">"market"</span><span class="p">,</span> <span class="s2">"order_region"</span><span class="p">,</span> <span class="s2">"order_country"</span><span class="p">,</span> <span class="s2">"order_state"</span><span class="p">,</span> <span class="s2">"order_city"</span><span class="p">,</span>
+       <span class="s2">"customer_segment"</span><span class="p">,</span> <span class="s2">"customer_country"</span><span class="p">,</span> <span class="s2">"customer_state"</span><span class="p">,</span> <span class="s2">"customer_city"</span><span class="p">,</span> <span class="s2">"department_name"</span><span class="p">,</span> <span class="s2">"category_name"</span><span class="p">,</span> <span class="s2">"product_name"</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="variables-numericas-estadisticos">
+<h2>Variables numéricas: estadísticos<a class="headerlink" href="#variables-numericas-estadisticos" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">est</span> <span class="o">=</span> <span class="n">numeric_summary</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">NUM</span><span class="p">])</span>
+<span class="n">est</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"estadisticas_numericas.csv"</span><span class="p">)</span>
+<span class="n">est</span><span class="p">[[</span><span class="s2">"media"</span><span class="p">,</span> <span class="s2">"mediana"</span><span class="p">,</span> <span class="s2">"desv_est"</span><span class="p">,</span> <span class="s2">"p01"</span><span class="p">,</span> <span class="s2">"p25"</span><span class="p">,</span> <span class="s2">"p75"</span><span class="p">,</span> <span class="s2">"p99"</span><span class="p">,</span> <span class="s2">"asimetría"</span><span class="p">,</span> <span class="s2">"curtosis"</span><span class="p">,</span> <span class="s2">"ceros_%"</span><span class="p">,</span> <span class="s2">"únicos"</span><span class="p">,</span> <span class="s2">"outliers_IQR_%"</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>media</th>
+      <th>mediana</th>
+      <th>desv_est</th>
+      <th>p01</th>
+      <th>p25</th>
+      <th>p75</th>
+      <th>p99</th>
+      <th>asimetría</th>
+      <th>curtosis</th>
+      <th>ceros_%</th>
+      <th>únicos</th>
+      <th>outliers_IQR_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>sales</th>
+      <td>196.985</td>
+      <td>179.970</td>
+      <td>111.329</td>
+      <td>29.980</td>
+      <td>119.980</td>
+      <td>299.950</td>
+      <td>499.950</td>
+      <td>0.658</td>
+      <td>-0.338</td>
+      <td>0.000</td>
+      <td>124</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_item_product_price</th>
+      <td>131.294</td>
+      <td>59.990</td>
+      <td>117.028</td>
+      <td>15.990</td>
+      <td>49.980</td>
+      <td>199.990</td>
+      <td>399.980</td>
+      <td>1.267</td>
+      <td>0.286</td>
+      <td>0.000</td>
+      <td>29</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_item_quantity</th>
+      <td>2.204</td>
+      <td>1.000</td>
+      <td>1.471</td>
+      <td>1.000</td>
+      <td>1.000</td>
+      <td>3.000</td>
+      <td>5.000</td>
+      <td>0.782</td>
+      <td>-0.915</td>
+      <td>0.000</td>
+      <td>5</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_item_discount</th>
+      <td>19.974</td>
+      <td>14.000</td>
+      <td>19.561</td>
+      <td>0.000</td>
+      <td>5.400</td>
+      <td>28.800</td>
+      <td>80.000</td>
+      <td>1.558</td>
+      <td>2.674</td>
+      <td>5.556</td>
+      <td>580</td>
+      <td>4.440</td>
+    </tr>
+    <tr>
+      <th>order_item_discount_rate</th>
+      <td>0.102</td>
+      <td>0.100</td>
+      <td>0.070</td>
+      <td>0.000</td>
+      <td>0.040</td>
+      <td>0.160</td>
+      <td>0.250</td>
+      <td>0.341</td>
+      <td>-0.901</td>
+      <td>5.556</td>
+      <td>18</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_item_profit_ratio</th>
+      <td>0.120</td>
+      <td>0.270</td>
+      <td>0.467</td>
+      <td>-1.750</td>
+      <td>0.080</td>
+      <td>0.360</td>
+      <td>0.500</td>
+      <td>-2.886</td>
+      <td>10.089</td>
+      <td>0.656</td>
+      <td>162</td>
+      <td>9.633</td>
+    </tr>
+    <tr>
+      <th>benefit_per_order</th>
+      <td>21.156</td>
+      <td>31.120</td>
+      <td>96.644</td>
+      <td>-405.870</td>
+      <td>7.200</td>
+      <td>63.060</td>
+      <td>178.463</td>
+      <td>-3.532</td>
+      <td>21.697</td>
+      <td>0.656</td>
+      <td>18482</td>
+      <td>10.547</td>
+    </tr>
+    <tr>
+      <th>sales_per_customer</th>
+      <td>177.011</td>
+      <td>159.990</td>
+      <td>101.307</td>
+      <td>25.190</td>
+      <td>103.990</td>
+      <td>242.400</td>
+      <td>424.960</td>
+      <td>0.706</td>
+      <td>-0.191</td>
+      <td>0.000</td>
+      <td>1951</td>
+      <td>0.714</td>
+    </tr>
+    <tr>
+      <th>days_shipping_scheduled</th>
+      <td>2.932</td>
+      <td>4.000</td>
+      <td>1.374</td>
+      <td>0.000</td>
+      <td>2.000</td>
+      <td>4.000</td>
+      <td>4.000</td>
+      <td>-0.732</td>
+      <td>-1.023</td>
+      <td>5.390</td>
+      <td>4</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>items_in_order</th>
+      <td>3.663</td>
+      <td>4.000</td>
+      <td>1.243</td>
+      <td>1.000</td>
+      <td>3.000</td>
+      <td>5.000</td>
+      <td>5.000</td>
+      <td>-0.590</td>
+      <td>-0.714</td>
+      <td>0.000</td>
+      <td>5</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>orders_prev_7d</th>
+      <td>397.928</td>
+      <td>399.000</td>
+      <td>22.231</td>
+      <td>374.000</td>
+      <td>394.000</td>
+      <td>405.000</td>
+      <td>418.000</td>
+      <td>-11.810</td>
+      <td>166.997</td>
+      <td>0.001</td>
+      <td>427</td>
+      <td>1.561</td>
+    </tr>
+    <tr>
+      <th>order_hour</th>
+      <td>11.500</td>
+      <td>12.000</td>
+      <td>6.922</td>
+      <td>0.000</td>
+      <td>5.000</td>
+      <td>18.000</td>
+      <td>23.000</td>
+      <td>0.000</td>
+      <td>-1.204</td>
+      <td>4.153</td>
+      <td>24</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_dow</th>
+      <td>3.010</td>
+      <td>3.000</td>
+      <td>1.999</td>
+      <td>0.000</td>
+      <td>1.000</td>
+      <td>5.000</td>
+      <td>6.000</td>
+      <td>-0.009</td>
+      <td>-1.246</td>
+      <td>14.246</td>
+      <td>7</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>order_month</th>
+      <td>6.004</td>
+      <td>6.000</td>
+      <td>3.541</td>
+      <td>1.000</td>
+      <td>3.000</td>
+      <td>9.000</td>
+      <td>12.000</td>
+      <td>0.187</td>
+      <td>-1.259</td>
+      <td>0.000</td>
+      <td>12</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>latitude</th>
+      <td>29.746</td>
+      <td>33.145</td>
+      <td>9.802</td>
+      <td>18.201</td>
+      <td>18.266</td>
+      <td>39.280</td>
+      <td>45.355</td>
+      <td>-0.102</td>
+      <td>-1.566</td>
+      <td>0.000</td>
+      <td>8143</td>
+      <td>0.004</td>
+    </tr>
+    <tr>
+      <th>longitude</th>
+      <td>-84.936</td>
+      <td>-76.891</td>
+      <td>21.465</td>
+      <td>-123.027</td>
+      <td>-98.467</td>
+      <td>-66.371</td>
+      <td>-66.025</td>
+      <td>-0.458</td>
+      <td>2.465</td>
+      <td>0.000</td>
+      <td>4179</td>
+      <td>0.795</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">NUM</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+    <span class="n">discrete</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">25</span>
+    <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+        <span class="n">vc</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">vc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">vc</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.8</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">vc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="se">\n</span><span class="s2">asim.=</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">skew</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> · curt.=</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">""</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"04_histogramas_numericas.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/20521277f9f89ce3b246a26064d6db47f7497eaa49b4dbdc988162b7d3fa43f2.png" src="../_images/20521277f9f89ce3b246a26064d6db47f7497eaa49b4dbdc988162b7d3fa43f2.png" />
+</div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><strong>Precios y ventas</strong> (<code class="docutils literal notranslate"><span class="pre">sales</span></code>, <code class="docutils literal notranslate"><span class="pre">order_item_product_price</span></code>, <code class="docutils literal notranslate"><span class="pre">sales_per_customer</span></code>) son
+discretos (pocos precios distintos) y con <strong>asimetría positiva</strong>: muchos productos de
+bajo precio y unos pocos caros. Se transforman con <code class="docutils literal notranslate"><span class="pre">log1p</span></code> (cap. 10).</p></li>
+<li><p><strong>Ganancia</strong> (<code class="docutils literal notranslate"><span class="pre">benefit_per_order</span></code>, <code class="docutils literal notranslate"><span class="pre">order_item_profit_ratio</span></code>) tiene <strong>cola izquierda
+pesada</strong> (curtosis alta): ventas con pérdidas grandes. Al ser negativa, <code class="docutils literal notranslate"><span class="pre">log1p</span></code> no
+aplica; se escala y se conserva.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">days_shipping_scheduled</span></code> toma solo 4 valores, uno por modo de envío.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">items_in_order</span></code> (1–5) y <code class="docutils literal notranslate"><span class="pre">order_item_quantity</span></code> (1–5) son conteos pequeños.</p></li>
+<li><p>Hora, día y mes son <strong>cíclicos</strong>: su distribución es casi uniforme, y se codifican con
+seno y coseno para que 23 h y 0 h queden cerca.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">orders_prev_7d</span></code> es casi constante (≈ 380 pedidos semanales), con una caída en la primera
+semana (no hay historia previa) y un cambio de nivel al final del periodo (cap. 7).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code>/<code class="docutils literal notranslate"><span class="pre">longitude</span></code> son multimodales: corresponden a ciudades (cap. 8).</p></li>
+</ul>
+</section>
+<section id="normalidad-y-atipicos">
+<h2>Normalidad y atípicos<a class="headerlink" href="#normalidad-y-atipicos" title="Link to this heading">#</a></h2>
+<p>Prueba de D’Agostino-Pearson sobre una muestra de 5.000 líneas (con n = 143.000
+cualquier desviación mínima resultaría significativa) y gráficos Q-Q.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">NUM</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">k2</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">normaltest</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">norm</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">col</span><span class="p">,</span> <span class="s2">"K2"</span><span class="p">:</span> <span class="n">k2</span><span class="p">,</span> <span class="s2">"p_valor"</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span> <span class="s2">"¿normal al 5 %?"</span><span class="p">:</span> <span class="s2">"sí"</span> <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s2">"no"</span><span class="p">})</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+<span class="n">norm</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"normalidad.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="p">[</span><span class="s2">"sales"</span><span class="p">,</span> <span class="s2">"order_item_product_price"</span><span class="p">,</span> <span class="s2">"order_item_profit_ratio"</span><span class="p">,</span> <span class="s2">"benefit_per_order"</span><span class="p">,</span>
+                                  <span class="s2">"order_item_discount"</span><span class="p">,</span> <span class="s2">"sales_per_customer"</span><span class="p">,</span> <span class="n">LAT</span><span class="p">,</span> <span class="n">LON</span><span class="p">]):</span>
+    <span class="n">stats</span><span class="o">.</span><span class="n">probplot</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">dist</span><span class="o">=</span><span class="s2">"norm"</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">""</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"04_qqplots.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">cont</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"sales"</span><span class="p">,</span> <span class="s2">"order_item_product_price"</span><span class="p">,</span> <span class="s2">"order_item_discount"</span><span class="p">,</span> <span class="s2">"order_item_profit_ratio"</span><span class="p">,</span> <span class="s2">"benefit_per_order"</span><span class="p">,</span> <span class="s2">"sales_per_customer"</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cont</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">3.6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#72b7b2"</span><span class="p">,</span> <span class="n">fliersize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="se">\n</span><span class="s2">outliers IQR: </span><span class="si">{</span><span class="n">est</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">col</span><span class="p">,</span><span class="w"> </span><span class="s1">'outliers_IQR_%'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> %"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"04_boxplots.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>K2</th>
+      <th>p_valor</th>
+      <th>¿normal al 5 %?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>sales</td>
+      <td>323.5969</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>order_item_product_price</td>
+      <td>832.0994</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>order_item_quantity</td>
+      <td>1266.1256</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>order_item_discount</td>
+      <td>1398.9201</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>order_item_discount_rate</td>
+      <td>834.7984</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>order_item_profit_ratio</td>
+      <td>3116.9225</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>benefit_per_order</td>
+      <td>3978.3705</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>sales_per_customer</td>
+      <td>338.0737</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>days_shipping_scheduled</td>
+      <td>2259.7550</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>items_in_order</td>
+      <td>538.7798</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>orders_prev_7d</td>
+      <td>8399.0756</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>order_hour</td>
+      <td>4546.4492</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>order_dow</td>
+      <td>5896.7708</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>order_month</td>
+      <td>9768.5503</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>latitude</td>
+      <td>24146.4955</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>longitude</td>
+      <td>453.6696</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/f4f1ce2e4c1330443e48dbab9213ce8be5dff9ba93e0f2fc005e207830ea311d.png" src="../_images/f4f1ce2e4c1330443e48dbab9213ce8be5dff9ba93e0f2fc005e207830ea311d.png" />
+<img alt="../_images/2294fad2ac829367c55a789406b0184577a96a3e0d0abc1d46dc41404e1fa8e8.png" src="../_images/2294fad2ac829367c55a789406b0184577a96a3e0d0abc1d46dc41404e1fa8e8.png" />
+</div>
+</div>
+<p><strong>Interpretación.</strong> Ninguna variable es normal (era esperable: son precios,
+conteos y coordenadas). La normalidad <strong>no es requisito</strong> de la regresión logística;
+la transformación logarítmica se aplica para reducir la influencia de la cola, no
+para normalizar. Los atípicos por IQR se concentran en la ganancia (≈ 10 %), y
+corresponden a ventas con pérdida, no a errores (capítulo 2): se <strong>conservan</strong>.</p>
+</section>
+<section id="variables-categoricas-cardinalidad-frecuencias-y-categorias-raras">
+<h2>Variables categóricas: cardinalidad, frecuencias y categorías raras<a class="headerlink" href="#variables-categoricas-cardinalidad-frecuencias-y-categorias-raras" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filas</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">CAT</span><span class="p">:</span>
+    <span class="n">vc</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">filas</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">col</span><span class="p">,</span> <span class="s2">"cardinalidad"</span><span class="p">:</span> <span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="s2">"moda"</span><span class="p">:</span> <span class="n">vc</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"frecuencia_moda_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">vc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                  <span class="s2">"categorías_raras_&lt;0,5%"</span><span class="p">:</span> <span class="nb">int</span><span class="p">((</span><span class="n">vc</span> <span class="o">&lt;</span> <span class="mf">0.005</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s2">"líneas_en_raras_%"</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">vc</span><span class="p">[</span><span class="n">vc</span> <span class="o">&lt;</span> <span class="mf">0.005</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()})</span>
+<span class="n">res_cat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas</span><span class="p">)</span>
+<span class="n">res_cat</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLES</span> <span class="o">/</span> <span class="s2">"resumen_categoricas.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">res_cat</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="p">[</span><span class="s2">"shipping_mode"</span><span class="p">,</span> <span class="s2">"payment_type"</span><span class="p">,</span> <span class="s2">"market"</span><span class="p">,</span> <span class="s2">"customer_segment"</span><span class="p">,</span> <span class="s2">"department_name"</span><span class="p">,</span> <span class="s2">"category_name"</span><span class="p">]):</span>
+    <span class="n">vc</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">vc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">vc</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4c78a8"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"</span><span class="si">% d</span><span class="s2">e líneas"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">save_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s2">"04_categoricas.png"</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>cardinalidad</th>
+      <th>moda</th>
+      <th>frecuencia_moda_%</th>
+      <th>categorías_raras_&lt;0,5%</th>
+      <th>líneas_en_raras_%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>shipping_mode</td>
+      <td>4</td>
+      <td>Standard Class</td>
+      <td>59.67</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>payment_type</td>
+      <td>4</td>
+      <td>DEBIT</td>
+      <td>38.46</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>market</td>
+      <td>5</td>
+      <td>LATAM</td>
+      <td>28.43</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>order_region</td>
+      <td>23</td>
+      <td>Central America</td>
+      <td>15.57</td>
+      <td>1</td>
+      <td>0.39</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>order_country</td>
+      <td>164</td>
+      <td>Estados Unidos</td>
+      <td>17.36</td>
+      <td>125</td>
+      <td>12.36</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>order_state</td>
+      <td>1089</td>
+      <td>California</td>
+      <td>3.47</td>
+      <td>1055</td>
+      <td>62.63</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>order_city</td>
+      <td>3553</td>
+      <td>New York City</td>
+      <td>1.54</td>
+      <td>3535</td>
+      <td>85.35</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>customer_segment</td>
+      <td>3</td>
+      <td>Consumer</td>
+      <td>51.80</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>customer_country</td>
+      <td>2</td>
+      <td>EE. UU.</td>
+      <td>61.74</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>customer_state</td>
+      <td>44</td>
+      <td>PR</td>
+      <td>38.26</td>
+      <td>18</td>
+      <td>3.84</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>customer_city</td>
+      <td>562</td>
+      <td>Caguas</td>
+      <td>36.86</td>
+      <td>546</td>
+      <td>48.81</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>department_name</td>
+      <td>6</td>
+      <td>Fan Shop</td>
+      <td>38.40</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>category_name</td>
+      <td>24</td>
+      <td>Cleats</td>
+      <td>14.30</td>
+      <td>9</td>
+      <td>2.27</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>product_name</td>
+      <td>54</td>
+      <td>Perfect Fitness Perfect Rip Deck</td>
+      <td>14.30</td>
+      <td>45</td>
+      <td>9.18</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/d4068ac8b52a5818585c56fadddda95237982ac6057d109cd9fc8ea8dcd3184b.png" src="../_images/d4068ac8b52a5818585c56fadddda95237982ac6057d109cd9fc8ea8dcd3184b.png" />
+</div>
+</div>
+<p><strong>Interpretación y tratamiento de categorías raras.</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">shipping_mode</span></code>: Standard Class domina (≈ 60 %); Same Day es la más rara (≈ 5 %), pero
+con miles de casos.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">payment_type</span></code>, <code class="docutils literal notranslate"><span class="pre">market</span></code>, <code class="docutils literal notranslate"><span class="pre">customer_segment</span></code> y <code class="docutils literal notranslate"><span class="pre">department_name</span></code> tienen pocas
+categorías y ninguna rara.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order_country</span></code> (≈ 160), <code class="docutils literal notranslate"><span class="pre">order_state</span></code>, <code class="docutils literal notranslate"><span class="pre">order_city</span></code>, <code class="docutils literal notranslate"><span class="pre">customer_city</span></code> y <code class="docutils literal notranslate"><span class="pre">product_name</span></code>
+tienen <strong>alta cardinalidad</strong> y muchas categorías raras. Codificarlas tal cual crearía
+cientos de columnas con pocos casos (sobreajuste). <strong>Tratamiento:</strong> en el Pipeline,
+<code class="docutils literal notranslate"><span class="pre">OneHotEncoder(min_frequency=0.005,</span> <span class="pre">handle_unknown=&quot;infrequent_if_exist&quot;)</span></code> agrupa en
+«infrequent» las categorías con &lt; 0,5 % de líneas <strong>calculadas solo en entrenamiento</strong>,
+y las categorías nuevas de la prueba caen en ese mismo grupo. Las de ciudad se descartan
+(la región y el país ya capturan la geografía, cap. 5).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">customer_country</span></code> solo tiene EE. UU. y Puerto Rico (sesgo de muestreo, cap. 2).</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_eda_objetivo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3. Análisis de la variable objetivo (2.1)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_eda_bivariado.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5. Análisis bivariado (2.3)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-estadisticos">Variables numéricas: estadísticos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalidad-y-atipicos">Normalidad y atípicos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-cardinalidad-frecuencias-y-categorias-raras">Variables categóricas: cardinalidad, frecuencias y categorías raras</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Proyecto de Machine Learning — Polo y Pallares
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
