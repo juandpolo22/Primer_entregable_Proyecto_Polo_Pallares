@@ -1,0 +1,12 @@
+comprobación,resultado
+Formato original,texto «M/D/AAAA H:MM» (sin segundos)
+Valores que no se pueden interpretar como fecha (todo el archivo),0
+Zona horaria,no informada; se asume hora local única (sin conversión)
+Primer pedido de entrenamiento,2015-01-01 00:00
+Último pedido de entrenamiento,2017-04-14 23:42
+Días del periodo,835
+Días sin pedidos (huecos),0
+Frecuencia,irregular (eventos); se agrega por día
+Mediana de minutos entre pedidos consecutivos,"21,0"
+Pedidos con la misma marca de tiempo que otro pedido,0
+"Líneas con marca duplicada (líneas de un mismo pedido, esperado)",95.356

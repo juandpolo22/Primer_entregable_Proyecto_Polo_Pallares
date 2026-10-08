@@ -1,0 +1,71 @@
+{
+ "faltantes": {
+  "n_variables": 2,
+  "variable_max": "product_description",
+  "pct_max": 100.0,
+  "detalle": {
+   "product_description": 100.0,
+   "order_zipcode": 82.6384763236065
+  }
+ },
+ "integridad": {
+  "pedidos_compartidos_train_test": 0,
+  "pedidos_compartidos_train_gap": 0,
+  "lineas_compartidas_train_test": 0,
+  "dias_entre_train_y_test": 7.0,
+  "columnas_duplicadas": 8,
+  "clientes_en_ambos_conjuntos": 6426,
+  "pct_validacion_con_pedido_en_train_si_fuera_aleatoria": 89.6
+ },
+ "inconsistencias": {
+  "comprobaciones": 13,
+  "con_hallazgos": 3,
+  "lineas_tardias_por_dias_con_etiqueta_0": 3362,
+  "detalle": {
+   "Tardía según días reales > programados pero etiqueta 0": 3362,
+   "product_status constante": 1,
+   "customer_email / password enmascarados (un solo valor)": 1
+  }
+ },
+ "fuga": {
+  "alto_riesgo": [
+   "days_shipping_real",
+   "delivery_status",
+   "order_status",
+   "shipping_date"
+  ],
+  "posteriores_al_pedido": [
+   "days_shipping_real",
+   "delivery_status",
+   "order_status",
+   "shipping_date"
+  ],
+  "n_variables_auditadas": 62,
+  "disponibles_al_pedido": [
+   "payment_type",
+   "category_name",
+   "customer_segment",
+   "department_name",
+   "latitude",
+   "longitude",
+   "market",
+   "order_country",
+   "order_item_discount_rate",
+   "order_item_profit_ratio",
+   "order_item_quantity",
+   "sales",
+   "order_region",
+   "shipping_mode",
+   "order_weekend",
+   "order_afternoon",
+   "mode_x_daypart",
+   "items_in_order",
+   "orders_prev_7d"
+  ]
+ },
+ "variables": {
+  "originales": 53,
+  "candidatas_originales": 32,
+  "candidatas_auditoria": 19
+ }
+}

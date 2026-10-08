@@ -1,0 +1,10 @@
+variable,comparada_con,efecto,p_valor,nota,p_fdr
+product_description,—,,,100 % faltante: no hay variación que comparar,
+order_zipcode,market,0.9772396170340323,0.0,V de Cramér,0.0
+order_zipcode,order_region,0.9999266081977655,0.0,V de Cramér,0.0
+order_zipcode,shipping_mode,0.005291730859299014,0.07169283654360607,V de Cramér,0.15833268104153697
+order_zipcode,customer_segment,0.004634022147949724,0.07916634052076849,V de Cramér,0.15833268104153697
+order_zipcode,late_delivery_risk,0.0,0.6464987784488532,V de Cramér,0.6464987784488532
+order_zipcode,sales,0.002593599076377462,0.5188504950124908,|rank-biserial|,0.5929719942999895
+order_zipcode,order_item_quantity,0.0057790589676240955,0.12059995422287305,|rank-biserial|,0.19295992675659687
+order_zipcode,order_item_profit_ratio,0.005609088507718907,0.16380278858834296,|rank-biserial|,0.2184037181177906

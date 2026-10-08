@@ -1,0 +1,63 @@
+variable,nombre_original,tipo,significado,unidad,valores,únicos,faltantes,faltantes_%,papel
+payment_type,Type,categórica nominal,"Tipo de transacción o medio de pago (DEBIT, TRANSFER, CASH, PAYMENT)",no aplica,"CASH, DEBIT, PAYMENT, TRANSFER",4,0,0.0,predictora candidata
+days_shipping_real,Days for shipping (real),numérica discreta,Días reales entre la compra y el envío/entrega,días,"0, 1, 2, 3, 4, 5, 6",7,0,0.0,posterior al pedido; excluida (fuga)
+days_shipping_scheduled,Days for shipment (scheduled),numérica discreta,Días de envío programados (promesa al cliente),días,"0, 1, 2, 4",4,0,0.0,predictora candidata
+benefit_per_order,Benefit per order,numérica continua,Ganancia por ítem de pedido,USD,rango: -1375 a 250,18482,0,0.0,predictora candidata
+sales_per_customer,Sales per customer,numérica continua,Venta total por cliente en la línea (igual a order_item_total),USD,rango: 7.49 a 500,1951,0,0.0,predictora candidata
+delivery_status,Delivery Status,categórica nominal,"Estado de la entrega: adelantada, a tiempo, tardía, cancelada",no aplica,"Advance shipping, Late delivery, Shipping canceled, Shipping on time",4,0,0.0,posterior al pedido; excluida (fuga)
+late_delivery_risk,Late_delivery_risk,objetivo binario,Objetivo: 1 si la entrega fue tardía; 0 en otro caso,no aplica,"0, 1",2,0,0.0,variable objetivo
+category_id,Category Id,identificador,Código de la categoría del producto,código,rango: 3 a 48,25,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+category_name,Category Name,categórica nominal,Categoría del producto,no aplica,24 categorías,24,0,0.0,predictora candidata
+customer_city,Customer City,categórica de alta cardinalidad,Ciudad del cliente,no aplica,562 categorías,562,0,0.0,predictora candidata
+customer_country,Customer Country,categórica nominal,País del cliente,no aplica,"EE. UU., Puerto Rico",2,0,0.0,predictora candidata
+customer_email,Customer Email,texto enmascarado,Correo del cliente (enmascarado),no aplica,XXXXXXXXX,1,0,0.0,dato personal; excluida
+customer_fname,Customer Fname,texto personal,Nombre del cliente,no aplica,200 categorías,200,0,0.0,dato personal; excluida
+customer_id,Customer Id,identificador / entidad,Identificador del cliente,código,rango: 1 a 1.244e+04,12187,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+customer_lname,Customer Lname,texto personal,Apellido del cliente,no aplica,985 categorías,985,0,0.0,dato personal; excluida
+customer_password,Customer Password,texto enmascarado,Contraseña (enmascarada),no aplica,XXXXXXXXX,1,0,0.0,dato personal; excluida
+customer_segment,Customer Segment,categórica nominal,"Segmento: Consumer, Corporate, Home Office",no aplica,"Consumer, Corporate, Home Office",3,0,0.0,predictora candidata
+customer_state,Customer State,categórica nominal,Estado del cliente,no aplica,44 categorías,44,0,0.0,predictora candidata
+customer_street,Customer Street,texto personal,Dirección del cliente,no aplica,6865 categorías,6865,0,0.0,dato personal; excluida
+customer_zipcode,Customer Zipcode,código postal,Código postal del cliente,código,rango: 603 a 9.92e+04,995,0,0.0,dato personal; excluida
+department_id,Department Id,identificador,Código del departamento de la tienda,código,"2, 3, 4, 5, 6, 7",6,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+department_name,Department Name,categórica nominal,Departamento de la tienda,no aplica,"Apparel, Fan Shop, Fitness, Footwear, Golf, Outdoors",6,0,0.0,predictora candidata
+latitude,Latitude,coordenada,Latitud de la tienda (según la ficha del dataset),grados (EPSG:4326),rango: -33.94 a 48.78,8143,0,0.0,predictora candidata
+longitude,Longitude,coordenada,Longitud de la tienda (según la ficha del dataset),grados (EPSG:4326),rango: -158 a 115.3,4179,0,0.0,predictora candidata
+market,Market,categórica nominal,"Mercado de destino: Africa, Europe, LATAM, Pacific Asia, USCA",no aplica,"Africa, Europe, LATAM, Pacific Asia, USCA",5,0,0.0,predictora candidata
+order_city,Order City,categórica de alta cardinalidad,Ciudad de destino del pedido,no aplica,3553 categorías,3553,0,0.0,predictora candidata
+order_country,Order Country,categórica de alta cardinalidad,País de destino del pedido,no aplica,164 categorías,164,0,0.0,predictora candidata
+order_customer_id,Order Customer Id,identificador,Identificador del cliente en el pedido (copia de customer_id),código,rango: 1 a 1.244e+04,12187,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+order_date,order date (DateOrders),fecha-hora,Fecha y hora del pedido,minuto,2015-01-01 a 2017-04-14,47719,0,0.0,marca temporal; define la partición
+order_id,Order Id,identificador / entidad,Identificador del pedido (varios ítems por pedido),código,rango: 1 a 5.72e+04,47719,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+order_item_cardprod_id,Order Item Cardprod Id,identificador,Código del producto en la línea (copia de product_card_id),código,rango: 37 a 1073,54,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+order_item_discount,Order Item Discount,numérica continua,Descuento de la línea,USD,rango: 0 a 125,580,0,0.0,predictora candidata
+order_item_discount_rate,Order Item Discount Rate,numérica continua,Tasa de descuento de la línea,proporción,rango: 0 a 0.25,18,0,0.0,predictora candidata
+order_item_id,Order Item Id,identificador,Identificador de la línea del pedido,código,rango: 1 a 1.431e+05,143075,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+order_item_product_price,Order Item Product Price,numérica continua,Precio del producto sin descuento (copia de product_price),USD,rango: 9.99 a 400,29,0,0.0,predictora candidata
+order_item_profit_ratio,Order Item Profit Ratio,numérica continua,Margen de ganancia de la línea,proporción,rango: -2.75 a 0.5,162,0,0.0,predictora candidata
+order_item_quantity,Order Item Quantity,numérica discreta,Cantidad de unidades de la línea,unidades,"1, 2, 3, 4, 5",5,0,0.0,predictora candidata
+sales,Sales,numérica continua,Venta bruta de la línea (precio × cantidad),USD,rango: 9.99 a 500,124,0,0.0,predictora candidata
+order_item_total,Order Item Total,numérica continua,Total de la línea tras descuento,USD,rango: 7.49 a 500,1951,0,0.0,predictora candidata
+order_profit_per_order,Order Profit Per Order,numérica continua,Ganancia del pedido (copia de benefit_per_order),USD,rango: -1375 a 250,18482,0,0.0,predictora candidata
+order_region,Order Region,categórica nominal,Región de destino (23 regiones),no aplica,23 categorías,23,0,0.0,predictora candidata
+order_state,Order State,categórica de alta cardinalidad,Estado o provincia de destino,no aplica,1089 categorías,1089,0,0.0,predictora candidata
+order_status,Order Status,categórica nominal,"Estado del pedido (COMPLETE, PENDING, CANCELED, SUSPECTED_FRAUD...)",no aplica,"CANCELED, CLOSED, COMPLETE, ON_HOLD, PAYMENT_REVIEW, PENDING, PENDING_PAYMENT, PROCESSING, SUSPECTED_FRAUD",9,0,0.0,posterior al pedido; excluida (fuga)
+order_zipcode,Order Zipcode,código postal,Código postal de destino,código,rango: 1040 a 9.93e+04,609,118235,82.64,predictora candidata
+product_card_id,Product Card Id,identificador,Código del producto,código,rango: 37 a 1073,54,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+product_category_id,Product Category Id,identificador,Código de la categoría (copia de category_id),código,rango: 3 a 48,25,0,0.0,identificador; excluido (orden/cliente solo para agrupar)
+product_description,Product Description,texto,Descripción del producto (vacía),no aplica,,0,143075,100.0,predictora candidata
+product_image,Product Image,texto,URL de la imagen del producto,no aplica,54 categorías,54,0,0.0,predictora candidata
+product_name,Product Name,categórica de alta cardinalidad,Nombre del producto,no aplica,54 categorías,54,0,0.0,predictora candidata
+product_price,Product Price,numérica continua,Precio del producto,USD,rango: 9.99 a 400,29,0,0.0,predictora candidata
+product_status,Product Status,categórica binaria,Disponibilidad del producto (1 = no disponible),no aplica,0,1,0,0.0,predictora candidata
+shipping_date,shipping date (DateOrders),fecha-hora,Fecha y hora del despacho,minuto,2015-01-03 a 2017-04-20,46258,0,0.0,posterior al pedido; excluida (fuga)
+shipping_mode,Shipping Mode,categórica ordinal,"Modo de envío: Standard, Second, First Class, Same Day",no aplica,"First Class, Same Day, Second Class, Standard Class",4,0,0.0,predictora candidata
+order_year,(derivada),derivada temporal,Año del pedido (derivada),año,"2015, 2016, 2017",3,0,0.0,predictora candidata
+order_month,(derivada),derivada temporal,Mes del pedido (derivada),mes,rango: 1 a 12,12,0,0.0,predictora candidata
+order_dow,(derivada),derivada temporal,"Día de la semana del pedido, 0 = lunes (derivada)",día,"0, 1, 2, 3, 4, 5, 6",7,0,0.0,predictora candidata
+order_hour,(derivada),derivada temporal,Hora del pedido (derivada),hora,rango: 0 a 23,24,0,0.0,predictora candidata
+order_weekend,(derivada),derivada temporal,1 si el pedido se hizo en sábado o domingo (derivada),no aplica,"0, 1",2,0,0.0,predictora candidata
+order_afternoon,(derivada),derivada temporal,1 si el pedido se hizo a partir de las 12:00 (derivada),no aplica,"0, 1",2,0,0.0,predictora candidata
+mode_x_daypart,(derivada),derivada categórica,Interacción modo de envío × jornada (AM/PM) del pedido (derivada),no aplica,"First Class | AM, First Class | PM, Same Day | AM, Same Day | PM, Second Class | AM, Second Class | PM, Standard Class | AM, Standard Class | PM",8,0,0.0,predictora candidata
+items_in_order,(derivada),derivada numérica,"Número de líneas del pedido (derivada, conocida al cerrar la compra)",ítems,"1, 2, 3, 4, 5",5,0,0.0,predictora candidata
+orders_prev_7d,(derivada),derivada temporal,"Pedidos registrados en los 7 días previos (derivada, carga logística pasada)",pedidos,rango: 0 a 426,427,0,0.0,predictora candidata

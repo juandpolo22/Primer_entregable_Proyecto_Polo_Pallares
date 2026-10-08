@@ -1,0 +1,7 @@
+pregunta del enunciado,respuesta
+¿Accuracy ≥ 80 %?,"No: 0,725 (Dummy 0,573)"
+Verificar fuga (2.5–2.8),"Hecho: variables posteriores excluidas (cap. 9); con fuga el AUC sería 0,975; partición y CV temporales con gap; sin pedidos compartidos"
+Comparar con línea base trivial,"ROC-AUC 0,775 vs 0,5; accuracy +15,2 puntos"
+¿La validación respeta tiempo y espacio?,Sí: temporal con gap (principal) y bloques espaciales (adicional) dan lo mismo
+Complejidad del dataset,"Datos simulados: sin fuga, la señal está en modo de envío × jornada; Standard y Second Class son aleatorios"
+¿Problema trivial?,"No: el techo sin fuga es moderado (ROC-AUC 0,775, accuracy 0,723); el «AUC ≈ 1» de DataCo solo aparece con fuga"

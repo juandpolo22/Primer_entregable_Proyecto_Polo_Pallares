@@ -1,0 +1,27 @@
+requisito,dónde
+"Definición del problema, justificación, fuente, licencia",Cap. 1
+"Diccionario de variables (tipo, unidad, significado)",Cap. 2 · tables/diccionario_datos.csv
+"Estructura: unidad, agregación, tipo (espacio-temporal)",Cap. 2
+"Tamaño ≥ 20.000, n/p, casos por clase, entidades independientes",Cap. 1–3
+Faltantes: patrón y mecanismo,Cap. 2
+"Duplicados y casi-duplicados, outliers, valores imposibles","Cap. 2, 4 y 6"
+Sesgos de muestreo y ética,"Cap. 2, 8 y 12"
+Reserva del conjunto de prueba antes de decidir,Cap. 1 (partición cronológica con gap)
+2.1 Variable objetivo,Cap. 3
+2.2 Univariado,Cap. 4
+"2.3 Bivariado (tamaños de efecto, FDR, VIF, información mutua)",Cap. 5
+"2.4 Multivariado (PCA, t-SNE, Mahalanobis, Isolation Forest, clustering)",Cap. 6
+2.5 Auditoría de fuga,Cap. 9
+"2.6 Componente temporal (STL, ADF/KPSS, ACF/PACF, deriva)",Cap. 7
+"2.7 Componente espacial (CRS, mapas, Ripley, DBSCAN, Moran, LISA, Gi*, MAUP)",Cap. 8
+"2.8 Espacio-temporal (mapas por periodo, Knox, persistencia de hotspots)",Cap. 8
+2.9 Preprocesamiento en Pipeline ajustado solo con train,Cap. 10
+Línea base trivial (DummyClassifier) y regresión logística,Cap. 11
+Validación cruzada del mismo tipo que la partición,Cap. 11 (temporal con gap; espacial por separado)
+"Métricas: accuracy, recall, F1, ROC-AUC (principal), AP, Brier, matriz, ROC, PR, calibración",Cap. 11 y 12
+Intervalos de confianza (bootstrap),Cap. 11 (por pedido)
+Residuos: ACF temporal e I de Moran espacial,Cap. 11
+Curva de aprendizaje,Cap. 11
+Interpretación de coeficientes y métricas,Cap. 11
+Nota crítica (accuracy ≥ 80–90 %),"Cap. 11, sección 11"
+"Jupyter Book, datos, requirements.txt, semillas",Este repositorio · semilla 42

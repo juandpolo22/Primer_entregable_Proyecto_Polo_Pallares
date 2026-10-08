@@ -1,0 +1,7 @@
+comprobación,resultado
+pedidos en entrenamiento y prueba,0.0
+líneas (order_item_id) en ambos,0.0
+pedido más reciente de train vs más antiguo de test (días),7.0
+"clientes con pedidos en ambos (esperado, no se usan como predictor)",6426.0
+patrones de predictoras idénticos en ambos (sin ids),0.0
+% de líneas de validación cuyo pedido estaría en train con partición ALEATORIA por filas,89.6

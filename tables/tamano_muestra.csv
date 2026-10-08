@@ -1,0 +1,13 @@
+medida,valor
+Líneas (filas) de entrenamiento,143.075
+Variables originales,53
+"Predictoras candidatas originales (sin objetivo, fuga, ids ni datos personales)",32
+Relación n/p,4.471
+Casos clase 1 (entrega tardía),78.549
+Casos clase 0 (no tardía),64.526
+Pedidos distintos,47.719
+Clientes distintos,12.187
+Líneas por pedido (media; máx.),"3,00; 5"
+Pedidos por cliente (media; máx.),"3,92; 13"
+Pedidos con la misma etiqueta en todas sus líneas,"100,0 %"
+"Ubicaciones (lat, lon) distintas",8.431

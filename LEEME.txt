@@ -1,0 +1,22 @@
+LIBRO: Riesgo de entrega tardía en DataCo (sin fuga) — Entregable 1 de Machine Learning
+
+CÓMO USARLO
+1. Clona o descarga el repositorio completo.
+2. Los datos ya están en data/DataCoSupplyChainDataset.zip; el libro extrae el CSV solo.
+3. Crea un entorno e instala las versiones verificadas:  pip install -r requirements.txt
+4. En la carpeta raíz ejecuta:   jupyter-book build .
+5. Abre _build/html/index.html.
+
+Los notebooks ya vienen ejecutados. Si los abres a mano para re-ejecutarlos, hazlo en orden (01 a 12):
+el 10 lee la decisión de población del 09, el 11 las variables elegidas en el 10 y el 12 las tablas del 11.
+
+QUÉ HAY AQUÍ
+  notebooks/              los 12 capítulos
+  src/project_utils.py    utilidades (datos, partición cronológica, pliegues temporales, espacial, Pipeline, bootstrap)
+  _config.yml / _toc.yml  configuración y tabla de contenidos del libro
+  colab/                  lanzador para Google Colab
+
+DECISIONES PRINCIPALES
+  - Objetivo: Late_delivery_risk (1 = entrega tardía). Métrica principal: ROC-AUC.
+  - Sin fuga: fuera Days for shipping (real), Delivery Status, Order Status y shipping date.
+  - Partición cronológica con gap de 7 días; CV temporal; bootstrap por pedido; semilla 42.

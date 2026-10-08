@@ -1,0 +1,16 @@
+decisión,variables,hallazgo del EDA
+Excluir variables posteriores al pedido,"days_shipping_real, delivery_status, order_status, shipping_date","Cap. 9: AUC 0,97–1 con fuga; no disponibles al predecir"
+Excluir pedidos cancelados/fraude,población,Cap. 2 y 9: etiqueta 0 por construcción; vuelven proxy al medio de pago
+Excluir identificadores y datos personales,"ids, nombre, dirección, correo...",Cap. 2 y 9: sin significado predictivo; riesgo ético
+Una columna por par duplicado,"sales_per_customer, order_profit_per_order, product_price...",Cap. 2: copias exactas; cap. 5: VIF infinito
+shipping_mode en lugar de days_shipping_scheduled,shipping_mode,"Cap. 2: relación 1 a 1; la categórica no impone linealidad entre 0, 1, 2 y 4 días"
+Omitir precio y descuento absolutos,"order_item_product_price, order_item_discount",Cap. 5: VIF > 10 (ventas = precio × cantidad)
+log1p de ventas,sales,Cap. 4: asimetría positiva y valores altos
+Escalado estándar de numéricas,todas las numéricas,Coeficientes comparables; regularización L2 equilibrada
+Interacción modo × jornada (AM/PM),mode_x_daypart,Cap. 7 y 9: hora de corte del mediodía solo en Same Day
+"Seno/coseno de hora, día y mes",order_hour/dow/month,Cap. 7: variables cíclicas (23 h cerca de 0 h)
+Carga de los 7 días previos,orders_prev_7d,Cap. 7: ventana solo con el pasado (cerrada a la izquierda)
+"One-hot con agrupación de raras (< 0,5 %)",categóricas,Cap. 4: alta cardinalidad en país y categorías raras
+Imputación dentro del Pipeline,mediana / «Missing»,Cap. 2: sin faltantes en las candidatas; se deja por robustez ante datos nuevos
+Conservar atípicos,"ganancia, ventas","Cap. 2, 4 y 6: son ventas reales con pérdida o productos caros; log y escalado reducen su influencia"
+Destino y coordenadas: decidir con CV temporal,"market, order_region, order_country, lat/lon",Cap. 7 y 8: sin señal y confundidos con el periodo

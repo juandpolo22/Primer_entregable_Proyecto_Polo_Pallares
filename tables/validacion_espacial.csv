@@ -1,0 +1,13 @@
+comprobación,resultado
+Sistema de referencia,grados decimales; se asume WGS84 (EPSG:4326)
+"Latitud fuera de [-90, 90] / longitud fuera de [-180, 180]",0
+"Coordenadas nulas o (0, 0)",0
+Latitud negativa (hemisferio sur) con estado de EE. UU.,6
+Longitud positiva con estado de EE. UU. (signo invertido probable),91
+"Latitud y longitud intercambiadas (|lon| < 90 y lat fuera de [15, 72])",6
+Ubicaciones distintas,8.431
+Líneas en la ubicación más repetida,307
+Clientes con más de una coordenada,0
+Decimales de la latitud (mediana),8
+Ubicaciones fuera del área de estudio (EE. UU. + PR),17
+Líneas fuera del área de estudio,227

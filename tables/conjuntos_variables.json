@@ -1,0 +1,112 @@
+{
+ "A · solo modo de envío": {
+  "num_lin": [],
+  "num_log": [],
+  "cat": [
+   "shipping_mode"
+  ]
+ },
+ "B · modo + hora (aditivo, seno/coseno)": {
+  "num_lin": [
+   "order_hour_sin",
+   "order_hour_cos"
+  ],
+  "num_log": [],
+  "cat": [
+   "shipping_mode"
+  ]
+ },
+ "C · modo × jornada (interacción)": {
+  "num_lin": [],
+  "num_log": [],
+  "cat": [
+   "mode_x_daypart"
+  ]
+ },
+ "D · pedido completo + interacción (sin destino)": {
+  "num_lin": [
+   "order_item_quantity",
+   "order_item_discount_rate",
+   "order_item_profit_ratio",
+   "items_in_order",
+   "orders_prev_7d",
+   "order_weekend",
+   "order_hour_sin",
+   "order_hour_cos",
+   "order_dow_sin",
+   "order_dow_cos",
+   "order_month_sin",
+   "order_month_cos"
+  ],
+  "num_log": [
+   "sales"
+  ],
+  "cat": [
+   "mode_x_daypart",
+   "payment_type",
+   "customer_segment",
+   "department_name",
+   "category_name"
+  ]
+ },
+ "E · D + destino (mercado, región, país)": {
+  "num_lin": [
+   "order_item_quantity",
+   "order_item_discount_rate",
+   "order_item_profit_ratio",
+   "items_in_order",
+   "orders_prev_7d",
+   "order_weekend",
+   "order_hour_sin",
+   "order_hour_cos",
+   "order_dow_sin",
+   "order_dow_cos",
+   "order_month_sin",
+   "order_month_cos"
+  ],
+  "num_log": [
+   "sales"
+  ],
+  "cat": [
+   "mode_x_daypart",
+   "payment_type",
+   "customer_segment",
+   "department_name",
+   "category_name",
+   "market",
+   "order_region",
+   "order_country"
+  ]
+ },
+ "F · E + coordenadas": {
+  "num_lin": [
+   "order_item_quantity",
+   "order_item_discount_rate",
+   "order_item_profit_ratio",
+   "items_in_order",
+   "orders_prev_7d",
+   "order_weekend",
+   "order_hour_sin",
+   "order_hour_cos",
+   "order_dow_sin",
+   "order_dow_cos",
+   "order_month_sin",
+   "order_month_cos",
+   "latitude",
+   "longitude"
+  ],
+  "num_log": [
+   "sales"
+  ],
+  "cat": [
+   "mode_x_daypart",
+   "payment_type",
+   "customer_segment",
+   "department_name",
+   "category_name",
+   "market",
+   "order_region",
+   "order_country"
+  ]
+ }
+}

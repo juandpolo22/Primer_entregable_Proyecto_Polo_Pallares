@@ -1,0 +1,25 @@
+modelo,métrica,media,desv
+Dummy — clase mayoritaria / prior,Accuracy,0.5733661007580367,0.002768675340279331
+Dummy — clase mayoritaria / prior,Precision,0.5733661007580367,0.002768675340279331
+Dummy — clase mayoritaria / prior,Recall,1.0,0.0
+Dummy — clase mayoritaria / prior,F1,0.7288368830364861,0.0022378777085232285
+Dummy — clase mayoritaria / prior,Balanced Accuracy,0.5,0.0
+Dummy — clase mayoritaria / prior,ROC-AUC,0.5,0.0
+Dummy — clase mayoritaria / prior,Average Precision,0.5733661007580367,0.002768675340279331
+Dummy — clase mayoritaria / prior,Brier,0.2446200960343119,0.00040704620098092927
+Logística aditiva (modo + hora),Accuracy,0.7078493991914403,0.00605626696670913
+Logística aditiva (modo + hora),Precision,0.8895882058465092,0.006425486906378953
+Logística aditiva (modo + hora),Recall,0.559918827899377,0.007984959269969616
+Logística aditiva (modo + hora),F1,0.6872560442267982,0.007846373853033004
+Logística aditiva (modo + hora),Balanced Accuracy,0.7332787940235417,0.006064422731525471
+Logística aditiva (modo + hora),ROC-AUC,0.7459792873401496,0.0037463516064725273
+Logística aditiva (modo + hora),Average Precision,0.8355975851750668,0.002820036989671435
+Logística aditiva (modo + hora),Brier,0.18743364744966917,0.0014120406215519723
+Logística modo × jornada,Accuracy,0.7215991670023194,0.002168837925983926
+Logística modo × jornada,Precision,0.8937030546788713,0.004548433925478187
+Logística modo × jornada,Recall,0.5839066274609488,0.00530012015629774
+Logística modo × jornada,F1,0.7063096054991084,0.003597822554876913
+Logística modo × jornada,Balanced Accuracy,0.7452726938043275,0.0022218165498419243
+Logística modo × jornada,ROC-AUC,0.7743259196049523,0.003912447918388978
+Logística modo × jornada,Average Precision,0.8229630983925487,0.003244674724426177
+Logística modo × jornada,Brier,0.17725576206586374,0.0012378647628290957

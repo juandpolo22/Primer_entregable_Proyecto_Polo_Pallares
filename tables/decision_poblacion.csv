@@ -1,0 +1,2 @@
+excluir_cancelados,estado,n_excluidos_train,pct_excluidos,tasa_tardia_cancelados,tasa_tardia_resto,criterio
+True,Shipping canceled (CANCELED + SUSPECTED_FRAUD),6032,4.21597064476673,0.0,0.5731704647446422,excluir si la tasa de retraso del estado es < 2 % (no entregados)

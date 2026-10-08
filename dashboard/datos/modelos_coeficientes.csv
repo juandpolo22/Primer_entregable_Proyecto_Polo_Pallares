@@ -1,0 +1,13 @@
+modelo,variable,coeficiente,odds_ratio
+Logística aditiva (modo + hora),num__order_hour_sin,-0.1320882510858473,0.8762636604474678
+Logística aditiva (modo + hora),num__order_hour_cos,-0.014102925895912772,0.9859960545127125
+Logística aditiva (modo + hora),cat__shipping_mode_Same Day,-9.110860537391186,0.00011045961958746615
+Logística aditiva (modo + hora),cat__shipping_mode_Second Class,-7.613228802619231,0.0004938746575538553
+Logística aditiva (modo + hora),cat__shipping_mode_Standard Class,-9.409363066733324,8.195312940581853e-05
+Logística modo × jornada,cat__mode_x_daypart_First Class | PM,1.7545172374557214,5.780656383845949
+Logística modo × jornada,cat__mode_x_daypart_Same Day | AM,-4.404002394852815,0.01222829934633578
+Logística modo × jornada,cat__mode_x_daypart_Same Day | PM,1.13308918720977,3.1052343488577945
+Logística modo × jornada,cat__mode_x_daypart_Second Class | AM,-0.9213302898842778,0.39798924770298544
+Logística modo × jornada,cat__mode_x_daypart_Second Class | PM,-0.9040367627942916,0.40493174263051185
+Logística modo × jornada,cat__mode_x_daypart_Standard Class | AM,-2.725266921710901,0.06552870934823574
+Logística modo × jornada,cat__mode_x_daypart_Standard Class | PM,-2.707461612571392,0.06670591745220246

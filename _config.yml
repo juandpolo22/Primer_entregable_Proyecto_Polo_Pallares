@@ -1,0 +1,38 @@
+# Configuración del Jupyter Book: Entregable 1 — DataCo Smart Supply Chain (sin fuga)
+# Más opciones en https://jupyterbook.org/customize/config.html
+
+title: Riesgo de entrega tardía en DataCo (sin fuga)
+author: Proyecto de Machine Learning — Polo y Pallares
+copyright: "2026"
+
+# Solo se construyen los archivos listados en _toc.yml.
+only_build_toc_files: true
+
+# Los notebooks se entregan YA EJECUTADOS (con sus salidas), así que «off» construye el libro
+# en segundos mostrando esas salidas. Para regenerar todo desde los datos usa «force»
+# (≈ 5 min; los capítulos dependen unos de otros: el 10 lee la decisión del 09 y el 11 la del 10).
+execute:
+  execute_notebooks: "off"
+  timeout: -1
+  allow_errors: false
+
+latex:
+  latex_documents:
+    targetname: book.tex
+
+bibtex_bibfiles:
+  - references.bib
+
+sphinx:
+  config:
+    bibtex_reference_style: author_year
+    html_show_copyright: false
+
+# Botones de GitHub: activa use_repository_button si publicas el libro en GitHub Pages.
+repository:
+  url: https://github.com/juandpolo22/Avance_1_Polo_Pallares
+  branch: main
+
+html:
+  use_issues_button: false
+  use_repository_button: true

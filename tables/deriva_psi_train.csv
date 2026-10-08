@@ -1,0 +1,14 @@
+variable,PSI,nivel
+shipping_mode,0.00012952667749295289,estable
+payment_type,0.0008252848129540727,estable
+market,5.996773656761313,fuerte
+customer_segment,0.0002000995039984234,estable
+category_name,0.0007482302872749183,estable
+product_name,0.0018805234358245772,estable
+sales,0.00039089684104265794,estable
+order_item_quantity,0.0003542255507466354,estable
+order_item_discount_rate,2.347680442541554e-06,estable
+order_item_profit_ratio,0.00031800168700603896,estable
+items_in_order,9.771421333565785e-05,estable
+orders_prev_7d,0.05193970366532365,estable
+order_hour,0.00023094076116194338,estable

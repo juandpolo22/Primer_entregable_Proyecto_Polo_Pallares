@@ -1,0 +1,5 @@
+diagnóstico,estadístico,p
+"Ljung-Box residuo diario, rezago 7",5.159806703350677,0.6404683444670916
+"Ljung-Box residuo diario, rezago 14",13.508447334444533,0.4869357771713023
+"Ljung-Box residuo diario, rezago 28",36.94550824604106,0.1200671162216972
+I de Moran del residuo por celda (132 celdas),-0.0098623892004373,0.912

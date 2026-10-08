@@ -1,0 +1,4 @@
+escenario,ROC-AUC media (CV temporal),desv. est.
+Con fuga: días reales + modo de envío,0.9747754742612516,0.0023680843609296
+Con fuga: estado del pedido + modo de envío,0.7617061837561383,0.0020870085173391
+Sin fuga: solo modo de envío,0.7272848544293348,0.0027226887734235

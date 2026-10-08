@@ -1,0 +1,13 @@
+# Despliegue del dashboard en Render (https://render.com): "New +" > "Blueprint" y elegir este repositorio.
+# El servicio se arranca DESDE LA RAÍZ del proyecto con gunicorn sobre el objeto WSGI `server` de dashboard/app.py.
+services:
+  - type: web
+    name: dataco-dashboard
+    runtime: python
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: gunicorn dashboard.app:server --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION          # las versiones de requirements.txt están verificadas con Python 3.11
+        value: 3.11.9

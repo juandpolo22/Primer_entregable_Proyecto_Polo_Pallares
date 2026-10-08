@@ -1,0 +1,9 @@
+variable,PSI train→test,nivel
+shipping_mode,1.2755747797641205e-05,estable
+order_hour,0.0005150884243038556,estable
+payment_type,0.00021099987324321002,estable
+customer_segment,1.539480156605867e-05,estable
+market,3.5232171042141456,fuerte
+items_in_order,0.3689981963853206,fuerte
+category_name,2.8882366562262987,fuerte
+sales,0.03828501453152297,estable

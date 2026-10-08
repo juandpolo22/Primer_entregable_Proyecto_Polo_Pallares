@@ -1,0 +1,10 @@
+DATOS: DataCo Smart Supply Chain for Big Data Analysis
+
+  DataCoSupplyChainDataset.zip   contiene el CSV original sin modificar (180.519 filas, 53 columnas, codificación latin-1).
+                                 MD5 del CSV: 66ac372e9390a590654f4f0fc0367e3b
+
+El libro extrae el CSV automáticamente la primera vez (src/project_utils.py, función ensure_data).
+Si borras el ZIP, intenta descargar una copia pública; si no hay conexión, copia aquí
+DataCoSupplyChainDataset.csv descargado de:
+  Kaggle:   https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis
+  Mendeley: https://data.mendeley.com/datasets/8gx2fvg2k6/5  (DOI 10.17632/8gx2fvg2k6.5, licencia CC BY 4.0)

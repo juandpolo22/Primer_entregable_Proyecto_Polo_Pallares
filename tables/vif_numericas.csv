@@ -1,0 +1,17 @@
+variable,VIF
+sales,5735458546.192434
+sales_per_customer,4749347489.176711
+order_item_discount,177060121.86980852
+order_item_product_price,12.338591031890898
+order_item_quantity,6.4537474747092585
+benefit_per_order,4.129133732571552
+order_item_discount_rate,4.128481144411015
+order_item_profit_ratio,4.066003423920961
+latitude,1.372322478489779
+longitude,1.3722775452927185
+orders_prev_7d,1.0183074426312086
+order_month,1.017443684878816
+order_dow,1.0009462568949332
+days_shipping_scheduled,1.0003485114120745
+items_in_order,1.0001569675420587
+order_hour,1.0001475418343226

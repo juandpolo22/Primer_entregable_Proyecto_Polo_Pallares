@@ -1,0 +1,2 @@
+referencia,Accuracy,Precision,Recall,F1,Balanced Accuracy,ROC-AUC,Average Precision,Brier
+"Tabla de tasas modo × jornada (tasas del entrenamiento, evaluada en la prueba)",0.7248069860914322,0.8954238329238329,0.5884846344048039,0.7102097987272008,0.7481228535697323,0.7745714425418695,0.8238575461688862,0.1742739464456245

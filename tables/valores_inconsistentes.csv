@@ -1,0 +1,14 @@
+comprobación,casos
+"Latitud fuera de [-90, 90] o longitud fuera de [-180, 180]",0
+"Coordenadas (0, 0)",0
+Precio <= 0,0
+Cantidad <= 0,0
+"Tasa de descuento fuera de [0, 1]",0
+sales ≠ precio × cantidad,0
+order_item_total ≠ sales − descuento,0
+Fecha de despacho anterior a la del pedido,0
+Días reales ≠ días de calendario entre pedido y despacho,0
+Tardía según días reales > programados pero etiqueta 0,3362
+Etiqueta 1 con días reales <= programados,0
+product_status constante,1
+customer_email / password enmascarados (un solo valor),1

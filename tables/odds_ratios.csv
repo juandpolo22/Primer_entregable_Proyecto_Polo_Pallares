@@ -1,0 +1,8 @@
+variable,coeficiente,odds_ratio,tipo
+cat__mode_x_daypart_Same Day | AM,-4.404002394852815,0.01222829934633578,indicador de categoría
+cat__mode_x_daypart_Standard Class | AM,-2.725266921710901,0.06552870934823574,indicador de categoría
+cat__mode_x_daypart_Standard Class | PM,-2.707461612571392,0.06670591745220246,indicador de categoría
+cat__mode_x_daypart_First Class | PM,1.7545172374557214,5.780656383845949,indicador de categoría
+cat__mode_x_daypart_Same Day | PM,1.13308918720977,3.1052343488577945,indicador de categoría
+cat__mode_x_daypart_Second Class | AM,-0.9213302898842778,0.39798924770298544,indicador de categoría
+cat__mode_x_daypart_Second Class | PM,-0.9040367627942916,0.40493174263051185,indicador de categoría

@@ -1,0 +1,63 @@
+variable,disponible_al_predecir,evidencia,AUC univariado,decisión,riesgo_de_fuga
+payment_type,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5323091229897183,Candidata (se decide en cap. 10),Bajo
+days_shipping_real,No,Se conoce cuando el pedido se envía/entrega; el objetivo es días reales > programados.,0.7098178476586118,Excluir: fuga (posterior al pedido),Alto
+days_shipping_scheduled,Sí,Promesa de entrega definida por el modo de envío al comprar.,0.6977719329145318,Excluir: redundante o reemplazada (cap. 10),Bajo
+benefit_per_order,"Sí, con cautela","Ganancia calculada con precio, descuento y costo del producto; en DataCo se registra con la venta.",0.5019123142568716,Excluir: redundante o reemplazada (cap. 10),Bajo
+sales_per_customer,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5009473799429742,Excluir: redundante o reemplazada (cap. 10),Bajo
+delivery_status,No,Estado final de la entrega; «Late delivery» ES la etiqueta 1.,1.0,Excluir: fuga (posterior al pedido),Alto
+late_delivery_risk,No,Variable objetivo.,,Objetivo,Alto
+category_id,"Sí, como código",Identificador numérico de una categoría ya presente como texto (redundante).,0.5000427803137699,Excluir: código redundante,Bajo
+category_name,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5010291359953722,Candidata (se decide en cap. 10),Bajo
+customer_city,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5080094724351083,Excluir: redundante o reemplazada (cap. 10),Bajo
+customer_country,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5062081184930574,Excluir: redundante o reemplazada (cap. 10),Bajo
+customer_email,"Sí, pero excluida",Dato personal o enmascarado; sin valor predictivo legítimo.,,Excluir: dato personal,Bajo
+customer_fname,"Sí, pero excluida",Dato personal o enmascarado; sin valor predictivo legítimo.,,Excluir: dato personal,Bajo
+customer_id,Solo agrupar,Identificador del cliente (entidad); usarlo como predictor memorizaría clientes.,0.5008724494825489,Excluir: identificador (solo agrupar),Bajo
+customer_lname,"Sí, pero excluida",Dato personal o enmascarado; sin valor predictivo legítimo.,,Excluir: dato personal,Bajo
+customer_password,"Sí, pero excluida",Dato personal o enmascarado; sin valor predictivo legítimo.,,Excluir: dato personal,Bajo
+customer_segment,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5033456051738112,Candidata (se decide en cap. 10),Bajo
+customer_state,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5025224409653286,Excluir: redundante o reemplazada (cap. 10),Bajo
+customer_street,"Sí, pero excluida",Dato personal o enmascarado; sin valor predictivo legítimo.,,Excluir: dato personal,Bajo
+customer_zipcode,"Sí, pero excluida",Dato personal o enmascarado; sin valor predictivo legítimo.,,Excluir: dato personal,Bajo
+department_id,"Sí, como código",Identificador numérico de una categoría ya presente como texto (redundante).,0.5000890736325523,Excluir: código redundante,Bajo
+department_name,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5023576626094883,Candidata (se decide en cap. 10),Bajo
+latitude,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5007256828985105,Candidata (se decide en cap. 10),Bajo
+longitude,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5005040714817559,Candidata (se decide en cap. 10),Bajo
+market,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5002367158283363,Candidata (se decide en cap. 10),Bajo
+order_city,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5013602537721561,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_country,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5001862891160637,Candidata (se decide en cap. 10),Bajo
+order_customer_id,Solo agrupar,Identificador del cliente (entidad); usarlo como predictor memorizaría clientes.,0.5008724494825489,Excluir: identificador (solo agrupar),Bajo
+order_date,Sí,Marca temporal del pedido; se usa para la partición y para derivar calendario.,,Usar solo para partición y calendario,Bajo
+order_id,Solo agrupar,Identificador; correlaciona con el tiempo (es secuencial) y no describe el pedido.,0.5000128183102215,Excluir: identificador (solo agrupar),Medio (codifica tiempo)
+order_item_cardprod_id,"Sí, como código",Identificador numérico de una categoría ya presente como texto (redundante).,0.5000338711846899,Excluir: código redundante,Bajo
+order_item_discount,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5004025888354859,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_item_discount_rate,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5001062952589326,Candidata (se decide en cap. 10),Bajo
+order_item_id,Solo agrupar,Identificador; correlaciona con el tiempo (es secuencial) y no describe el pedido.,0.5000128183102215,Excluir: identificador (solo agrupar),Medio (codifica tiempo)
+order_item_product_price,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5014166690152138,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_item_profit_ratio,"Sí, con cautela","Ganancia calculada con precio, descuento y costo del producto; en DataCo se registra con la venta.",0.5009681238474137,Candidata (se decide en cap. 10),Bajo
+order_item_quantity,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5005455417310356,Candidata (se decide en cap. 10),Bajo
+sales,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5010652198492793,Candidata (se decide en cap. 10),Bajo
+order_item_total,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5009473799429742,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_profit_per_order,"Sí, con cautela","Ganancia calculada con precio, descuento y costo del producto; en DataCo se registra con la venta.",0.5019123142568716,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_region,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5002863038104548,Candidata (se decide en cap. 10),Bajo
+order_state,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5021906993263556,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_status,No,"Estado del pedido en el sistema (COMPLETE, CLOSED, CANCELED, SUSPECTED_FRAUD...); se actualiza después de la compra.",0.5415107443145121,Excluir: fuga (posterior al pedido),Alto
+order_zipcode,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5094142103908539,"Excluir: vacía, constante o redundante",Bajo
+product_card_id,"Sí, como código",Identificador numérico de una categoría ya presente como texto (redundante).,0.5000338711846899,Excluir: código redundante,Bajo
+product_category_id,"Sí, como código",Identificador numérico de una categoría ya presente como texto (redundante).,0.5000427803137699,Excluir: código redundante,Bajo
+product_description,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",,"Excluir: vacía, constante o redundante",Bajo
+product_image,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5008662016376162,"Excluir: vacía, constante o redundante",Bajo
+product_name,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5008662016376162,Excluir: redundante o reemplazada (cap. 10),Bajo
+product_price,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5014166690152138,Excluir: redundante o reemplazada (cap. 10),Bajo
+product_status,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",,"Excluir: vacía, constante o redundante",Bajo
+shipping_date,No,Fecha de despacho = fecha del pedido + días reales; posterior y equivalente a days_shipping_real.,,Excluir: fuga (posterior al pedido),Alto
+shipping_mode,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.7265204005855765,Candidata (se decide en cap. 10),Bajo
+order_year,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5003676911047805,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_month,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5018522713772059,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_dow,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5008825978458253,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_hour,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5280382649965675,Excluir: redundante o reemplazada (cap. 10),Bajo
+order_weekend,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5016090077906683,Candidata (se decide en cap. 10),Bajo
+order_afternoon,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.5297438897474475,Candidata (se decide en cap. 10),Bajo
+mode_x_daypart,Sí,"Atributo del pedido, producto, cliente o destino conocido al comprar.",0.7581197750157208,Candidata (se decide en cap. 10),Bajo
+items_in_order,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5030006062358943,Candidata (se decide en cap. 10),Bajo
+orders_prev_7d,Sí,Derivada del momento de la compra o del pasado (ventana cerrada a la izquierda).,0.5004035744419861,Candidata (se decide en cap. 10),Bajo

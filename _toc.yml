@@ -1,0 +1,26 @@
+# Tabla de contenidos: los 12 capítulos del Entregable 1 (DataCo sin fuga), en el orden de ejecución.
+format: jb-book
+root: notebooks/01_introduccion
+parts:
+- caption: Base de datos
+  chapters:
+  - file: notebooks/02_datos
+- caption: Análisis exploratorio
+  chapters:
+  - file: notebooks/03_eda_objetivo
+  - file: notebooks/04_eda_univariado
+  - file: notebooks/05_eda_bivariado
+  - file: notebooks/06_eda_multivariado
+  - file: notebooks/07_eda_temporal
+  - file: notebooks/08_eda_espacial
+  - file: notebooks/09_data_leakage
+- caption: Modelado
+  chapters:
+  - file: notebooks/10_preprocesamiento
+  - file: notebooks/11_modelo_base
+  - file: notebooks/12_conclusiones
+- caption: "Entregable 2: Dashboard (Dash/Plotly)"
+  chapters:
+  - file: notebooks/13_dashboard_contexto
+  - file: notebooks/14_dashboard_eda
+  - file: notebooks/15_dashboard_modelos

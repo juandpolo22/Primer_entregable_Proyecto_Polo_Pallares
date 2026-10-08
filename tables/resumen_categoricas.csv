@@ -1,0 +1,15 @@
+variable,cardinalidad,moda,frecuencia_moda_%,"categorías_raras_<0,5%",líneas_en_raras_%
+shipping_mode,4,Standard Class,59.67499563166172,0,0.0
+payment_type,4,DEBIT,38.45815131923816,0,0.0
+market,5,LATAM,28.42774768478071,0,0.0
+order_region,23,Central America,15.570155512842915,1,0.3865105713786475
+order_country,164,Estados Unidos,17.3615236763935,125,12.36414467936397
+order_state,1089,California,3.4709068670277827,1055,62.62659444347371
+order_city,3553,New York City,1.5390529442600034,3535,85.35173859863708
+customer_segment,3,Consumer,51.80499737899703,0,0.0
+customer_country,2,EE. UU.,61.73545343351389,0,0.0
+customer_state,44,PR,38.26454656648611,18,3.839245151144505
+customer_city,562,Caguas,36.85619430368688,546,48.8135593220339
+department_name,6,Fan Shop,38.402236589201465,0,0.0
+category_name,24,Cleats,14.298794338633583,9,2.27433164424253
+product_name,54,Perfect Fitness Perfect Rip Deck,14.298794338633583,45,9.18119867202516

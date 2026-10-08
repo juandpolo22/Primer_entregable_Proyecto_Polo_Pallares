@@ -1,0 +1,9 @@
+columna,copia_de,coincidencia_%
+order_customer_id,customer_id,100.0
+order_profit_per_order,benefit_per_order,100.0
+order_item_total,sales_per_customer,100.0
+order_item_product_price,product_price,100.0
+product_category_id,category_id,100.0
+order_item_cardprod_id,product_card_id,100.0
+product_image,product_name (1 a 1),100.0
+days_shipping_scheduled,shipping_mode (1 a 1),100.0
